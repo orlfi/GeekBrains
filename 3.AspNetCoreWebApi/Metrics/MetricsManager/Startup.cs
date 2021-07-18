@@ -24,6 +24,7 @@ using MetricsManager.ApiClients.Interfaces;
 using MetricsManager.ApiClients.Clients;
 using Polly;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace MetricsManager
 {
@@ -137,6 +138,11 @@ namespace MetricsManager
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseHttpsRedirection();
 
