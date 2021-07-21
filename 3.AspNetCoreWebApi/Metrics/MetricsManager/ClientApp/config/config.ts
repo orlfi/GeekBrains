@@ -19,8 +19,8 @@ export default defineConfig({
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
     // default zh-CN
-    default: 'en-US',
-    antd: true,
+    default: 'ru-RU',
+    antd: false,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
@@ -64,30 +64,45 @@ export default defineConfig({
       ],
     },
     {
-      path: '/dashboard',
+      path: '/dashboard/analysis',
       name: 'dashboard',
       icon: 'dashboard',
-      routes: [
-        {
-          name: 'analysis',
-          icon: 'smile',
-          path: '/dashboard/analysis',
-          component: './dashboard/analysis',
-        },
-        {
-          name: 'monitor',
-          icon: 'smile',
-          path: '/dashboard/monitor',
-          component: './dashboard/monitor',
-        },
-        // {
-        //   name: 'workplace',
-        //   icon: 'smile',
-        //   path: '/dashboard/workplace',
-        //   component: './dashboard/workplace',
-        // },
-      ],
+      component: './dashboard/analysis',
     },
+    {
+      name: 'agents',
+      path: '/dashboard/agents',
+      component: './dashboard/agents',
+      icon: 'dashboard',
+    },
+
+    //   routes: [
+    //     {
+    //       name: 'agents',
+    //       icon: 'smile',
+    //       path: '/dashboard/agents',
+    //       component: './dashboard/agents',
+    //     },
+    //     {
+    //       name: 'analysis',
+    //       icon: 'smile',
+    //       path: '/dashboard/analysis',
+    //       component: './dashboard/analysis',
+    //     },
+    //     {
+    //       name: 'monitor',
+    //       icon: 'smile',
+    //       path: '/dashboard/monitor',
+    //       component: './dashboard/monitor',
+    //     },
+    //     // {
+    //     //   name: 'workplace',
+    //     //   icon: 'smile',
+    //     //   path: '/dashboard/workplace',
+    //     //   component: './dashboard/workplace',
+    //     // },
+    //   ],
+    // },
     // {
     //   path: '/form',
     //   icon: 'form',

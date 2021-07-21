@@ -1,6 +1,14 @@
 import moment from 'moment';
 import type { Request, Response } from 'express';
-import type { AnalysisData, RadarData, DataItem } from './data.d';
+import type { AnalysisData, RadarData, DataItem, AgentDataType } from './data.d';
+
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
 
 // mock data
 const visitData: DataItem[] = [];
@@ -117,11 +125,32 @@ const salesTypeDataOffline = [
   },
 ];
 
+const agentsData: AgentDataType[] = [];
+for (let i = 0; i < 5; i += 1) {
+  agentsData.push({
+    AgentId: i,
+    AgentUrl: `192.168.1.${i}`,
+    IsEnabled: Math.ceil(Math.random()),
+  });
+}
+
+const metricsData: DataItem[] = [];
+for (let i = 0; i < 100; i += 1) {
+  const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
+  metricsData.push({
+    Time,
+    AgentId: 1,
+    Type: 'CPU metrics',
+    Value: Math.floor(Math.random() * 100) + 10,
+  });
+}
+
 const offlineData = [];
-for (let i = 0; i < 10; i += 1) {
+for (let i = 0; i < 5; i += 1) {
   offlineData.push({
-    name: `Stores ${i}`,
+    name: `192.168.1.${i}`,
     cvr: Math.ceil(Math.random() * 9) / 10,
+    isEnabled: Math.ceil(Math.random()),
   });
 }
 const offlineChartData = [];
@@ -129,12 +158,12 @@ for (let i = 0; i < 20; i += 1) {
   const date = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
   offlineChartData.push({
     date,
-    type: '客流量',
+    type: 'Passenger traffic',
     value: Math.floor(Math.random() * 100) + 10,
   });
   offlineChartData.push({
     date,
-    type: '支付笔数',
+    type: 'Безнал. оплата',
     value: Math.floor(Math.random() * 100) + 10,
   });
 }
@@ -199,12 +228,41 @@ const getFakeChartData: AnalysisData = {
   radarData,
 };
 
-const fakeChartData = (_: Request, res: Response) => {
+const fakeChartData = async (_: Request, res: Response) => {
+  await waitTime(2000);
   return res.json({
     data: getFakeChartData,
   });
 };
 
+const fakeAgentsData = async (_: Request, res: Response) => {
+  await waitTime(20);
+  return res.json({
+    data: agentsData,
+  });
+};
+
+const fakeMetricsData = async (_: Request, res: Response) => {
+  await waitTime(20);
+  const metricsDataq: DataItem[] = [];
+  for (let i = 0; i < 20; i += 1) {
+    //const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
+    const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
+    metricsDataq.push({
+      Time,
+      AgentId: 1,
+      Type: 'CPU metrics',
+      Value: Math.floor(Math.random() * 100) + 10,
+    });
+  }
+
+  return res.json({
+    data: metricsDataq,
+  });
+};
+
 export default {
   'GET  /api/fake_analysis_chart_data': fakeChartData,
+  'GET  /api/agents': fakeAgentsData,
+  'GET  /api/metrics/cpu': fakeMetricsData,
 };

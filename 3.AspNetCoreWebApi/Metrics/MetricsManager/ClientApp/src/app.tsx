@@ -7,9 +7,35 @@ import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import customMenuDate from './customMenu';
+import { SmileOutlined, HeartOutlined, DashboardOutlined, DesktopOutlined } from '@ant-design/icons';
+import type { MenuDataItem } from '@ant-design/pro-layout';
+
+const IconMap = {
+  smile: <SmileOutlined />,
+  heart: <HeartOutlined />,
+  dashboard: <DashboardOutlined/>,
+  desktop: <DesktopOutlined/>,
+} ;
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+
+const loopMenuItem = ( menus : MenuDataItem [ ] ) : MenuDataItem [ ] =>{    
+  return menus.map(({ icon, children, ...item }) => ({
+    ...item,
+    icon: icon && IconMap[icon as string],
+    children: children && loopMenuItem(children),
+  } ) ) ;
+};
+
+const waitTime = (time: number = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -118,6 +144,18 @@ export const request: RequestConfig = {
 // ProLayout Supported API https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
+    // menu: {
+    //   // Re-execute request whenever initialState?.currentUser?.userid is modified
+    //   params: {
+    //     userId: initialState?.currentUser?.userid,
+    //   },
+    //   request: async (params, defaultMenuData) => {
+    //     // initialState.currentUser contains all user information
+    //     // const menuData = await fetchMenuData();
+    //     // return menuData;
+    //     return loopMenuItem(defaultMenus);
+    //   },
+    // },
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
@@ -131,20 +169,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         history.push(loginPath);
       }
     },
-    links: isDev
-      ? [
-          <Link to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
-      : [],
+    // links: isDev
+    //   ? [
+    //       <Link to="/umi/plugin/openapi" target="_blank">
+    //         <LinkOutlined />
+    //         <span>OpenAPI Documentation</span>
+    //       </Link>,
+    //       <Link to="/~docs">
+    //         <BookOutlined />
+    //         <span>Business component documentation</span>
+    //       </Link>,
+    //     ]
+    //   : [],
     menuHeaderRender: undefined,
-    // 自定义 403 页面
+    // Custom 403 page
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
   };

@@ -1,6 +1,21 @@
 {
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "command": "npm start",
+            "name": "Start client dev",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/MetricsManager/ClientApp/",
+        },
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:8000",
+            "webRoot": "${workspaceFolder}/MetricsManager/ClientApp"
+        },        
         {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes

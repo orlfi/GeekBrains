@@ -120,7 +120,7 @@ export default class Map extends React.Component {
               values: '#fff',
             }}
             shape={{
-              field: 'Short_Name_ZH',
+              field: 'Short_Name_RU',
               values: 'text',
             }}
             filter={{

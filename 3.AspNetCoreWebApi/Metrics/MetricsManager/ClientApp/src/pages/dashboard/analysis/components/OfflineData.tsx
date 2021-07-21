@@ -16,7 +16,7 @@ const CustomTab = ({
     <Col span={12}>
       <NumberInfo
         title={data.name}
-        subTitle="转化率"
+        subTitle="Conversion rate"
         gap={2}
         total={`${data.cvr * 100}%`}
         theme={currentKey !== data.name ? 'light' : undefined}
@@ -29,6 +29,15 @@ const CustomTab = ({
 );
 
 const { TabPane } = Tabs;
+
+const topColResponsiveProps = {
+  xs: 24,
+  sm: 12,
+  md: 12,
+  lg: 12,
+  xl: 12,
+  style: { marginBottom: 24 },
+};
 
 const OfflineData = ({
   activeKey,
@@ -44,28 +53,112 @@ const OfflineData = ({
   handleTabChange: (activeKey: string) => void;
 }) => (
   <Card loading={loading} className={styles.offlineCard} bordered={false} style={{ marginTop: 32 }}>
-    <Tabs activeKey={activeKey} onChange={handleTabChange}>
+    <Tabs activeKey={activeKey} onChange={handleTabChange} tabPosition="left">
       {offlineData.map((shop) => (
         <TabPane tab={<CustomTab data={shop} currentTabKey={activeKey} />} key={shop.name}>
           <div style={{ padding: '0 24px' }}>
-            <Line
-              forceFit
-              height={400}
-              data={offlineChartData}
-              responsive
-              xField="date"
-              yField="value"
-              seriesField="type"
-              interactions={[
-                {
-                  type: 'slider',
-                  cfg: {},
-                },
-              ]}
-              legend={{
-                position: 'top-center',
-              }}
-            />
+            <Row gutter={24}>
+              <Col {...topColResponsiveProps}>
+                <Line
+                  forceFit
+                  height={400}
+                  data={offlineChartData}
+                  responsive
+                  xField="date"
+                  yField="value"
+                  seriesField="type"
+                  interactions={[
+                    {
+                      type: 'slider',
+                      cfg: {},
+                    },
+                  ]}
+                  legend={{
+                    position: 'top-center',
+                  }}
+                />
+              </Col>
+              <Col {...topColResponsiveProps}>
+                <Line
+                  forceFit
+                  height={400}
+                  data={offlineChartData}
+                  responsive
+                  xField="date"
+                  yField="value"
+                  seriesField="type"
+                  interactions={[
+                    {
+                      type: 'slider',
+                      cfg: {},
+                    },
+                  ]}
+                  legend={{
+                    position: 'top-center',
+                  }}
+                />
+              </Col>
+              <Col {...topColResponsiveProps}>
+                <Line
+                  forceFit
+                  height={400}
+                  data={offlineChartData}
+                  responsive
+                  xField="date"
+                  yField="value"
+                  seriesField="type"
+                  interactions={[
+                    {
+                      type: 'slider',
+                      cfg: {},
+                    },
+                  ]}
+                  legend={{
+                    position: 'top-center',
+                  }}
+                />
+              </Col>
+              <Col {...topColResponsiveProps}>
+                <Line
+                  forceFit
+                  height={400}
+                  data={offlineChartData}
+                  responsive
+                  xField="date"
+                  yField="value"
+                  seriesField="type"
+                  interactions={[
+                    {
+                      type: 'slider',
+                      cfg: {},
+                    },
+                  ]}
+                  legend={{
+                    position: 'top-center',
+                  }}
+                />
+              </Col>
+              <Col {...topColResponsiveProps}>
+                <Line
+                  forceFit
+                  height={400}
+                  data={offlineChartData}
+                  responsive
+                  xField="date"
+                  yField="value"
+                  seriesField="type"
+                  interactions={[
+                    {
+                      type: 'slider',
+                      cfg: {},
+                    },
+                  ]}
+                  legend={{
+                    position: 'top-center',
+                  }}
+                />
+              </Col>
+            </Row>
           </div>
         </TabPane>
       ))}

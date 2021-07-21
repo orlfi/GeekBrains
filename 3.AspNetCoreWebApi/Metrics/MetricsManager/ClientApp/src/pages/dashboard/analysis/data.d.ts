@@ -20,6 +20,12 @@ export type OfflineDataType = {
   cvr: number;
 };
 
+export type AgentDataType = {
+  AgentId: number;
+  AgentUrl: string;
+  IsEnabled: number;
+};
+
 export interface OfflineChartData {
   date: number;
   type: number;
