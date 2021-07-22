@@ -30,7 +30,7 @@ const Monitor: FC = () => {
     <GridContent>
       <>
         <Row gutter={24}>
-          <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+          {/* <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card title="Activity real-time transaction" bordered={false}>
               <Row>
                 <Col md={6} sm={12} xs={24}>
@@ -54,12 +54,12 @@ const Monitor: FC = () => {
                 <Map />
               </div>
             </Card>
-          </Col>
+          </Col> */}
           <Col xl={6} lg={24} md={24} sm={24} xs={24}>
             <Card title="Activity prediction" style={{ marginBottom: 24 }} bordered={false}>
               <ActiveChart />
             </Card>
-            <Card
+            {/* <Card
               title="Brokens nuclear efficiency"
               style={{ marginBottom: 24 }}
               bodyStyle={{ textAlign: 'center' }}
@@ -78,15 +78,15 @@ const Monitor: FC = () => {
                   color: '#30bf78',
                 }}
               />
-            </Card>
+            </Card> */}
           </Col>
         </Row>
-        <Row gutter={24}>
+        {/* <Row gutter={24}>
           <Col xl={12} lg={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card title="各品类占比" bordered={false} className={styles.pieCard}>
               <Row style={{ padding: '16px 0' }}>
                 <Col span={8}>
-                  <RingProgress forceFit height={128} percent={0.28} />
+                  <RingProgress forceFit height={128} percent={0.28} /> */}
                   {/* <Pie
                     animate={false}
                     percent={28}
@@ -95,7 +95,7 @@ const Monitor: FC = () => {
                     height={128}
                     lineWidth={2}
                   /> */}
-                </Col>
+                {/* </Col>
                 <Col span={8}>
                   <RingProgress color="#5DDECF" forceFit height={128} percent={0.22} />
                 </Col>
@@ -120,9 +120,9 @@ const Monitor: FC = () => {
                   fontSize: [10, 20],
                 }}
                 shape="triangle"
-              />
+              /> */}
               {/* <TagCloud data={data?.list || []} height={161} /> */}
-            </Card>
+            {/* </Card>
           </Col>
           <Col xl={6} lg={12} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <Card
@@ -143,7 +143,7 @@ const Monitor: FC = () => {
               />
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </>
     </GridContent>
   );

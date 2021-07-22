@@ -20,7 +20,7 @@ export default defineConfig({
   locale: {
     // default zh-CN
     default: 'ru-RU',
-    antd: false,
+    antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
@@ -75,7 +75,12 @@ export default defineConfig({
       component: './dashboard/agents',
       icon: 'dashboard',
     },
-
+        {
+          name: 'monitor',
+          icon: 'smile',
+          path: '/dashboard/monitor',
+          component: './dashboard/monitor',
+        },
     //   routes: [
     //     {
     //       name: 'agents',

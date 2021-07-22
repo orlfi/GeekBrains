@@ -1,4 +1,5 @@
 import { Card, Col, Row, Tabs } from 'antd';
+
 import CpuChart from './Charts/CpuChart';
 import type { AgentDataType, DataItem } from '../data.d';
 import { Line } from '@ant-design/charts';
@@ -69,53 +70,53 @@ const Metrics = ({
   };
 
   return (
-    <Card
+  
+    // content={
+    //   <div style={{ textAlign: 'center' }}>
+    //     <Input.Search
+    //       placeholder="请输入"
+    //       enterButton="搜索"
+    //       size="large"
+    //       onSearch={handleFormSubmit}
+    //       style={{ maxWidth: 522, width: '100%' }}
+    //     />
+    //   </div>
+    // }
+    
+     <Card
       loading={loading}
       className={styles.offlineCard}
       bordered={false}
       style={{ marginTop: 32 }}
-    >
+    > 
       <Tabs activeKey={activeKey} onChange={onTabChange} tabPosition="left">
         {agentsData.map((agent) => (
           <TabPane tab={<AgentTab data={agent} currentTabKey={activeKey} />} key={agent.AgentId}>
             <div style={{ padding: '0 24px' }}>
-              <Row gutter={24}>
-                <Col {...metricsColProps}>
-                <p>Test {agent.AgentId}</p>
-                  <CpuChart agentId={agent.AgentId}></CpuChart>
-                </Col>
-                <Col {...metricsColProps}>
-                <p>Test</p>
-                  {/* <CpuChart data={[]}></CpuChart> */}
+            <Row gutter={24}>
+            <Col {...metricsColProps}>
+                  <Card title="CPU metrics" style={{ marginBottom: 24 }} bordered={false}>
+                    <CpuChart agentId={agent.AgentId}></CpuChart>
+                  </Card>
                 </Col>
 
-                {/* <Col {...metricsColProps}>
-                  <p>Test</p>
-                  <Line
-                    forceFit
-                    height={400}
-                    data={metricsData}
-                    responsive
-                    xField="Time"
-                    yField="Value"
-                    seriesField="AgentId"
-                    interactions={[
-                      {
-                        type: 'slider',
-                        cfg: {},
-                      },
-                    ]}
-                    legend={{
-                      position: 'top-center',
-                    }}
-                  />
-                </Col> */}
+            </Row>
+
+              <Row gutter={24}>
+                <Col {...metricsColProps}>
+                  <Card title="CPU metrics" style={{ marginBottom: 24 }} bordered={false}>
+                    <CpuChart agentId={agent.AgentId}></CpuChart>
+                  </Card>
+                </Col>
+                <Col {...metricsColProps}>
+
+                </Col>
               </Row>
             </div>
           </TabPane>
         ))}
       </Tabs>
-    </Card>
+     </Card> 
   );
 };
 
