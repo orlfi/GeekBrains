@@ -8,7 +8,8 @@ import { Input } from 'antd';
 import { TimePicker } from 'antd';
 import { DatePicker, Space } from 'antd';
 import moment from 'moment';
-import { getAgents } from './service';
+import { getRegisteredAgents } from './service';
+import type { Agents } from './data';
 
 import type { AnalysisData } from './data.d';
 
@@ -20,8 +21,10 @@ const format = 'DD.MM.YYYY HH:mm';
 
 const Analysis: FC<AnalysisProps> = () => {
   const [currentTabKey, setCurrentTabKey] = useState<string>('');
+  const [fromTime, setFromTime] = useState<moment.Moment>(moment().startOf('day'));
+  const [toTime, setToTime] = useState<moment.Moment>(moment());
 
-  const { loading, data } = useRequest(getAgents);
+  const { loading, data } = useRequest<{ data: Agents }>(getRegisteredAgents);
   //  const { loading: metricsLoading, data: metricsData} = useRequest(getMetrics);
   //const { metricsLoading, metricsData } = useRequest(getMetrics);
 
@@ -30,17 +33,21 @@ const Analysis: FC<AnalysisProps> = () => {
   };
 
   // const activeKey = currentTabKey || (data?.offlineData[0] && data?.offlineData[0].name) || '';
-  const activeKey = currentTabKey || (data && data[0] && data[0].AgentId.toString()) || '';
- 
+  //const activeKey = currentTabKey || (data && data[0] && data[0].AgentId.toString()) || '';
+  const activeKey = currentTabKey || (data?.Agents[0] && data?.Agents[0].AgentId.toString()) || '';
 
   return (
     <PageContainer
       content={
         <>
           <div style={{ textAlign: 'center' }}>
-            <DatePicker.RangePicker showTime  format={format}/>
+            <DatePicker.RangePicker
+              defaultValue={[fromTime, toTime]}
+              showTime
+              format={format}
+              onChange={()=>alert("dt")}
+            />
           </div>
-
         </>
       }
       //ghost
@@ -58,7 +65,7 @@ const Analysis: FC<AnalysisProps> = () => {
             <Metrics
               activeKey={activeKey}
               loading={loading}
-              agentsData={data || []}
+              agentsData={data?.Agents || []}
               handleTabChange={handleTabChange}
             />
           </Suspense>

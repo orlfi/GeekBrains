@@ -23,7 +23,12 @@ export type OfflineDataType = {
 export type AgentDataType = {
   AgentId: number;
   AgentUrl: string;
-  IsEnabled: number;
+  IsEnabled: boolean;
+};
+
+
+export type Agents = {
+  Agents: AgentDataType[];
 };
 
 export interface OfflineChartData {

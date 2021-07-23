@@ -8,25 +8,30 @@ import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import customMenuDate from './customMenu';
-import { SmileOutlined, HeartOutlined, DashboardOutlined, DesktopOutlined } from '@ant-design/icons';
+import {
+  SmileOutlined,
+  HeartOutlined,
+  DashboardOutlined,
+  DesktopOutlined,
+} from '@ant-design/icons';
 import type { MenuDataItem } from '@ant-design/pro-layout';
 
 const IconMap = {
   smile: <SmileOutlined />,
   heart: <HeartOutlined />,
-  dashboard: <DashboardOutlined/>,
-  desktop: <DesktopOutlined/>,
-} ;
+  dashboard: <DashboardOutlined />,
+  desktop: <DesktopOutlined />,
+};
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
-const loopMenuItem = ( menus : MenuDataItem [ ] ) : MenuDataItem [ ] =>{    
+const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] => {
   return menus.map(({ icon, children, ...item }) => ({
     ...item,
     icon: icon && IconMap[icon as string],
     children: children && loopMenuItem(children),
-  } ) ) ;
+  }));
 };
 
 const waitTime = (time: number = 100) => {
@@ -42,16 +47,14 @@ export const initialStateConfig = {
   loading: <PageLoading />,
 };
 
-
-export function getInitialState():{
+export function getInitialState(): {
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
 } {
   return {
-
-    currentUser : {
-    name: 'Serati Ma',
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    currentUser: {
+      name: 'Serati Ma',
+      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
     },
     settings: {},
   };
@@ -159,7 +162,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      //content: initialState?.currentUser?.name,
+      content: 'orlfi.tk',
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -169,6 +173,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         history.push(loginPath);
       }
     },
+    links: [
+      <Link to="/swagger" target="_blank">
+        <LinkOutlined />
+        <span>OpenAPI Documentation</span>
+      </Link>,
+    ],
     // links: isDev
     //   ? [
     //       <Link to="/umi/plugin/openapi" target="_blank">

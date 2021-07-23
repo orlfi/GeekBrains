@@ -130,9 +130,14 @@ for (let i = 0; i < 5; i += 1) {
   agentsData.push({
     AgentId: i,
     AgentUrl: `192.168.1.${i}`,
-    IsEnabled: Math.ceil(Math.random()),
+    IsEnabled: true,
   });
 }
+agentsData.push({
+  AgentId: 7,
+  AgentUrl: `Тестовые данные для анализа`,
+  IsEnabled: true,
+});
 
 const metricsData: DataItem[] = [];
 for (let i = 0; i < 100; i += 1) {
@@ -153,6 +158,8 @@ for (let i = 0; i < 5; i += 1) {
     isEnabled: Math.ceil(Math.random()),
   });
 }
+
+
 const offlineChartData = [];
 for (let i = 0; i < 20; i += 1) {
   const date = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
@@ -237,9 +244,10 @@ const fakeChartData = async (_: Request, res: Response) => {
 
 const fakeAgentsData = async (_: Request, res: Response) => {
   await waitTime(20);
-  return res.json({
-    data: agentsData,
+  const data = res.json({
+    Agents: agentsData,
   });
+  return data;
 };
 
 const fakeMetricsData = async (_: Request, res: Response) => {
