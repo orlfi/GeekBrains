@@ -26,6 +26,11 @@ export type AgentDataType = {
   IsEnabled: boolean;
 };
 
+export type MetricDataType = {
+  AgentId: number;
+  Value: number;
+  Time: Date;
+};
 
 export type Agents = {
   Agents: AgentDataType[];

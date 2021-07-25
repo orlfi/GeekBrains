@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Metrics Manager Dashboard',
+  title: 'Metrics Manager by Orlfi',
   pwa: false,
   logo: '/logo.svg',
   iconfontUrl: '',

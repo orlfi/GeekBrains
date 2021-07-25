@@ -11,13 +11,15 @@ export async function getMetrics(): Promise<{ data: DataItem[] }> {
 }
 
 export async function enableAgentById(agentId: number) {
-  return request<API.RuleListItem>(`/api/agents/enable/${agentId}`, {
+  var param = `/api/agents/enable/${agentId}`;
+  return request<number>(param, {
     method: 'PUT',
   });
 }
 
 export async function disableAgentById(agentId: number) {
-  return request<API.RuleListItem>(`/api/agents/disable/${agentId}`, {
+  var param = `/api/agents/disable/${agentId}`;
+  return request<number>(param, {
     method: 'PUT',
   });
 }

@@ -2,10 +2,12 @@ import { Card, Col, Row, Tabs, Switch } from 'antd';
 import { useState } from 'react';
 import CpuChart from './Charts/CpuChart';
 import type { AgentDataType, DataItem } from '../data.d';
-
+import { useRequest } from 'umi';
 import AgentInfo from './AgentInfo';
 import styles from '../style.less';
 import moment from 'moment';
+import { enableAgentById, disableAgentById } from '../service';
+import { message } from 'antd';
 
 const metricsData: DataItem[] = [];
 for (let i = 0; i < 100; i += 1) {
@@ -21,23 +23,48 @@ for (let i = 0; i < 100; i += 1) {
 const AgentTabPane = ({
   data,
   currentTabKey: currentKey,
-}: // handleAgentStatusChange,
+}: 
 {
   data: AgentDataType;
   currentTabKey: string;
-  // handleAgentStatusChange: (activeKey: number) => void;
 }) => {
   const [isAgentEnabled, setAgentEnableState] = useState(data.IsEnabled);
+  
+  const { loading: enableAgentLoading, run: runEnableAgent } = useRequest(enableAgentById, {
+    manual: true,
+    onSuccess: (result: any, params) => {
+        message.success(`Agent  id="${params[0]}" is enabled!`);
+    },
+    onError: (result: any, params) => {
+      setAgentEnableState(false);
+      message.error(`Ошибка при изменении состояния агента id="${params[0]}" на  enabled!`);
+    },
+  });
+
+  const { loading: disableAgentLoading, run: runDisableAgent } = useRequest(disableAgentById, {
+    manual: true,
+    onSuccess: (result: any, params) => {
+      
+      message.success(`Agent  id="${params[0]}" is disabled!`);
+    },
+    onError: (result: any, params) => {
+      setAgentEnableState(true);
+      message.error(`Ошибка при изменении состояния агента id="${params[0]}" на  disabled!`);
+    },
+  });
+
+
 
   const onSwitchChange = (checked: boolean, ev:Event) => {
-    setAgentEnableState(true);
+    setAgentEnableState(checked);
+
+    if (checked){
+      runEnableAgent(data.AgentId);
+    } else {
+      runDisableAgent(data.AgentId);
+    }
+
     ev.stopPropagation();
-    // try {
-    //         const currentUser = await queryCurrentUser();
-    //         return currentUser;
-    //       } catch (error) {
-    //         history.push(loginPath);
-    //       }
   };
 
   return (
@@ -52,7 +79,7 @@ const AgentTabPane = ({
           <AgentInfo title={data.AgentUrl} />
         </Col>
         <Col flex="none">
-          <Switch checked={isAgentEnabled} defaultChecked={isAgentEnabled} onChange={onSwitchChange} />
+          <Switch checked={isAgentEnabled} defaultChecked={isAgentEnabled} onChange={onSwitchChange} loading={enableAgentLoading || disableAgentLoading}/>
         </Col>
     </Row>
   );
@@ -85,18 +112,6 @@ const Metrics = ({
   };
 
   return (
-    // content={
-    //   <div style={{ textAlign: 'center' }}>
-    //     <Input.Search
-    //       placeholder="请输入"
-    //       enterButton="搜索"
-    //       size="large"
-    //       onSearch={handleFormSubmit}
-    //       style={{ maxWidth: 522, width: '100%' }}
-    //     />
-    //   </div>
-    // }
-
     <Card
       loading={loading}
       className={styles.offlineCard}

@@ -53,7 +53,7 @@ const Analysis: FC<AnalysisProps> = () => {
       //ghost
       //loading = {loading}
       header={{
-        title: 'Agents metrics',
+        title: 'Agents Metrics Dashboard',
       }}
     >
       <GridContent>

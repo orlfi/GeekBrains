@@ -1,6 +1,6 @@
 import moment from 'moment';
 import type { Request, Response } from 'express';
-import type { AnalysisData, RadarData, DataItem, AgentDataType } from './data.d';
+import type { AnalysisData, RadarData, DataItem, AgentDataType, MetricDataType } from './data.d';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -139,13 +139,14 @@ agentsData.push({
   IsEnabled: true,
 });
 
-const metricsData: DataItem[] = [];
+const metricsData: MetricDataType[] = [];
 for (let i = 0; i < 100; i += 1) {
-  const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
+  //const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('DD.MM.YY HH:mm');
+  const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).toDate();
   metricsData.push({
     Time,
     AgentId: 1,
-    Type: 'CPU metrics',
+    //Type: 'CPU metrics',
     Value: Math.floor(Math.random() * 100) + 10,
   });
 }
@@ -252,20 +253,9 @@ const fakeAgentsData = async (_: Request, res: Response) => {
 
 const fakeMetricsData = async (_: Request, res: Response) => {
   await waitTime(20);
-  const metricsDataq: DataItem[] = [];
-  for (let i = 0; i < 20; i += 1) {
-    //const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
-    const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
-    metricsDataq.push({
-      Time,
-      AgentId: 1,
-      Type: 'CPU metrics',
-      Value: Math.floor(Math.random() * 100) + 10,
-    });
-  }
 
   return res.json({
-    data: metricsDataq,
+    data: metricsData,
   });
 };
 
