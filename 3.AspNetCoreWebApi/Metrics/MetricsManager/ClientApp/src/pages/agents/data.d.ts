@@ -34,3 +34,13 @@ export type TableListParams = {
   filter?: Record<string, any[]>;
   sorter?: Record<string, any>;
 };
+
+export type AgentDataType = {
+  AgentId: number;
+  AgentUrl: string;
+  IsEnabled: boolean;
+};
+
+export type Agents = {
+  Agents: AgentDataType[];
+};

@@ -64,10 +64,10 @@ export default defineConfig({
     //   ],
     // },
     {
-      path: '/dashboard/analysis',
+      path: '/dashboard',
       name: 'dashboard',
       icon: 'dashboard',
-      component: './dashboard/analysis',
+      component: './dashboard',
     },
     // {
     //   name: 'agents',
@@ -83,10 +83,11 @@ export default defineConfig({
         // },
 
     {
-      path: '/list',
-      icon: 'table',
-      name: 'list',
-      routes: [
+      path: '/agents',
+      icon: 'form',
+      name: 'agents',
+      component: './agents',
+      // routes: [
         // {
         //   path: '/list/search',
         //   name: 'search-list',
@@ -116,12 +117,12 @@ export default defineConfig({
         //     },
         //   ],
         // },
-        {
-          name: 'table-list',
-          icon: 'smile',
-          path: '/list/table-list',
-          component: './list/table-list',
-        },
+        // {
+        //   name: 'table-list',
+        //   icon: 'smile',
+        //   path: '/list/table-list',
+        //   component: './list/table-list',
+        // },
         // {
         //   name: 'basic-list',
         //   icon: 'smile',
@@ -134,7 +135,7 @@ export default defineConfig({
         //   path: '/list/card-list',
         //   component: './list/card-list',
         // },
-      ],
+      // ],
     },        
     //   routes: [
     //     {
@@ -351,7 +352,7 @@ export default defineConfig({
     // },
     {
       path: '/',
-      redirect: '/dashboard/analysis',
+      redirect: '/dashboard',
     },
     {
       component: '404',

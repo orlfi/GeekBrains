@@ -93,9 +93,9 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
+      title: 'Rule name',
       dataIndex: 'name',
-      tip: '规则名称是唯一的 key',
+      tip: 'The rule name is the only Key',
       render: (dom, entity) => {
         return (
           <a
@@ -110,42 +110,42 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '描述',
+      title: 'describe',
       dataIndex: 'desc',
       valueType: 'textarea',
     },
     {
-      title: '服务调用次数',
+      title: 'Service call',
       dataIndex: 'callNo',
       sorter: true,
       hideInForm: true,
       renderText: (val: string) => `${val}万`,
     },
     {
-      title: '状态',
+      title: 'state',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
-          text: '关闭',
+          text: 'closure',
           status: 'Default',
         },
         1: {
-          text: '运行中',
+          text: 'Run in operation',
           status: 'Processing',
         },
         2: {
-          text: '已上线',
+          text: 'Last line',
           status: 'Success',
         },
         3: {
-          text: '异常',
+          text: 'abnormal',
           status: 'Error',
         },
       },
     },
     {
-      title: '上次调度时间',
+      title: 'Last scheduled time',
       sorter: true,
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
@@ -164,7 +164,7 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '操作',
+      title: 'operate',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -187,12 +187,13 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<TableListItem, TableListPagination>
-        headerTitle="查询表格"
+        //headerTitle="Query form"
         actionRef={actionRef}
         rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
+        // search={{
+        //   labelWidth: 120,
+        // }}
+        search={false}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -201,7 +202,7 @@ const TableList: React.FC = () => {
               handleModalVisible(true);
             }}
           >
-            <PlusOutlined /> 新建
+            <PlusOutlined /> Add agent
           </Button>,
         ]}
         request={rule}
@@ -226,7 +227,7 @@ const TableList: React.FC = () => {
               </a>{' '}
               项 &nbsp;&nbsp;
               <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
+                Total number of service calls {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
               </span>
             </div>
           }
@@ -244,7 +245,7 @@ const TableList: React.FC = () => {
         </FooterToolbar>
       )}
       <ModalForm
-        title="新建规则"
+        title="New rules"
         width="400px"
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
