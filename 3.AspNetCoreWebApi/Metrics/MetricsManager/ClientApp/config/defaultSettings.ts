@@ -18,6 +18,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: '/logo.svg',
   iconfontUrl: '',
+  //headerRender: false,
 };
 
 export default Settings;

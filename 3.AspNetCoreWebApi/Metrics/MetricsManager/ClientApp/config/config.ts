@@ -32,55 +32,110 @@ export default defineConfig({
   },
   // umi routes: https://umijs.org/docs/routing
   routes: [
-    {
-      path: '/user',
-      layout: false,
-      routes: [
-        {
-          path: '/user/login',
-          layout: false,
-          name: 'login',
-          component: './User/Login',
-        },
-        {
-          path: '/user',
-          redirect: '/user/login',
-        },
-        {
-          name: 'register-result',
-          icon: 'smile',
-          path: '/user/register-result',
-          component: './user/register-result',
-        },
-        {
-          name: 'register',
-          icon: 'smile',
-          path: '/user/register',
-          component: './user/register',
-        },
-        {
-          component: '404',
-        },
-      ],
-    },
+    // {
+    //   path: '/user',
+    //   layout: false,
+    //   routes: [
+    //     {
+    //       path: '/user/login',
+    //       layout: false,
+    //       name: 'login',
+    //       component: './User/Login',
+    //     },
+    //     {
+    //       path: '/user',
+    //       redirect: '/user/login',
+    //     },
+    //     {
+    //       name: 'register-result',
+    //       icon: 'smile',
+    //       path: '/user/register-result',
+    //       component: './user/register-result',
+    //     },
+    //     {
+    //       name: 'register',
+    //       icon: 'smile',
+    //       path: '/user/register',
+    //       component: './user/register',
+    //     },
+    //     {
+    //       component: '404',
+    //     },
+    //   ],
+    // },
     {
       path: '/dashboard/analysis',
       name: 'dashboard',
       icon: 'dashboard',
       component: './dashboard/analysis',
     },
+    // {
+    //   name: 'agents',
+    //   path: '/dashboard/agents',
+    //   component: './dashboard/agents',
+    //   icon: 'dashboard',
+    // },
+        // {
+        //   name: 'monitor',
+        //   icon: 'smile',
+        //   path: '/dashboard/monitor',
+        //   component: './dashboard/monitor',
+        // },
+
     {
-      name: 'agents',
-      path: '/dashboard/agents',
-      component: './dashboard/agents',
-      icon: 'dashboard',
-    },
+      path: '/list',
+      icon: 'table',
+      name: 'list',
+      routes: [
+        // {
+        //   path: '/list/search',
+        //   name: 'search-list',
+        //   component: './list/search',
+        //   routes: [
+        //     {
+        //       path: '/list/search',
+        //       redirect: '/list/search/articles',
+        //     },
+        //     {
+        //       name: 'articles',
+        //       icon: 'smile',
+        //       path: '/list/search/articles',
+        //       component: './list/search/articles',
+        //     },
+        //     {
+        //       name: 'projects',
+        //       icon: 'smile',
+        //       path: '/list/search/projects',
+        //       component: './list/search/projects',
+        //     },
+        //     {
+        //       name: 'applications',
+        //       icon: 'smile',
+        //       path: '/list/search/applications',
+        //       component: './list/search/applications',
+        //     },
+        //   ],
+        // },
         {
-          name: 'monitor',
+          name: 'table-list',
           icon: 'smile',
-          path: '/dashboard/monitor',
-          component: './dashboard/monitor',
+          path: '/list/table-list',
+          component: './list/table-list',
         },
+        // {
+        //   name: 'basic-list',
+        //   icon: 'smile',
+        //   path: '/list/basic-list',
+        //   component: './list/basic-list',
+        // },
+        // {
+        //   name: 'card-list',
+        //   icon: 'smile',
+        //   path: '/list/card-list',
+        //   component: './list/card-list',
+        // },
+      ],
+    },        
     //   routes: [
     //     {
     //       name: 'agents',
@@ -317,20 +372,20 @@ export default defineConfig({
   },
   // Fast Refresh Hot update
   fastRefresh: {},
-  openAPI: [
-    {
-      requestLibPath: "import { request } from 'umi'",
-      // Or use online version
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
-    },
-    {
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
-  ],
+  // openAPI: [
+  //   {
+  //     requestLibPath: "import { request } from 'umi'",
+  //     // Or use online version
+  //     // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+  //     schemaPath: join(__dirname, 'oneapi.json'),
+  //     mock: false,
+  //   },
+  //   {
+  //     requestLibPath: "import { request } from 'umi'",
+  //     schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
+  //     projectName: 'swagger',
+  //   },
+  // ],
   nodeModulesTransform: {
     type: 'none',
   },

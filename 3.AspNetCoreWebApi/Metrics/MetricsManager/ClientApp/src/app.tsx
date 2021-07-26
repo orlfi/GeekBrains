@@ -3,18 +3,18 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
-import RightContent from '@/components/RightContent';
+//import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+//import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
-import customMenuDate from './customMenu';
+//import customMenuDate from './customMenu';
 import {
   SmileOutlined,
   HeartOutlined,
   DashboardOutlined,
   DesktopOutlined,
 } from '@ant-design/icons';
-import type { MenuDataItem } from '@ant-design/pro-layout';
+//import type { MenuDataItem } from '@ant-design/pro-layout';
 
 const IconMap = {
   smile: <SmileOutlined />,
@@ -24,15 +24,15 @@ const IconMap = {
 };
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+//const loginPath = '/user/login';
 
-const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] => {
-  return menus.map(({ icon, children, ...item }) => ({
-    ...item,
-    icon: icon && IconMap[icon as string],
-    children: children && loopMenuItem(children),
-  }));
-};
+// const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] => {
+//   return menus.map(({ icon, children, ...item }) => ({
+//     ...item,
+//     icon: icon && IconMap[icon as string],
+//     children: children && loopMenuItem(children),
+//   }));
+// };
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -45,17 +45,18 @@ const waitTime = (time: number = 100) => {
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
   loading: <PageLoading />,
+  //loading: <p>Loading...</p>,
 };
 
 export function getInitialState(): {
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  // currentUser?: API.CurrentUser;
 } {
   return {
-    currentUser: {
-      name: 'Serati Ma',
-      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-    },
+    // currentUser: {
+    //   name: 'Serati Ma',
+    //   avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    // },
     settings: {},
   };
 }
@@ -159,7 +160,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     //     return loopMenuItem(defaultMenus);
     //   },
     // },
-    rightContentRender: () => <RightContent />,
+    // rightContentRender: () => <RightContent />,
+    rightRender: (initialState:any, setInitialState:any) => {
+      return '';
+    },
     disableContentMargin: false,
     waterMarkProps: {
       //content: initialState?.currentUser?.name,
@@ -169,9 +173,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // If you don't log in, redirect login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
+      // if (!initialState?.currentUser && location.pathname !== loginPath) {
+      //   history.push(loginPath);
+      // }
     },
     links: [
       <Link to="/swagger" target="_blank">
@@ -191,7 +195,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     //       </Link>,
     //     ]
     //   : [],
-    menuHeaderRender: undefined,
+    // menuHeaderRender: undefined,
     // Custom 403 page
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
