@@ -10,12 +10,17 @@ export async function getRegisteredAgents(): Promise<{ data: AgentDataType[] }> 
 }
 
 /** 新建规则 POST /api/rule */
-export async function addAgent(options?: { [key: string]: any }) {
-  let a=1;
-  return request<AgentDataType>('/api/agents', {
+export async function addAgent(body: AgentDataType,options?: { [key: string]: any }) {
+  var response = await request<AgentDataType>('/api/agents/register', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
+  
+  return  response;
 }
 
 /** 获取规则列表 GET /api/rule */

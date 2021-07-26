@@ -8,7 +8,12 @@ import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import { getRegisteredAgents, addAgent} from './service';
 import type { AgentDataType } from './data.d';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import type { FormInstance } from 'antd';
 
+const valueEnum = {
+  false: { text: 'Disabled', status: 'Error' },
+  true: { text: 'Enabled', status: 'Success' },
+};
 
 const columns: ProColumns<AgentDataType>[] = [
   {
@@ -27,7 +32,8 @@ const columns: ProColumns<AgentDataType>[] = [
     title: 'Status',
     dataIndex: 'IsEnabled',
     align: 'center',
-    render: (_, row, index, action) => [<Switch defaultChecked={row.IsEnabled} disabled={true} />],
+    valueEnum,
+    //render: (_, row, index, action) => [<Switch defaultChecked={row.IsEnabled} disabled={true} />],
     // sorter: (a, b) => a.containers - b.containers,
   },
 ];
@@ -50,11 +56,12 @@ const handleAdd = async (fields: AgentDataType) => {
 const TableList: React.FC = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
+  const formRef = useRef<FormInstance>();
 
   return (
     <PageContainer>
     <ProTable<AgentDataType>
-              actionRef={actionRef}
+      actionRef={actionRef}
       columns={columns}
       //   request={(params, sorter, filter) => {
       //     // 表单搜索项会从 params 传入，传递给后端接口。
@@ -67,16 +74,20 @@ const TableList: React.FC = () => {
       request={getRegisteredAgents}
       rowKey="AgentId"
       pagination={{
-        showQuickJumper: true,
+        //showQuickJumper: true,
+        //hideOnSinglePage:true
+        
+        //disabled: true,
       }}
       search={false}
       dateFormatter="string"
-      headerTitle="表格标题"
+      headerTitle={false}
       toolBarRender={() => [
         <Button
           type="primary"
           key="primary"
           onClick={() => {
+            formRef.current?.resetFields();
             handleModalVisible(true);
           }}
         >
@@ -87,6 +98,7 @@ const TableList: React.FC = () => {
       <ModalForm
         title="New agent"
         width="400px"
+        formRef={formRef}
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {

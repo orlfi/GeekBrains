@@ -32,11 +32,11 @@ function postAgent(req: Request, res: Response, u: string, b: Request) {
   }
 
   const body = (b && b.body) || req.body;
-  const { method, name, desc, key } = body;
+  const { method} = req;
 
   switch (method) {
     /* eslint no-case-declarations:0 */
-    case 'post':
+    case 'POST':
       (() => {
         const newAgent:AgentDataType = {
           AgentId: 10,
@@ -222,5 +222,5 @@ export default {
   'GET /api/rule': getRule,
   'POST /api/rule': postRule,
   'GET  /api/agents': fakeAgentsData,
-  'POST  /api/agents': postAgent,
+  'POST  /api/agents/register': postAgent,
 };

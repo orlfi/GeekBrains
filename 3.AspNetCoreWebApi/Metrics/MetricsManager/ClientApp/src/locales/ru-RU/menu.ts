@@ -8,6 +8,7 @@ export default {
   'menu.register': 'Register',
   'menu.register.result': 'Register Result',
   'menu.dashboard': 'Dashboard',
+  'menu.agents': 'Agents',
   'menu.dashboard.agents': 'Агенты',
   'menu.dashboard.analysis': 'Analysis',
   'menu.dashboard.monitor': 'Monitor',

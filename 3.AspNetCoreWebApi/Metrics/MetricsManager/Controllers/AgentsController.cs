@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using MediatR;
@@ -59,11 +60,16 @@ namespace MetricsManager.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAgent([FromBody] RegisterAgentCommand request)
         {
+            if (Uri.IsWellFormedUriString(request.AgentUrl.ToString(), UriKind.Absolute))
+            {
             _logger.LogInformation($"Register Agent Parameters: command={request}");
 
             var result = await _mediator.Send(request);
 
             return Ok(result);
+            }
+            else 
+                { return BadRequest("Ошибка запроса");}
         }
 
         /// <summary>
