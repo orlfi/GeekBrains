@@ -1,20 +1,25 @@
 import { Line } from '@ant-design/charts';
 import { useRequest } from 'umi';
-import { getMetrics } from '../../../service';
+import { getMetricsFromAgent } from '../../../service';
 import type { DataItem } from '../../../data.d';
-
+import moment, {Moment} from 'moment';
 import React from 'react';
-import Grid from 'antd/lib/card/Grid';
+import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 //import styles from '../index.less';
+
+type RangePickerValue = RangePickerProps<moment.Moment>['value'];
 
 export type ChartProps = {
   agentId: number;
+  timeRange:RangePickerValue;
+  data: DataItem[] | undefined;
+  loading:boolean;
 };
 
 const CpuChart: React.FC<ChartProps> = (props) => {
-  const { agentId} = props;
+  const { timeRange, data, loading} = props;
   
-  const { loading, data } = useRequest(getMetrics);
+  // const { loading, data } = useRequest(getMetrics);
 
   return (
     <Line

@@ -1,24 +1,7 @@
 import { DataItem } from '@antv/g2plot/esm/interface/config';
+import moment from 'moment';
 
 export { DataItem };
-
-export interface VisitDataType {
-  x: string;
-  y: number;
-}
-
-export type SearchDataType = {
-  index: number;
-  keyword: string;
-  count: number;
-  range: number;
-  status: number;
-};
-
-export type OfflineDataType = {
-  name: string;
-  cvr: number;
-};
 
 export type AgentDataType = {
   AgentId: number;
@@ -27,36 +10,22 @@ export type AgentDataType = {
 };
 
 export type MetricDataType = {
+  Id:number;
   AgentId: number;
   Value: number;
   Time: Date;
+};
+
+export type Metrics = {
+  Metrics: DataItem[];
 };
 
 export type Agents = {
   Agents: AgentDataType[];
 };
 
-export interface OfflineChartData {
-  date: number;
-  type: number;
-  value: number;
-}
-
-export type RadarData = {
-  name: string;
-  label: string;
-  value: number;
+export type CpuMetricGetByPeriodFromAgentQuery = {
+  AgentId: number;
+  FromTime: moment;
+  ToTime: moment;
 };
-
-export interface AnalysisData {
-  visitData: DataItem[];
-  visitData2: DataItem[];
-  salesData: DataItem[];
-  searchData: DataItem[];
-  offlineData: OfflineDataType[];
-  offlineChartData: DataItem[];
-  salesTypeData: DataItem[];
-  salesTypeDataOnline: DataItem[];
-  salesTypeDataOffline: DataItem[];
-  radarData: RadarData[];
-}

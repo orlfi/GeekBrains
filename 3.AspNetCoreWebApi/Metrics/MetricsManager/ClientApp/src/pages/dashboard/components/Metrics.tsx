@@ -1,15 +1,18 @@
 import { Card, Col, Row, Tabs, Switch } from 'antd';
 import { useState } from 'react';
 import CpuChart from './Charts/CpuChart';
-import type { AgentDataType, DataItem } from '../data.d';
+import type { AgentDataType, DataItem, MetricDataType } from '../data.d';
 import { useRequest } from 'umi';
 import AgentInfo from './AgentInfo';
 import styles from '../style.less';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 import { enableAgentById, disableAgentById } from '../service';
 import { message } from 'antd';
+import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 
+type RangePickerValue = RangePickerProps<moment.Moment>['value'];
 const metricsData: DataItem[] = [];
+
 for (let i = 0; i < 100; i += 1) {
   const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('HH:mm');
   metricsData.push({
@@ -28,6 +31,7 @@ const AgentTabPane = ({
   data: AgentDataType;
   currentTabKey: string;
 }) => {
+
   const [isAgentEnabled, setAgentEnableState] = useState(data.IsEnabled);
   
   const { loading: enableAgentLoading, run: runEnableAgent } = useRequest(enableAgentById, {
@@ -99,14 +103,23 @@ const metricsColProps = {
 const Metrics = ({
   activeKey,
   loading,
+  timeRange,
   agentsData,
+  cpuData,
+  cpuLoading,
   handleTabChange,
+  // handleTimeRangeChange
 }: {
   activeKey: string;
   loading: boolean;
+  timeRange: RangePickerValue;
   agentsData: AgentDataType[];
+  cpuData: DataItem[] | undefined;
+  cpuLoading: boolean;
   handleTabChange: (activeKey: string) => void;
+  // handleTimeRangeChange:(values:RangePickerValue) => void;
 }) => {
+ 
   const onTabChange = (key: string) => {
     handleTabChange(key);
   };
@@ -124,8 +137,8 @@ const Metrics = ({
             <div style={{ padding: '0 24px' }}>
               <Row gutter={24}>
                 <Col {...metricsColProps}>
-                  <Card title="CPU metrics" style={{ marginBottom: 24 }} bordered={false}>
-                    <CpuChart agentId={agent.AgentId}></CpuChart>
+                  <Card loading={cpuLoading} title="CPU metrics" style={{ marginBottom: 24 }} bordered={false}>
+                    <CpuChart loading={cpuLoading} data = {cpuData} agentId={agent.AgentId} timeRange = {timeRange}></CpuChart>
                   </Card>
                 </Col>
                 <Col {...metricsColProps}></Col>

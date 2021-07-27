@@ -1,6 +1,6 @@
 import { Line } from '@ant-design/charts';
 import { useRequest } from 'umi';
-import { getMetrics } from '../../../../service';
+import { getMetricsFromAgent } from '../../../../service';
 import type { DataItem } from '../../../../data.d';
 
 import React from 'react';
@@ -13,7 +13,7 @@ export type ChartProps = {
 const CpuChart: React.FC<ChartProps> = (props) => {
   const { agentId} = props;
   
-  const { loading, data } = useRequest(getMetrics);
+  const { loading, data } = useRequest(getMetricsFromAgent);
 
   return (
     <Line

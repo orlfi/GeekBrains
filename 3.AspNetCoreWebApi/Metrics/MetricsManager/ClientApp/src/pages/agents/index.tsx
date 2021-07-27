@@ -1,8 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState, useRef } from 'react';
-import { Button, Tooltip, Switch,message} from 'antd';
-import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Switch, message} from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import { getRegisteredAgents, addAgent} from './service';

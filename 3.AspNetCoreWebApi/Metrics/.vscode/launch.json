@@ -1,6 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
+    {
+        "name": "Attach to Chrome",
+        "port": 5001,
+        "request": "attach",
+        "type": "pwa-chrome",
+        "webRoot": "${workspaceFolder}"
+    },
 
         {
             "command": "npm start",
@@ -15,7 +22,14 @@
             "type": "pwa-chrome",
             "url": "http://localhost:8000",
             "webRoot": "${workspaceFolder}/MetricsManager/ClientApp"
-        },        
+        },    
+        {
+            "name": "Launch Chrome server",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:5001",
+            "webRoot": "${workspaceFolder}/MetricsManager/ClientApp"
+        },     
         {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
