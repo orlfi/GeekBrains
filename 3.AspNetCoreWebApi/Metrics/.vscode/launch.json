@@ -1,14 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-    {
-        "name": "Attach to Chrome",
-        "port": 5001,
-        "request": "attach",
-        "type": "pwa-chrome",
-        "webRoot": "${workspaceFolder}"
-    },
-
         {
             "command": "npm start",
             "name": "Start client dev",
@@ -24,10 +16,10 @@
             "webRoot": "${workspaceFolder}/MetricsManager/ClientApp"
         },    
         {
-            "name": "Launch Chrome server",
+            "name": "Launch Chrome .Net",
             "request": "launch",
             "type": "pwa-chrome",
-            "url": "http://localhost:5001",
+            "url": "https://localhost:5001",
             "webRoot": "${workspaceFolder}/MetricsManager/ClientApp"
         },     
         {

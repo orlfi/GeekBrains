@@ -1,11 +1,12 @@
 import { Card, Col, Row, Tabs, Switch } from 'antd';
 import { useState } from 'react';
 import CpuChart from './Charts/CpuChart';
+import RamChart from './Charts/RamChart';
 import type { AgentDataType, DataItem, MetricDataType } from '../data.d';
 import { useRequest } from 'umi';
 import AgentInfo from './AgentInfo';
 import styles from '../style.less';
-import moment, {Moment} from 'moment';
+import moment, { Moment } from 'moment';
 import { enableAgentById, disableAgentById } from '../service';
 import { message } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
@@ -26,18 +27,16 @@ for (let i = 0; i < 100; i += 1) {
 const AgentTabPane = ({
   data,
   currentTabKey: currentKey,
-}: 
-{
+}: {
   data: AgentDataType;
   currentTabKey: string;
 }) => {
-
   const [isAgentEnabled, setAgentEnableState] = useState(data.IsEnabled);
-  
+
   const { loading: enableAgentLoading, run: runEnableAgent } = useRequest(enableAgentById, {
     manual: true,
     onSuccess: (result: any, params) => {
-        message.success(`Agent  id="${params[0]}" is enabled!`);
+      message.success(`Agent  id="${params[0]}" is enabled!`);
     },
     onError: (result: any, params) => {
       setAgentEnableState(false);
@@ -48,7 +47,6 @@ const AgentTabPane = ({
   const { loading: disableAgentLoading, run: runDisableAgent } = useRequest(disableAgentById, {
     manual: true,
     onSuccess: (result: any, params) => {
-      
       message.success(`Agent  id="${params[0]}" is disabled!`);
     },
     onError: (result: any, params) => {
@@ -57,12 +55,10 @@ const AgentTabPane = ({
     },
   });
 
-
-
-  const onSwitchChange = (checked: boolean, ev:Event) => {
+  const onSwitchChange = (checked: boolean, ev: Event) => {
     setAgentEnableState(checked);
 
-    if (checked){
+    if (checked) {
       runEnableAgent(data.AgentId);
     } else {
       runDisableAgent(data.AgentId);
@@ -79,12 +75,17 @@ const AgentTabPane = ({
       gutter={8}
       style={{ width: 250, margin: '8px 0' }}
     >
-        <Col flex="auto">
-          <AgentInfo title={data.AgentUrl} />
-        </Col>
-        <Col flex="none">
-          <Switch checked={isAgentEnabled} defaultChecked={isAgentEnabled} onChange={onSwitchChange} loading={enableAgentLoading || disableAgentLoading}/>
-        </Col>
+      <Col flex="auto">
+        <AgentInfo title={data.AgentUrl} />
+      </Col>
+      <Col flex="none">
+        <Switch
+          checked={isAgentEnabled}
+          defaultChecked={isAgentEnabled}
+          onChange={onSwitchChange}
+          loading={enableAgentLoading || disableAgentLoading}
+        />
+      </Col>
     </Row>
   );
 };
@@ -107,19 +108,22 @@ const Metrics = ({
   agentsData,
   cpuData,
   cpuLoading,
+  ramData,
+  ramLoading,
   handleTabChange,
-  // handleTimeRangeChange
-}: {
+}: // handleTimeRangeChange
+{
   activeKey: string;
   loading: boolean;
   timeRange: RangePickerValue;
   agentsData: AgentDataType[];
   cpuData: DataItem[] | undefined;
   cpuLoading: boolean;
+  ramData: DataItem[] | undefined;
+  ramLoading: boolean;
   handleTabChange: (activeKey: string) => void;
   // handleTimeRangeChange:(values:RangePickerValue) => void;
 }) => {
- 
   const onTabChange = (key: string) => {
     handleTabChange(key);
   };
@@ -133,12 +137,40 @@ const Metrics = ({
     >
       <Tabs activeKey={activeKey} onChange={onTabChange} tabPosition="left">
         {agentsData.map((agent) => (
-          <TabPane tab={<AgentTabPane data={agent} currentTabKey={activeKey} />} key={agent.AgentId}>
+          <TabPane
+            tab={<AgentTabPane data={agent} currentTabKey={activeKey} />}
+            key={agent.AgentId}
+          >
             <div style={{ padding: '0 24px' }}>
               <Row gutter={24}>
                 <Col {...metricsColProps}>
-                  <Card loading={cpuLoading} title="CPU metrics" style={{ marginBottom: 24 }} bordered={false}>
-                    <CpuChart loading={cpuLoading} data = {cpuData} agentId={agent.AgentId} timeRange = {timeRange}></CpuChart>
+                  <Card
+                    loading={cpuLoading}
+                    title="CPU usage, %"
+                    style={{ marginBottom: 24 }}
+                    bordered={false}
+                  >
+                    <CpuChart
+                      loading={cpuLoading}
+                      data={cpuData}
+                      agentId={agent.AgentId}
+                      timeRange={timeRange}
+                    ></CpuChart>
+                  </Card>
+                </Col>
+                <Col {...metricsColProps}>
+                  <Card
+                    loading={ramLoading}
+                    title="RAM available, Mb"
+                    style={{ marginBottom: 24 }}
+                    bordered={false}
+                  >
+                    <RamChart
+                      loading={ramLoading}
+                      data={ramData}
+                      agentId={agent.AgentId}
+                      timeRange={timeRange}
+                    ></RamChart>
                   </Card>
                 </Col>
                 <Col {...metricsColProps}></Col>

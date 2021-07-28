@@ -24,7 +24,7 @@ export type Agents = {
   Agents: AgentDataType[];
 };
 
-export type CpuMetricGetByPeriodFromAgentQuery = {
+export type MetricGetByPeriodFromAgentQuery = {
   AgentId: number;
   FromTime: moment;
   ToTime: moment;

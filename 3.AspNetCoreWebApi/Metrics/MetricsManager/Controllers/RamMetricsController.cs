@@ -31,7 +31,7 @@ namespace MetricsManager.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET api/metrics/ram/agent/1/from/2021-07-01/to/2021-07-10
+        ///     GET api/metrics/ram/agent/1/available/from/2021-07-01/to/2021-07-10
         ///
         /// </remarks>
         /// <param name="request"></param>

@@ -1,5 +1,5 @@
 import { request } from 'umi';
-import type { Agents, DataItem, CpuMetricGetByPeriodFromAgentQuery, Metrics } from './data';
+import type { Agents, DataItem, MetricGetByPeriodFromAgentQuery, Metrics } from './data';
 
 export async function getRegisteredAgents(): Promise<{ data: Agents }> {
   //const agents = await request('/api/agents');
@@ -19,7 +19,7 @@ export async function getRegisteredAgents(): Promise<{ data: Agents }> {
 // }
 
 //export async function getMetricsFromAgent(parameters: CpuMetricGetByPeriodFromAgentQuery, options?: { [key: string]: any }): Promise<{ data: Metrics }> {
-  export async function getMetricsFromAgent(parameters: CpuMetricGetByPeriodFromAgentQuery) {
+  export async function getCpuMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
   var param = `api/metrics/cpu/agent/${parameters.AgentId}/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
   //var param = `api/metrics/cpu/agent/`;
   return request(param, {
@@ -40,6 +40,34 @@ export async function getRegisteredAgents(): Promise<{ data: Agents }> {
   // let a =1;
   // return response;
   //return {data:response.Metrics};
+}
+
+export async function getRamMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
+  var param = `api/metrics/ram/agent/${parameters.AgentId}/available/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
+  return request(param, {
+     method: 'GET',
+   });
+}
+
+export async function getHddMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
+  var param = `api/metrics/hdd/agent/${parameters.AgentId}/disk-time/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
+  return request(param, {
+     method: 'GET',
+   });
+}
+
+export async function getNetworkMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
+  var param = `api/metrics/network/agent/${parameters.AgentId}/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
+  return request(param, {
+     method: 'GET',
+   });
+}
+
+export async function getDotNetMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
+  var param = `api/metrics/dotnet/agent/${parameters.AgentId}/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
+  return request(param, {
+     method: 'GET',
+   });
 }
 
 export async function enableAgentById(agentId: number) {
