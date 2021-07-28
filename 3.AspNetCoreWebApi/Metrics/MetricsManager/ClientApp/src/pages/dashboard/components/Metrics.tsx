@@ -2,6 +2,9 @@ import { Card, Col, Row, Tabs, Switch } from 'antd';
 import { useState } from 'react';
 import CpuChart from './Charts/CpuChart';
 import RamChart from './Charts/RamChart';
+import HddChart from './Charts/HddChart';
+import NetworkChart from './Charts/NetworkChart';
+import DotNetChart from './Charts/DotNetChart';
 import type { AgentDataType, DataItem, MetricDataType } from '../data.d';
 import { useRequest } from 'umi';
 import AgentInfo from './AgentInfo';
@@ -96,8 +99,8 @@ const metricsColProps = {
   xs: 24,
   sm: 12,
   md: 12,
-  lg: 12,
-  xl: 12,
+  lg: 8,
+  xl: 8,
   style: { marginBottom: 24 },
 };
 
@@ -110,6 +113,12 @@ const Metrics = ({
   cpuLoading,
   ramData,
   ramLoading,
+  hddData,
+  hddLoading,
+  networkData,
+  networkLoading,
+  dotNetData,
+  dotNetLoading,
   handleTabChange,
 }: // handleTimeRangeChange
 {
@@ -121,6 +130,12 @@ const Metrics = ({
   cpuLoading: boolean;
   ramData: DataItem[] | undefined;
   ramLoading: boolean;
+  hddData: DataItem[] | undefined;
+  hddLoading: boolean;
+  networkData: DataItem[] | undefined;
+  networkLoading: boolean;
+  dotNetData: DataItem[] | undefined;
+  dotNetLoading: boolean;
   handleTabChange: (activeKey: string) => void;
   // handleTimeRangeChange:(values:RangePickerValue) => void;
 }) => {
@@ -173,7 +188,51 @@ const Metrics = ({
                     ></RamChart>
                   </Card>
                 </Col>
-                <Col {...metricsColProps}></Col>
+                <Col {...metricsColProps}>
+                  <Card
+                    loading={hddLoading}
+                    title="HDD active time, %"
+                    style={{ marginBottom: 24 }}
+                    bordered={false}
+                  >
+                    <HddChart
+                      loading={hddLoading}
+                      data={hddData}
+                      agentId={agent.AgentId}
+                      timeRange={timeRange}
+                    ></HddChart>
+                  </Card>
+                </Col>
+                <Col {...metricsColProps}>
+                  <Card
+                    loading={networkLoading}
+                    title="Network send speed, Mb/s"
+                    style={{ marginBottom: 24 }}
+                    bordered={false}
+                  >
+                    <NetworkChart
+                      loading={networkLoading}
+                      data={networkData}
+                      agentId={agent.AgentId}
+                      timeRange={timeRange}
+                    ></NetworkChart>
+                  </Card>
+                </Col>
+                <Col {...metricsColProps}>
+                  <Card
+                    loading={dotNetLoading}
+                    title="CLR Memory gen 1 heap size, Мб "
+                    style={{ marginBottom: 24 }}
+                    bordered={false}
+                  >
+                    <DotNetChart
+                      loading={dotNetLoading}
+                      data={dotNetData}
+                      agentId={agent.AgentId}
+                      timeRange={timeRange}
+                    ></DotNetChart>
+                  </Card>
+                </Col>
               </Row>
             </div>
           </TabPane>

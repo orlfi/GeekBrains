@@ -9,7 +9,7 @@ import moment from 'moment';
 import { getRegisteredAgents } from './service';
 import type { Agents, MetricGetByPeriodFromAgentQuery } from './data';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
-import { getCpuMetricsFromAgent, getRamMetricsFromAgent } from './service';
+import { getCpuMetricsFromAgent, getRamMetricsFromAgent, getHddMetricsFromAgent, getNetworkMetricsFromAgent, getDotNetMetricsFromAgent } from './service';
 
 type RangePickerValue = RangePickerProps<moment.Moment>['value'];
 
@@ -41,6 +41,21 @@ const Dashboard: FC<DashboardProps> = () => {
     formatResult: (res) => res?.Metrics,
   });
 
+  const { loading: hddLoading, data: hddData, run: hddRun } = useRequest(getHddMetricsFromAgent, {
+    manual: true,
+    formatResult: (res) => res?.Metrics,
+  });
+
+  const { loading: networkLoading, data: networkData, run: networkRun } = useRequest(getNetworkMetricsFromAgent, {
+    manual: true,
+    formatResult: (res) => res?.Metrics,
+  });
+
+  const { loading: dotNetLoading, data: dotNetData, run: dotNetRun } = useRequest(getDotNetMetricsFromAgent, {
+    manual: true,
+    formatResult: (res) => res?.Metrics,
+  });
+
   const handleTabChange = (key: string) => {
     message.info(`Выбрана вкладка ${key}`);
     loadMetrics({AgentId: parseInt(key),FromTime:timeRange?.[0], ToTime:timeRange?.[1]});
@@ -50,6 +65,9 @@ const Dashboard: FC<DashboardProps> = () => {
   const loadMetrics = (parameters: MetricGetByPeriodFromAgentQuery) => {
     cpuRun(parameters);
     ramRun(parameters);
+    hddRun(parameters);
+    networkRun(parameters);
+    dotNetRun(parameters);
   };
 
 
@@ -102,6 +120,12 @@ const Dashboard: FC<DashboardProps> = () => {
               cpuLoading={cpuLoading}
               ramData={ramData}
               ramLoading={ramLoading}
+              hddData={hddData}
+              hddLoading={hddLoading}
+              networkData={networkData}
+              networkLoading={networkLoading}
+              dotNetData={dotNetData}
+              dotNetLoading={dotNetLoading}
               handleTabChange={handleTabChange}
             />
           </Suspense>

@@ -1,16 +1,16 @@
 import { Area } from '@ant-design/charts';
-import type { DataItem } from '../../../data.d';
+import type { DataItem } from '../../../data';
 import React from 'react';
 import type { RangePickerValue} from '../typings';
 
-export type RamChartProps = {
+export type DotNetChartProps = {
   agentId: number;
   timeRange:RangePickerValue;
   data: DataItem[] | undefined;
   loading:boolean;
 };
 
-const RamChart: React.FC<RamChartProps> = (props) => {
+const DotNetChart: React.FC<DotNetChartProps> = (props) => {
   const { data} = props;
   
   return (
@@ -24,6 +24,7 @@ const RamChart: React.FC<RamChartProps> = (props) => {
       yField="Value"
       
       yAxis={{
+        max:100,
         label:{
           formatter: function formatter(v) {
             return v;
@@ -41,4 +42,4 @@ const RamChart: React.FC<RamChartProps> = (props) => {
     />
   );
 };
-export default RamChart;
+export default DotNetChart;

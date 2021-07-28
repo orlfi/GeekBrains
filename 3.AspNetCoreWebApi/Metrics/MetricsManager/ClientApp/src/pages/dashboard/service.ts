@@ -64,7 +64,7 @@ export async function getNetworkMetricsFromAgent(parameters: MetricGetByPeriodFr
 }
 
 export async function getDotNetMetricsFromAgent(parameters: MetricGetByPeriodFromAgentQuery) {
-  var param = `api/metrics/dotnet/agent/${parameters.AgentId}/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
+  var param = `api/metrics/dotnet/agent/${parameters.AgentId}/heap-size/from/${parameters.FromTime.toJSON()}/to/${parameters.ToTime.toJSON()}`;
   return request(param, {
      method: 'GET',
    });
