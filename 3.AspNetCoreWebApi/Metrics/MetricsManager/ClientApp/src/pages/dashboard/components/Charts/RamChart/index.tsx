@@ -15,11 +15,9 @@ const RamChart: React.FC<RamChartProps> = (props) => {
   
   return (
     <Area
-      // animation={false}
       forceFit
       height={400}
       data={data}
-      //responsive
       xField="Time"
       yField="Value"
       
@@ -30,13 +28,9 @@ const RamChart: React.FC<RamChartProps> = (props) => {
             },
           },
       }}
-      //smooth={true}
-      // xAxis = {{ tickCount: 3, type: 'time' }}
       xAxis = {{
         mask:'DD.MM HH:mm:ss',
         type: 'time',
-        //mask
-        //nice: true,
       }}
     />
   );

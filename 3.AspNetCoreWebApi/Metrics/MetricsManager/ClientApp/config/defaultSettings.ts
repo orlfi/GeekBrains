@@ -4,7 +4,6 @@ const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } = {
-  //navTheme: 'light',
   navTheme: 'dark',
   // Dawn
   primaryColor: '#1890ff',
@@ -18,7 +17,6 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: '/logo.svg',
   iconfontUrl: '',
-  //headerRender: false,
 };
 
 export default Settings;

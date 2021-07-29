@@ -57,7 +57,6 @@ const Dashboard: FC<DashboardProps> = () => {
   });
 
   const handleTabChange = (key: string) => {
-    message.info(`Выбрана вкладка ${key}`);
     loadMetrics({AgentId: parseInt(key),FromTime:timeRange?.[0], ToTime:timeRange?.[1]});
     setCurrentTabKey(key);
   };
@@ -70,20 +69,14 @@ const Dashboard: FC<DashboardProps> = () => {
     dotNetRun(parameters);
   };
 
-
-  // const activeKey = currentTabKey || (data?.offlineData[0] && data?.offlineData[0].name) || '';
-  //const activeKey = currentTabKey || (data && data[0] && data[0].AgentId.toString()) || '';
   const activeKey = currentTabKey || (data?.Agents[0] && data?.Agents[0].AgentId.toString()) || '';
 
   const timeRangeChangeHandler = (values: RangePickerValue, agentId:string) => {
     if (values) {
-      // message.info(`Период ${values[0].toString()}`);
       loadMetrics({AgentId: parseInt(agentId),FromTime:values[0], ToTime:values[1]});
       setTimeRange(values);
     }
   };
-  // if (activeKey && timeRange)
-  //   loadMetrics({AgentId: parseInt(activeKey),FromTime:timeRange[0], ToTime:timeRange[1]});
 
   return (
     <PageContainer
@@ -99,17 +92,12 @@ const Dashboard: FC<DashboardProps> = () => {
           </div>
         </>
       }
-      //ghost
-      //loading = {loading}
       header={{
         title: 'Agents Metrics Dashboard',
       }}
     >
       <GridContent>
         <>
-          {/* <Suspense fallback={<PageLoading />}>
-          <IntroduceRow loading={loading} visitData={data?.visitData || []} />
-        </Suspense> */}
           <Suspense fallback={null}>
             <Metrics
               activeKey={activeKey}

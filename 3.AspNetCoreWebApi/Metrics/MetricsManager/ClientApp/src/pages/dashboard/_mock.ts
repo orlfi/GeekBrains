@@ -1,6 +1,6 @@
 import moment from 'moment';
 import type { Request, Response } from 'express';
-import type { DataItem, AgentDataType, MetricDataType } from './data.d';
+import type { AgentDataType, MetricDataType } from './data.d';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -26,17 +26,14 @@ agentsData.push({
   IsEnabled: true,
 });
 
-//const metricsData: MetricDataType[] = [];
 const metricsData: () => MetricDataType[] = () => {
   const data: MetricDataType[] = [];
   for (let i = 0; i < 100; i += 1) {
-    //const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).format('DD.MM.YY HH:mm');
     const Time = moment(new Date().getTime() + 1000 * 60 * 30 * i).toDate();
     data.push({
       Id:1,
       AgentId: 1,
       Time,
-      //Type: 'CPU metrics',
       Value: Math.floor(Math.random() * 100) + 10,
     });
   }
@@ -51,10 +48,9 @@ const fakeAgentsData = async (_: Request, res: Response) => {
   return data;
 };
 
-//const fakeMetricsData = async (req: Request, res: Response, u: string, b: Request) => {
 const fakeMetricsData = async (_: Request, res: Response) => {
 
-  //await waitTime(2000);
+  await waitTime(2000);
 
   return res.json({
     data: metricsData(),

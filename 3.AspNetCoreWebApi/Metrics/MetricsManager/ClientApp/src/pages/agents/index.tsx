@@ -1,12 +1,12 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState, useRef } from 'react';
-import { Button, Tooltip, Switch, message} from 'antd';
+import { Button, message} from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import { getRegisteredAgents, addAgent} from './service';
 import type { AgentDataType } from './data.d';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import type { FormInstance } from 'antd';
 
 const valueEnum = {
@@ -19,21 +19,17 @@ const columns: ProColumns<AgentDataType>[] = [
     title: 'ID',
     width: 80,
     dataIndex: 'AgentId',
-    // render: (_) => <a>{_}</a>,
   },
   {
     title: 'URL',
     dataIndex: 'AgentUrl',
     align: 'left',
-    // sorter: (a, b) => a.containers - b.containers,
   },
   {
     title: 'Status',
     dataIndex: 'IsEnabled',
     align: 'center',
     valueEnum,
-    //render: (_, row, index, action) => [<Switch defaultChecked={row.IsEnabled} disabled={true} />],
-    // sorter: (a, b) => a.containers - b.containers,
   },
 ];
 
@@ -62,21 +58,10 @@ const TableList: React.FC = () => {
     <ProTable<AgentDataType>
       actionRef={actionRef}
       columns={columns}
-      //   request={(params, sorter, filter) => {
-      //     // 表单搜索项会从 params 传入，传递给后端接口。
-      //     console.log(params, sorter, filter);
-      //     return Promise.resolve({
-      //       data: tableListDataSource,
-      //       success: true,
-      //     });
-      //   }}
       request={getRegisteredAgents}
       rowKey="AgentId"
       pagination={{
-        //showQuickJumper: true,
-        //hideOnSinglePage:true
-        
-        //disabled: true,
+        disabled: true,
       }}
       search={false}
       dateFormatter="string"
