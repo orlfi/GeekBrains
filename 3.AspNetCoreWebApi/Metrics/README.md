@@ -5,8 +5,8 @@ Metrics Agent works only under Windows, Metrics Manager works under Windows and 
 
 [https://metrics.orlfi.tk](https://metrics.orlfi.tk)
 
-![Sample app](/gitscreenshots/Dashboard.png)
-![Sample app](/screenshots/Agent_adding.png)
+![Sample app](Screenshots/Dashboard.png)
+![Sample app](Screenshots/Agent_adding.png)
 
 ## Features
 * The service agent and the service manager collect once in 5 seconds and displays the following metrics:
