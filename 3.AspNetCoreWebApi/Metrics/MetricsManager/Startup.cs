@@ -25,6 +25,7 @@ using MetricsManager.ApiClients.Clients;
 using Polly;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace MetricsManager
 {
@@ -179,8 +180,8 @@ namespace MetricsManager
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
         }

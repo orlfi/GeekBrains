@@ -20,7 +20,7 @@ const format = 'DD.MM.YYYY HH:mm';
 
 const Dashboard: FC<DashboardProps> = () => {
   const [currentTabKey, setCurrentTabKey] = useState<string>('');
-  const [timeRange, setTimeRange] = useState<RangePickerValue>([moment().startOf('day'), moment()]);
+  const [timeRange, setTimeRange] = useState<RangePickerValue>([moment([2021,5, 1]), moment()]);
 
   const { loading, data } = useRequest<{ data: Agents }>(getRegisteredAgents, {
     onSuccess: (result, params) => {
