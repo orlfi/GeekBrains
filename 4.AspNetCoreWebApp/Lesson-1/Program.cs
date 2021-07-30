@@ -29,15 +29,32 @@ namespace Lesson_1
         static readonly HttpClient client = new HttpClient();
         static readonly string url = "https://jsonplaceholder.typicode.com/posts/";
         static readonly string fileName = "result.txt";
+        static readonly int tasksCount = 10;
+        static readonly int startId = 4;
 
         static async Task Main(string[] args)
         {
-            Post post = await GetPostAsync(1);
-            if (post != null)
+            var tasks = new Task<Post>[tasksCount];
+            for (int i = 0; i < tasksCount; i++)
             {
-                File.WriteAllText(fileName, post.ToString());
-                Console.WriteLine(post.ToString());
+                tasks[i] = GetPostAsync(startId + i);
             }
+
+            Task.WaitAll(tasks);
+
+            using (StreamWriter sw = new StreamWriter(fileName, false, System.Text.Encoding.Default))
+            {
+                foreach (var task in tasks)
+                {
+                    if (task.Result != null)
+                    {
+                        string text = task.Result.ToString();
+                        await sw.WriteLineAsync(text);
+                        Console.WriteLine(text);
+                    }
+                }
+            }
+
             Console.WriteLine("Done. Press any key!");
             Console.ReadKey();
         }
@@ -54,11 +71,13 @@ namespace Lesson_1
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                     WriteIndented = true
                 };
-                return JsonSerializer.Deserialize<Post>(jsonText, serializeOptions);
+                var post = JsonSerializer.Deserialize<Post>(jsonText, serializeOptions);
+                Console.WriteLine($"End task with id={id}");
+                return post;
             }
-
             catch (Exception ex)
             {
+                Console.WriteLine($"Error in task with id={id}: {ex.Message}");
                 return null;
             }
         }
