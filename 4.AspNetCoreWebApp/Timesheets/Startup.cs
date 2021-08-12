@@ -11,11 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Timesheets.DAL;
+using Timesheets.DAL.Models;
 
 namespace Timesheets
 {
     public class Startup
     {
+        private TimesSheetsContext _db = new TimesSheetsContext();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +29,6 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(setup =>
             {
@@ -49,6 +51,14 @@ namespace Timesheets
                     }
                 });
             });
+
+            services.AddSingleton<TimesSheetsContext>(_db);
+            InitializeDatabase(_db);
+        }
+
+        private void InitializeDatabase(TimesSheetsContext db)
+        {
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

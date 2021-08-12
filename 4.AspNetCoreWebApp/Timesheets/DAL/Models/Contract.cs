@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 namespace Timesheets.DAL.Models
 {
     public class Contract
@@ -12,5 +14,8 @@ namespace Timesheets.DAL.Models
         public DateTime Date { get; set;}
 
         public string Name { get; set;}
+        
+        public Customer Customer { get; set;}
+        public ICollection<Invoice> Invoices { get; set;}
     }
 }

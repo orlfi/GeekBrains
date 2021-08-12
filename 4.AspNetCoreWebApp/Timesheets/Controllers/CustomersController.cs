@@ -10,18 +10,18 @@ namespace Timesheets.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientsController : ControllerBase
+    public class CustomersController : ControllerBase
     {
-        private static readonly List<Client> ClientsRepository = new List<Client>
+        private static readonly List<Customer> ClientsRepository = new List<Customer>
         {
-            new Client { Id = 0, Name = "ООО Рога и Копыта"},
-            new Client { Id = 1, Name = "МММ"},
-            new Client { Id = 2, Name = "GeekBrains"}
+            new Customer { Id = 0, Name = "ООО Рога и Копыта"},
+            new Customer { Id = 1, Name = "МММ"},
+            new Customer { Id = 2, Name = "GeekBrains"}
         };
 
-        private readonly ILogger<ClientsController> _logger;
+        private readonly ILogger<CustomersController> _logger;
 
-        public ClientsController(ILogger<ClientsController> logger)
+        public CustomersController(ILogger<CustomersController> logger)
         {
             _logger = logger;
         }
@@ -34,7 +34,7 @@ namespace Timesheets.Controllers
         }
 
         [HttpPost("modify")]
-        public IActionResult Modify([FromBody]Client Client)
+        public IActionResult Modify([FromBody]Customer Client)
         {
             var entity = ClientsRepository.SingleOrDefault(item => item.Id == Client.Id);
             if (entity == null)
@@ -45,7 +45,7 @@ namespace Timesheets.Controllers
         }
 
         [HttpPut("add")]
-        public IActionResult Add([FromBody]Client Client)
+        public IActionResult Add([FromBody]Customer Client)
         {
             if (ClientsRepository.Any(item => item.Name == Client.Name.Trim()))
                 return BadRequest($"The Client with id {Client.Id} is already exist");
