@@ -6,8 +6,7 @@ namespace Timesheets.DAL.Models
     public class Invoice
     {
         public int ContractId { get; set;}
-
-        public int EmployeeId { get; set;}
+        public Contract Contract { get; set;}
 
         public DateTime Date { get; set;}
         
@@ -17,6 +16,5 @@ namespace Timesheets.DAL.Models
 
         public ICollection<Task> Tasks { get; set;}
 
-        public Contract Contract { get; set;}
     }
 }

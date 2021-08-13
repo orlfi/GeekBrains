@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using MediatR;
+using Timesheets.Filters;
 using Timesheets.DAL;
 using Timesheets.DAL.Models;
 
@@ -29,7 +32,9 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers((options) => {
+                options.Filters.Add(typeof(MyActionFilter));
+            });
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
@@ -53,6 +58,8 @@ namespace Timesheets
             });
 
             services.AddSingleton<TimesSheetsContext>(_db);
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             InitializeDatabase(_db);
         }
 

@@ -11,6 +11,10 @@ namespace Timesheets.DAL.Models
 
         public int Amount { get; set;}
 
+        public int ContractId { get; set;}
+
+        public Contract Contract { get; set;}
+
         public ICollection<TaskExecution> TaskExecutions { get; set;}
         public ICollection<Invoice> Invoices { get; set;}
     }
