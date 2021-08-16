@@ -11,11 +11,13 @@ namespace Timesheets.DAL.Models
 
         public int Amount { get; set;}
 
-        public int ContractId { get; set;}
+        public bool IsCompleted { get; set;}
 
-        public Contract Contract { get; set;}
+        // public int ContractId { get; set;}
 
-        public ICollection<TaskExecution> TaskExecutions { get; set;}
-        public ICollection<Invoice> Invoices { get; set;}
+        // public Contract Contract { get; set;}
+
+        public ICollection<TaskExecution> TaskExecutions { get; set;}  = new List<TaskExecution>();
+        //public ICollection<Invoice> Invoices { get; set;}
     }
 }

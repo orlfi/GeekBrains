@@ -4,68 +4,68 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Timesheets.DAL.Models;
+using MediatR;
+using Timesheets.Services.Requests.Employees;
+using Timesheets.Services.Requests.TaskExecutions;
 
 namespace Timesheets.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     public class EmployeesController : ControllerBase
     {
-        private static readonly List<Employee> EmployeesRepository = new List<Employee>
-        {
-            new Employee { Id = 0, Name = "Иванов Иван Иванович"},
-            new Employee { Id = 1, Name = "Петров Петр Петрович"},
-            new Employee { Id = 2, Name = "Сидоров Сидр Сидорович"},
-            new Employee { Id = 3, Name = "Смит Владимир"},
-            new Employee { Id = 3, Name = "Монин Даниил"}
-        };
 
         private readonly ILogger<EmployeesController> _logger;
+        private readonly IMediator _mediator;
 
-        public EmployeesController(ILogger<EmployeesController> logger)
-        {
-            _logger = logger;
-        }
+        public EmployeesController(ILogger<EmployeesController> logger, IMediator mediator) => (_logger, _mediator) = (logger, mediator);
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
-            _logger.LogDebug("");
-            return Ok(EmployeesRepository);
+            var response = await _mediator.Send(new GetAllEmployeesQuery());
+
+            return Ok(response);
+
+        }
+        
+        [HttpGet("{EmployeeId}/Executions")]
+        public async Task<IActionResult> GetEmployeeExecutions([FromRoute]GetEmployeeExecutionsQuery  request)
+        {
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
         }
 
-        [HttpPost("modify")]
-        public IActionResult Modify([FromBody]Employee employee)
+
+        [HttpPut("Add")]
+        public async Task<IActionResult> Add([FromBody]AddEmployeeCommand request)
         {
-            var entity = EmployeesRepository.SingleOrDefault(item => item.Id == employee.Id);
-            if (entity == null)
-                return BadRequest($"Employee with id {employee.Id} is not found");
-            
-            entity.Name = employee.Name;
-            return Ok();
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
         }
 
-        [HttpPut("add")]
-        public IActionResult Add([FromBody]Employee employee)
+        [HttpPut("{EmployeeId}/Task/{TaskId}/Execution/{TimeSpent}")]
+        public async Task<IActionResult> AddEmployeeTaskExecution([FromRoute]AddEmployeeTaskExecutionCommand request)
         {
-            if (EmployeesRepository.Any(item => item.Name == employee.Name.Trim()))
-                return BadRequest($"The Employee with id {employee.Id} is already exist");
+            var response = await _mediator.Send(request);
 
-            var maxId = EmployeesRepository.Max(item => item.Id);
-            employee.Id = maxId + 1;
-            EmployeesRepository.Add(employee);
-            return Ok();
+            return Ok(response);
         }
 
-        [HttpDelete("delete/{id}")]
-        public IActionResult Delete([FromRoute]int id)
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody]UpdateEmployeeCommand request)
         {
-            var index = EmployeesRepository.FindIndex(item => item.Id == id);
-            if (index == -1)
-                return BadRequest($"Employee with id {id} is not found");
-            
-            EmployeesRepository.RemoveAt(index);
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+
+        [HttpDelete("Delete/{Id}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteEmployeeCommand request)
+        {
+            await _mediator.Send(request);
             return Ok();
         }
     }

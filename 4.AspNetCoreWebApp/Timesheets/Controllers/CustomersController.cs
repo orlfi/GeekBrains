@@ -4,66 +4,89 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Timesheets.DAL.Models;
+using MediatR;
+using Timesheets.Services.Requests.Customers;
+using Timesheets.Services.Requests.Contracts;
+using Timesheets.Services.Requests.Invoices;
 
 namespace Timesheets.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     public class CustomersController : ControllerBase
     {
-        private static readonly List<Customer> ClientsRepository = new List<Customer>
-        {
-            new Customer { Id = 0, Name = "ООО Рога и Копыта"},
-            new Customer { Id = 1, Name = "МММ"},
-            new Customer { Id = 2, Name = "GeekBrains"}
-        };
-
         private readonly ILogger<CustomersController> _logger;
+        private readonly IMediator _mediator;
 
-        public CustomersController(ILogger<CustomersController> logger)
-        {
-            _logger = logger;
-        }
+        public CustomersController(ILogger<CustomersController> logger, IMediator mediator) => (_logger, _mediator) = (logger, mediator);
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
-            _logger.LogDebug("");
-            return Ok(ClientsRepository);
+            var response = await _mediator.Send(new GetAllCustomersQuery());
+
+            return Ok(response);
+
+        }
+        
+        [HttpGet("{CustomerId}/Contracts")]
+        public async Task<IActionResult> GetCustomerContracts([FromRoute]GetCustomerContractsQuery request)
+        {
+            //var response = await _mediator.Send(new GetCustomerContractsQuery() {CustomerId = customerId});
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
+        }
+        
+        [HttpGet("Contract/{ContractId}/Invoices/From/{DateFrom}/To/{DateTo}")]
+        public async Task<IActionResult> GetContractInvoices([FromRoute]int ContractId, [FromRoute] DateTime DateFrom, [FromRoute] DateTime DateTo)
+        {
+            var response = await _mediator.Send(new GetContractInvoicesByPeriodQuery() 
+            {
+                ContractId = ContractId,
+                DateFrom = DateFrom,
+                DateTo = DateTo
+            });
+
+            return Ok(response);
         }
 
-        [HttpPost("modify")]
-        public IActionResult Modify([FromBody]Customer Client)
+        [HttpPut("Add")]
+        public async Task<IActionResult> Add([FromBody]AddCustomerCommand request)
         {
-            var entity = ClientsRepository.SingleOrDefault(item => item.Id == Client.Id);
-            if (entity == null)
-                return BadRequest($"Client with id {Client.Id} is not found");
-            
-            entity.Name = Client.Name;
-            return Ok();
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
         }
 
-        [HttpPut("add")]
-        public IActionResult Add([FromBody]Customer Client)
+        [HttpPut("{CustomerId}/Contract")]
+        public async Task<IActionResult> AddContract(AddContractCommand request)
         {
-            if (ClientsRepository.Any(item => item.Name == Client.Name.Trim()))
-                return BadRequest($"The Client with id {Client.Id} is already exist");
+            var response = await _mediator.Send(request);
 
-            var maxId = ClientsRepository.Max(item => item.Id);
-            Client.Id = maxId + 1;
-            ClientsRepository.Add(Client);
-            return Ok();
+            return Ok(response);
         }
 
-        [HttpDelete("delete/{id}")]
-        public IActionResult Delete([FromRoute]int id)
+        [HttpPut("Contract/{ContractId}/Invoice")]
+        public async Task<IActionResult> AddInvoice(AddInvoiceCommand request)
         {
-            var index = ClientsRepository.FindIndex(item => item.Id == id);
-            if (index == -1)
-                return BadRequest($"Client with id {id} is not found");
-            
-            ClientsRepository.RemoveAt(index);
+            var response = await _mediator.Send(request);
+
+            return Ok(response);
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody]UpdateCustomerCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+
+        [HttpDelete("Delete/{Id}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteCustomerCommand request)
+        {
+            await _mediator.Send(request);
             return Ok();
         }
     }

@@ -15,7 +15,10 @@ using System.Reflection;
 using MediatR;
 using Timesheets.Filters;
 using Timesheets.DAL;
+using Timesheets.DAL.Interfaces;
+using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Models;
+using Timesheets.Mappers;
 
 namespace Timesheets
 {
@@ -32,7 +35,8 @@ namespace Timesheets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers((options) => {
+            services.AddControllers((options) =>
+            {
                 options.Filters.Add(typeof(MyActionFilter));
             });
             services.AddSwaggerGen(setup =>
@@ -57,15 +61,18 @@ namespace Timesheets
                 });
             });
 
+            services.AddSingleton<ICustomersRepository, CustomersRepository>();
+            services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
+            services.AddSingleton<ITasksRepository, TasksRepository>();
+            services.AddSingleton<IContractsRepository, ContractsRepository>();
+            services.AddSingleton<IInvoicesRepository, InvoicesRepository>();
+            services.AddSingleton<ITaskExecutionsRepository, TaskExecutionsRepository>();
             services.AddSingleton<TimesSheetsContext>(_db);
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMapper();
 
-            InitializeDatabase(_db);
-        }
-
-        private void InitializeDatabase(TimesSheetsContext db)
-        {
-
+            _db.Initialize();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,13 +82,13 @@ namespace Timesheets
             {
                 app.UseDeveloperExceptionPage();
             }
-                app.UseSwagger();
-                app.UseSwaggerUI(c => 
-                { 
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Timesheets v1");
-                    c.RoutePrefix = string.Empty;
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Timesheets v1");
+                c.RoutePrefix = string.Empty;
 
-                });
+            });
 
             //     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             //     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
