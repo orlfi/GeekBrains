@@ -10,6 +10,5 @@ namespace Timesheets.DAL.Interfaces
         Task<ICollection<TaskExecution>> GetEmployeeTaskExecutions(Employee employee);
 
         Task<TaskExecution> Create(TaskExecution entity);
-
     }
 }

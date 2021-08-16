@@ -60,32 +60,5 @@ namespace Timesheets.DAL.Repositories
 
             return result;
         }
-
-        public async Task<Employee> Update(Employee entity)
-        {
-            await System.Threading.Tasks.Task.Run(() =>
-            {
-                var updatedEmployee = _db.Employees.SingleOrDefault(item => item.Id == entity.Id);
-                if (updatedEmployee != null)
-                {
-                    var index = _db.Employees.IndexOf(updatedEmployee);
-                    _db.Employees[index] = entity;
-                }
-            });
-
-            return entity;
-        }
-
-        public async System.Threading.Tasks.Task Delete(int id)
-        {
-            await System.Threading.Tasks.Task.Run(() =>
-           {
-               var Employee = _db.Employees.FirstOrDefault(item => item.Id == id);
-               if (Employee != null)
-               {
-                   _db.Employees.Remove(Employee);
-               }
-           });
-        }
     }
 }

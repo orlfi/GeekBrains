@@ -14,9 +14,5 @@ namespace Timesheets.DAL.Interfaces
         Task<Contract> Create(Contract entity);
 
         Task AddInvoice(Invoice entity);
-
-        // Task<Contract> Update(Contract entity);
-
-        // System.Threading.Tasks.Task Delete(int id);
     }
 }

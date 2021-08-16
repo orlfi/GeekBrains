@@ -35,32 +35,5 @@ namespace Timesheets.DAL.Repositories
 
             return result;
         }
-
-        // public async Task<Invoice> Update(Invoice Invoice)
-        // {
-        //     await System.Threading.Tasks.Task.Run(() =>
-        //     {
-        //         var updatedInvoice = _db.Invoices.SingleOrDefault(item => item.Id == Invoice.Id);
-        //         if (updatedInvoice != null)
-        //         {
-        //             var index = _db.Invoices.IndexOf(updatedInvoice);
-        //             _db.Invoices[index] = Invoice;
-        //         }
-        //     });
-
-        //     return Invoice;
-        // }
-
-        // public async System.Threading.Tasks.Task Delete(int id)
-        // {
-        //     await System.Threading.Tasks.Task.Run(() =>
-        //    {
-        //        var Invoice = _db.Invoices.FirstOrDefault(item => item.Id == id);
-        //        if (Invoice != null)
-        //        {
-        //            _db.Invoices.Remove(Invoice);
-        //        }
-        //    });
-        // }
     }
 }

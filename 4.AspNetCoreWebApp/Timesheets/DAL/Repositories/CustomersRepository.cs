@@ -46,33 +46,6 @@ namespace Timesheets.DAL.Repositories
             return result;
         }
 
-        public async Task<Customer> Update(Customer customer)
-        {
-            await System.Threading.Tasks.Task.Run(() =>
-            {
-                var updatedCustomer = _db.Customers.SingleOrDefault(item => item.Id == customer.Id);
-                if (updatedCustomer != null)
-                {
-                    var index = _db.Customers.IndexOf(updatedCustomer);
-                    _db.Customers[index] = customer;
-                }
-            });
-
-            return customer;
-        }
-
-        public async System.Threading.Tasks.Task Delete(int id)
-        {
-            await System.Threading.Tasks.Task.Run(() =>
-           {
-               var customer = _db.Customers.FirstOrDefault(item => item.Id == id);
-               if (customer != null)
-               {
-                   _db.Customers.Remove(customer);
-               }
-           });
-        }
-
         public async System.Threading.Tasks.Task AddContract(Contract entity)
         {
            await System.Threading.Tasks.Task.Run(() =>

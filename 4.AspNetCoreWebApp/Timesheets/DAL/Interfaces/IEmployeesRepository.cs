@@ -12,11 +12,6 @@ namespace Timesheets.DAL.Interfaces
 
         Task<ICollection<TaskExecution>> GetTaskExecutions(int employeeId);
 
-
         Task<Employee> Create(Employee entity);
-
-        Task<Employee> Update(Employee entity);
-
-        System.Threading.Tasks.Task Delete(int id);
     }
 }

@@ -26,15 +26,12 @@ namespace Timesheets.Mappers
         public MapperProfile()
         {
             CreateMap<AddCustomerCommand, Customer>();
-            CreateMap<UpdateCustomerCommand, Customer>();
             CreateMap<Customer, CustomerDto>();
 
             CreateMap<AddEmployeeCommand, Employee>();
-            CreateMap<UpdateEmployeeCommand, Employee>();
             CreateMap<Employee, EmployeeDto>();
 
             CreateMap<AddTaskCommand, Task>();
-            CreateMap<UpdateTaskCommand, Task>();
             CreateMap<Task, TaskDto>();
 
             CreateMap<AddContractCommand, Contract>();

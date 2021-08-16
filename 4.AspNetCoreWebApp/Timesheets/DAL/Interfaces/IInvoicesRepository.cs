@@ -10,9 +10,5 @@ namespace Timesheets.DAL.Interfaces
         Task<ICollection<Invoice>> GetContractInvoicesByPeriod(Contract contract, DateTime dateFrom, DateTime dateTo);
 
         Task<Invoice> Create(Invoice entity);
-
-        // Task<Invoice> Update(Invoice entity);
-
-        // System.Threading.Tasks.Task Delete(int id);
     }
 }

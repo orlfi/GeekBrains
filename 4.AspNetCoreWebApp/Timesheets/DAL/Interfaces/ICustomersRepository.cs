@@ -14,15 +14,5 @@ namespace Timesheets.DAL.Interfaces
         Task<Customer> Create(Customer entity);
 
         Task AddContract(Contract entity);
-
-        Task<Customer> Update(Customer entity);
-
-        System.Threading.Tasks.Task Delete(int id);
-
-        // IList<AgentInfo> GetRegistered();
-
-        // void EnableById(int agentId);
-
-        // void DisableById(int agentId);
     }
 }

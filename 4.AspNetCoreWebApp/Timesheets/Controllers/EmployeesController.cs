@@ -53,20 +53,5 @@ namespace Timesheets.Controllers
 
             return Ok(response);
         }
-
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody]UpdateEmployeeCommand request)
-        {
-            var response = await _mediator.Send(request);
-            return Ok(response);
-        }
-
-
-        [HttpDelete("Delete/{Id}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteEmployeeCommand request)
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
     }
 }
