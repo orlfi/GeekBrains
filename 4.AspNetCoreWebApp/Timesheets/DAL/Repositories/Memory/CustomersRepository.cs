@@ -6,13 +6,13 @@ using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Models;
 
-namespace Timesheets.DAL.Repositories
+namespace Timesheets.DAL.Repositories.Memory
 {
     public class CustomersRepository : ICustomersRepository
     {
-        private readonly TimesSheetsContext _db;
+        private readonly TimesSheetsMemoryContext _db;
 
-        public CustomersRepository(TimesSheetsContext db) => _db = db;
+        public CustomersRepository(TimesSheetsMemoryContext db) => _db = db;
 
         public async Task<ICollection<Customer>> GetAll()
         {

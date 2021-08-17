@@ -4,7 +4,7 @@ using Timesheets.DAL.Models;
 
 namespace Timesheets.DAL
 {
-    public class TimesSheetsContext
+    public class TimesSheetsMemoryContext
     {
         public IList<Contract> Contracts { get; set; } = new List<Contract>();
 
@@ -22,37 +22,37 @@ namespace Timesheets.DAL
         {
             List<Customer> CustomersList = new List<Customer>
             {
-                new Customer { Id = 0, Name = "ООО Рога и Копыта"},
-                new Customer { Id = 1, Name = "АО Пивной дворик"}
+                new Customer { Id = 0, Name = "ООО Рога и Копыта", Contracts = new List<Contract>()},
+                new Customer { Id = 1, Name = "АО Пивной дворик", Contracts = new List<Contract>()}
             };
             CustomersList.ForEach((item) => Customers.Add(item));
 
             List<Employee> EmployeesList = new List<Employee>
             {
-                new Employee { Id = 0, Name = "Иванов Иван Иванович"},
-                new Employee { Id = 1, Name = "Петров Петр Петрович"},
-                new Employee { Id = 2, Name = "Сидоров Сидр Сидорович"},
-                new Employee { Id = 3, Name = "Смит Владимир"},
-                new Employee { Id = 4, Name = "Монин Даниил"}
+                new Employee { Id = 0, Name = "Иванов Иван Иванович", TaskExecutions = new List<TaskExecution>()},
+                new Employee { Id = 1, Name = "Петров Петр Петрович", TaskExecutions = new List<TaskExecution>()},
+                new Employee { Id = 2, Name = "Сидоров Сидр Сидорович", TaskExecutions = new List<TaskExecution>()},
+                new Employee { Id = 3, Name = "Смит Владимир", TaskExecutions = new List<TaskExecution>()},
+                new Employee { Id = 4, Name = "Монин Даниил", TaskExecutions = new List<TaskExecution>()}
             };
             EmployeesList.ForEach((item) => Employees.Add(item));
 
             List<Task> TasksList = new List<Task>
             {
-                new Task { Id = 0, Name = "Создание базы данных ", Amount = 20},
-                new Task { Id = 1, Name = "Создание макета сайта", Amount = 30},
-                new Task { Id = 2, Name = "Разработка API", Amount = 40, IsCompleted = true},
-                new Task { Id = 3, Name = "Подготовка документации к проекту", Amount  =20},
-                new Task { Id = 4, Name = "Создание клиентского приложения на React", Amount  =20},
-                new Task { Id = 5, Name = "Создание приложения под Android", Amount  =20, IsCompleted = true}
+                new Task { Id = 0, Name = "Создание базы данных ", Amount = 20, TaskExecutions = new List<TaskExecution>()},
+                new Task { Id = 1, Name = "Создание макета сайта", Amount = 30,  TaskExecutions = new List<TaskExecution>()},
+                new Task { Id = 2, Name = "Разработка API", Amount = 40, IsCompleted = true,  TaskExecutions = new List<TaskExecution>()},
+                new Task { Id = 3, Name = "Подготовка документации к проекту", Amount  =20,  TaskExecutions = new List<TaskExecution>()},
+                new Task { Id = 4, Name = "Создание клиентского приложения на React", Amount  =20,  TaskExecutions = new List<TaskExecution>()},
+                new Task { Id = 5, Name = "Создание приложения под Android", Amount  =20, IsCompleted = true,  TaskExecutions = new List<TaskExecution>()}
             };
             TasksList.ForEach((item) => Tasks.Add(item));
 
             List<Contract> ContractsList = new List<Contract>
             {
-                new Contract { Id = 0, Name = "Создание сайта", Number = "1/2021", HourCost =3000, Customer = Customers[0]},
-                new Contract { Id = 1, Name = "Разработка учетной программы", Number = "2/2021", HourCost =3200, Customer = Customers[1]},
-                new Contract { Id = 2, Name = "Создание сайта", Number = "2/2021", HourCost =3200, Customer = Customers[1]},
+                new Contract { Id = 0, Name = "Создание сайта", Number = "1/2021", HourCost =3000, Customer = Customers[0], Invoices = new List<Invoice>()},
+                new Contract { Id = 1, Name = "Разработка учетной программы", Number = "2/2021", HourCost =3200, Customer = Customers[1],Invoices = new List<Invoice>()},
+                new Contract { Id = 2, Name = "Создание сайта", Number = "2/2021", HourCost =3200, Customer = Customers[1], Invoices = new List<Invoice>()},
             };
             ContractsList.ForEach((item) => Contracts.Add(item));
 
@@ -62,7 +62,8 @@ namespace Timesheets.DAL
                     Contract = Contracts[1],
                     Description = "Счет за выполненные работы по договору 2/2021",
                     Date = new DateTime(2021, 07, 31),
-                    Total = 192000
+                    Total = 192000,
+                    Tasks = new List<Task>()
                 }
             );
             Contracts[1].Invoices.Add(Invoices[0]);

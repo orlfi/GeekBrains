@@ -8,6 +8,6 @@ namespace Timesheets.DAL.Models
         
         public string Name { get; set;}
 
-        public ICollection<TaskExecution> TaskExecutions { get; set;}  = new List<TaskExecution>();
+        public ICollection<TaskExecution> TaskExecutions { get; set;}
     }
 }

@@ -17,7 +17,7 @@ namespace Timesheets.DAL.Models
 
         // public Contract Contract { get; set;}
 
-        public ICollection<TaskExecution> TaskExecutions { get; set;}  = new List<TaskExecution>();
+        public ICollection<TaskExecution> TaskExecutions { get; set;}
         //public ICollection<Invoice> Invoices { get; set;}
     }
 }

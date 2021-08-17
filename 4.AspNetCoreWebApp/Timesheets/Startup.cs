@@ -16,15 +16,15 @@ using MediatR;
 using Timesheets.Filters;
 using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
-using Timesheets.DAL.Repositories;
+using Timesheets.DAL.Repositories.Memory;
 using Timesheets.DAL.Models;
-using Timesheets.Mappers;
+using Timesheets.Infrastructure.Extensions;
 
 namespace Timesheets
 {
     public class Startup
     {
-        private TimesSheetsContext _db = new TimesSheetsContext();
+        private TimesSheetsMemoryContext _db = new TimesSheetsMemoryContext();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,6 +39,7 @@ namespace Timesheets
             {
                 options.Filters.Add(typeof(MyActionFilter));
             });
+
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
@@ -61,16 +62,13 @@ namespace Timesheets
                 });
             });
 
-            services.AddSingleton<ICustomersRepository, CustomersRepository>();
-            services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
-            services.AddSingleton<ITasksRepository, TasksRepository>();
-            services.AddSingleton<IContractsRepository, ContractsRepository>();
-            services.AddSingleton<IInvoicesRepository, InvoicesRepository>();
-            services.AddSingleton<ITaskExecutionsRepository, TaskExecutionsRepository>();
-            services.AddSingleton<TimesSheetsContext>(_db);
+            services.AddSingleton<TimesSheetsMemoryContext>(_db);
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddMapper();
+
+            services.ConfigureDbContext(Configuration);
+            services.ConfigureRepositories();
+            services.ConfigureMappers();
 
             _db.Initialize();
         }

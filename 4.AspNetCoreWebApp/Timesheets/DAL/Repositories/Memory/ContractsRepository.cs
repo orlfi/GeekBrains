@@ -7,13 +7,13 @@ using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace Timesheets.DAL.Repositories
+namespace Timesheets.DAL.Repositories.Memory
 {
     public class ContractsRepository : IContractsRepository
     {
-        private readonly TimesSheetsContext _db;
+        private readonly TimesSheetsMemoryContext _db;
 
-        public ContractsRepository(TimesSheetsContext db) => _db = db;
+        public ContractsRepository(TimesSheetsMemoryContext db) => _db = db;
 
         public async Task<ICollection<Contract>> GetByCustomer(Customer customer)
         {
