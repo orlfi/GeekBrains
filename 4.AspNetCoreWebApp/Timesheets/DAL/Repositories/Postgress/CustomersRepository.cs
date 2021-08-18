@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,13 +8,13 @@ using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Timesheets.DAL.Repositories.Postgress
+namespace Timesheets.DAL.Repositories
 {
     public class CustomersRepository : ICustomersRepository
     {
-        private readonly TimesSheetsPostgressContext _db;
+        private readonly TimesSheetsContext _db;
 
-        public CustomersRepository(TimesSheetsPostgressContext db) => _db = db;
+        public CustomersRepository(TimesSheetsContext db) => _db = db;
 
         public async Task<ICollection<Customer>> GetAll()
         {
@@ -28,18 +28,15 @@ namespace Timesheets.DAL.Repositories.Postgress
 
         public async Task<Customer> Create(Customer entity)
         {
-            await _db.Customers.AddAsync(entity);
-            await _db.SaveChangesAsync();
-            return entity;
-        }
-
-        public async System.Threading.Tasks.Task AddContract(Contract entity)
-        {
-            var customer = await _db.Customers.FirstOrDefaultAsync(item => item.Id == entity.Customer.Id);
-            if (customer != null)
+            try
             {
-                customer.Contracts.Add(entity);
+                await _db.Customers.AddAsync(entity);
                 await _db.SaveChangesAsync();
+                return entity;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Ошибка при создании нового покупателя: {ex.Message}");
             }
         }
     }

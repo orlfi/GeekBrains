@@ -16,7 +16,6 @@ using MediatR;
 using Timesheets.Filters;
 using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
-using Timesheets.DAL.Repositories.Memory;
 using Timesheets.DAL.Models;
 using Timesheets.Infrastructure.Extensions;
 
@@ -24,7 +23,6 @@ namespace Timesheets
 {
     public class Startup
     {
-        private TimesSheetsMemoryContext _db = new TimesSheetsMemoryContext();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +30,6 @@ namespace Timesheets
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers((options) =>
@@ -62,18 +59,13 @@ namespace Timesheets
                 });
             });
 
-            services.AddSingleton<TimesSheetsMemoryContext>(_db);
-
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.ConfigureDbContext(Configuration);
             services.ConfigureRepositories();
             services.ConfigureMappers();
-
-            _db.Initialize();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -87,12 +79,6 @@ namespace Timesheets
                 c.RoutePrefix = string.Empty;
 
             });
-
-            //     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            //     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            //     setup.IncludeXmlComments(xmlPath);
-            // });
-
 
             app.UseHttpsRedirection();
 

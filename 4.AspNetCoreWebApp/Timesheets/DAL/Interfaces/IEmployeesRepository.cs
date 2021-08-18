@@ -10,7 +10,7 @@ namespace Timesheets.DAL.Interfaces
 
         Task<Employee> GetById(int id);
 
-        Task<ICollection<TaskExecution>> GetTaskExecutions(int employeeId);
+        // Task<ICollection<TaskExecution>> GetTaskExecutions(int employeeId);
 
         Task<Employee> Create(Employee entity);
     }

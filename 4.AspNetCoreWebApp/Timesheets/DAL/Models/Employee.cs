@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Timesheets.DAL.Models
 {
@@ -6,6 +7,7 @@ namespace Timesheets.DAL.Models
     {
         public int Id { get; set;}
         
+        [Required]
         public string Name { get; set;}
 
         public ICollection<TaskExecution> TaskExecutions { get; set;}

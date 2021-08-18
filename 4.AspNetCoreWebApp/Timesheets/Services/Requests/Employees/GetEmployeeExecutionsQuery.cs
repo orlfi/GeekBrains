@@ -19,15 +19,15 @@ namespace Timesheets.Services.Requests.Employees
         public class GetEmployeeExecutionsQueryHandler : IRequestHandler<GetEmployeeExecutionsQuery, TaskExecutionsResponse>
         {
 
-            private readonly IEmployeesRepository _employeesRepository;
+            private readonly ITaskExecutionsRepository _taskExecutionsRepository;
             private readonly IMapper _mapper;
 
-            public GetEmployeeExecutionsQueryHandler(IEmployeesRepository employeesRepository, IContractsRepository contractsRepository, IMapper mapper) =>
-                (_employeesRepository,_mapper) = (employeesRepository, mapper);
+            public GetEmployeeExecutionsQueryHandler(ITaskExecutionsRepository taskExecutionsRepository, IContractsRepository contractsRepository, IMapper mapper) =>
+                (_taskExecutionsRepository,_mapper) = (taskExecutionsRepository, mapper);
 
             public async Task<TaskExecutionsResponse> Handle(GetEmployeeExecutionsQuery request, CancellationToken cancellationToken)
             {
-                    var executions = await _employeesRepository.GetTaskExecutions(request.EmployeeId);
+                    var executions = await _taskExecutionsRepository.GetEmployeeTaskExecutions(request.EmployeeId);
 
                     var response = new TaskExecutionsResponse();
                     response.TaskExecutions.AddRange(_mapper.Map<List<TaskExecutionDto>>(executions));

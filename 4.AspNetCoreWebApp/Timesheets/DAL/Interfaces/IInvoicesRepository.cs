@@ -7,7 +7,7 @@ namespace Timesheets.DAL.Interfaces
 {
     public interface IInvoicesRepository
     {
-        Task<ICollection<Invoice>> GetContractInvoicesByPeriod(Contract contract, DateTime dateFrom, DateTime dateTo);
+        Task<ICollection<Invoice>> GetContractInvoicesByPeriod(int contractId, DateTime dateFrom, DateTime dateTo);
 
         Task<Invoice> Create(Invoice entity);
     }

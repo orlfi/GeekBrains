@@ -28,18 +28,12 @@ namespace Timesheets.Services.Requests.Customers
 
             public async Task<InvoicesResponse> Handle(GetContractInvoicesByPeriodQuery request, CancellationToken cancellationToken)
             {
-                var contract = await _contractsRepository.GetById(request.ContractId);
-                if (contract != null)
-                {
-                    var invoices = await _invoicesRepository.GetContractInvoicesByPeriod(contract, request.DateFrom, request.DateTo);
+                    var invoices = await _invoicesRepository.GetContractInvoicesByPeriod(request.ContractId, request.DateFrom, request.DateTo);
 
                     var response = new InvoicesResponse();
                     response.Invoices.AddRange(_mapper.Map<List<InvoiceDto>>(invoices));
 
                     return response;
-                }
-                else
-                    return null;
             }
         }
     }

@@ -12,7 +12,5 @@ namespace Timesheets.DAL.Interfaces
         Task<Contract> GetById(int id);
         
         Task<Contract> Create(Contract entity);
-
-        Task AddInvoice(Invoice entity);
     }
 }
