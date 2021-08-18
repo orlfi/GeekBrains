@@ -2,12 +2,10 @@ using System.Collections.Generic;
 
 namespace Timesheets.DAL.Models
 {
-    public class Employee
+    public class Customer
     {
         public int Id { get; set;}
-        
         public string Name { get; set;}
-
-        public ICollection<TaskExecution> TaskExecutions { get; set;}  = new List<TaskExecution>();
+        public ICollection<Contract> Contracts { get; set;} = new List<Contract>();
     }
 }
