@@ -8,10 +8,12 @@ using MediatR;
 using Timesheets.Services.Requests.Customers;
 using Timesheets.Services.Requests.Contracts;
 using Timesheets.Services.Requests.Invoices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Timesheets.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("Api/[controller]")]
     public class CustomersController : ControllerBase
     {
