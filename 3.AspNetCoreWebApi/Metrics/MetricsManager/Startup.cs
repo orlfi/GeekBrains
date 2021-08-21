@@ -25,6 +25,7 @@ using MetricsManager.ApiClients.Clients;
 using Polly;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace MetricsManager
 {
@@ -129,6 +130,13 @@ namespace MetricsManager
                     .AddFluentMigratorConsole());
 
             ConfigureDapperMappers();
+
+            services.AddControllersWithViews();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration => {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,6 +153,9 @@ namespace MetricsManager
             });
 
             app.UseHttpsRedirection();
+            
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -159,10 +170,20 @@ namespace MetricsManager
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервиса агента сбора метрик");
-                c.RoutePrefix = string.Empty;
+                //c.RoutePrefix = string.Empty;
             });
 
             migrationRunner.MigrateUp();
+
+            app.UseSpa(spa => {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
 
         private void ConfigureDapperMappers()
