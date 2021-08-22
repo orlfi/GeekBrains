@@ -59,7 +59,7 @@ namespace Timesheets.Services.Requests.Invoices
                     
                     invoice.Total = amount*contract.HourCost;
                     invoice = await _invoicesRepository.Create(invoice);
-                     await _contractsRepository.AddInvoice(invoice);
+                    // await _contractsRepository.AddInvoice(invoice);
                     _mapper.Map<InvoiceDto>(invoice);
                 }
 

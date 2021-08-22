@@ -19,7 +19,7 @@ using Timesheets.Services.Requests.TaskExecutions;
 
 using Task = Timesheets.DAL.Models.Task;
 
-namespace Timesheets.Mappers
+namespace Timesheets.Infrastructure.Mappers
 {
     public class MapperProfile : Profile
     {

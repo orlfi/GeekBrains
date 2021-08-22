@@ -7,7 +7,7 @@ namespace Timesheets.DAL.Interfaces
 {
     public interface ITaskExecutionsRepository
     {
-        Task<ICollection<TaskExecution>> GetEmployeeTaskExecutions(Employee employee);
+        Task<ICollection<TaskExecution>> GetEmployeeTaskExecutions(int employeeId);
 
         Task<TaskExecution> Create(TaskExecution entity);
     }

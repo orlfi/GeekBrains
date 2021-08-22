@@ -16,15 +16,13 @@ using MediatR;
 using Timesheets.Filters;
 using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
-using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Models;
-using Timesheets.Mappers;
+using Timesheets.Infrastructure.Extensions;
 
 namespace Timesheets
 {
     public class Startup
     {
-        private TimesSheetsContext _db = new TimesSheetsContext();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,13 +30,13 @@ namespace Timesheets
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers((options) =>
             {
                 options.Filters.Add(typeof(MyActionFilter));
             });
+
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
@@ -61,21 +59,13 @@ namespace Timesheets
                 });
             });
 
-            services.AddSingleton<ICustomersRepository, CustomersRepository>();
-            services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
-            services.AddSingleton<ITasksRepository, TasksRepository>();
-            services.AddSingleton<IContractsRepository, ContractsRepository>();
-            services.AddSingleton<IInvoicesRepository, InvoicesRepository>();
-            services.AddSingleton<ITaskExecutionsRepository, TaskExecutionsRepository>();
-            services.AddSingleton<TimesSheetsContext>(_db);
-
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddMapper();
 
-            _db.Initialize();
+            services.ConfigureDbContext(Configuration);
+            services.ConfigureRepositories();
+            services.ConfigureMappers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -89,12 +79,6 @@ namespace Timesheets
                 c.RoutePrefix = string.Empty;
 
             });
-
-            //     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            //     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            //     setup.IncludeXmlComments(xmlPath);
-            // });
-
 
             app.UseHttpsRedirection();
 

@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Models;
 using Task = Timesheets.DAL.Models.Task;
+using Microsoft.EntityFrameworkCore;
 
 namespace Timesheets.DAL.Repositories
 {
@@ -17,34 +19,26 @@ namespace Timesheets.DAL.Repositories
 
         public async Task<ICollection<Task>> GetAll()
         {
-            var result = await System.Threading.Tasks.Task.Run<ICollection<Task>>(() =>
-            {
-                return _db.Tasks;
-            });
-
-            return result;
+            return await _db.Tasks.ToListAsync();
         }
 
         public async Task<Task> GetById(int id)
         {
-            var result = await System.Threading.Tasks.Task.Run<Task>(() =>
-            {
-                return _db.Tasks.SingleOrDefault(item => item.Id == id);
-            });
-
-            return result;
+            return await _db.Tasks.SingleOrDefaultAsync(item => item.Id == id);
         }
 
         public async Task<Task> Create(Task entity)
         {
-            var result = await System.Threading.Tasks.Task.Run<Task>(() =>
+            try
             {
-                entity.Id = _db.Tasks.Max(item => item.Id) + 1;
-                _db.Tasks.Add(entity);
+                await _db.Tasks.AddAsync(entity);
+                await _db.SaveChangesAsync();
                 return entity;
-            });
-
-            return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Ошибка при создании нового задания: {ex.Message}");
+            }
         }
     }
 }

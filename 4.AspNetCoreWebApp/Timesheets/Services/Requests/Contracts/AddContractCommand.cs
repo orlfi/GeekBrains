@@ -42,7 +42,6 @@ namespace Timesheets.Services.Requests.Contracts
                     var contract = _mapper.Map<Contract>(request);
                     contract.Customer = customer;
                     contract = await _contractsRepository.Create(contract);
-                    await _customersRepository.AddContract(contract);
                     _mapper.Map<ContractDto>(contract);
                 }
 

@@ -14,7 +14,7 @@ namespace Timesheets.Filters
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-             context.HttpContext.Response.Cookies.Append("LastVisit1", DateTime.Now.ToString("dd/MM/yyyy hh-mm-ss"));
+             context.HttpContext.Response.Cookies.Append("LastVisit", DateTime.Now.ToString("dd/MM/yyyy hh-mm-ss"));
         }
     }
 }

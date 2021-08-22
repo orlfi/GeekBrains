@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Timesheets.DAL.Models
 {
@@ -7,20 +8,18 @@ namespace Timesheets.DAL.Models
     {
         public int Id { get; set;}
 
-        // public int ClientId { get; set;}
-        
+        [Required]
         public string Number { get; set;}
 
-        // public DateTime Date { get; set;}
-
+        [Required]
         public string Name { get; set;}
 
         public decimal HourCost { get; set;}
         
+        public int  CustomerId { get; set;}
+        
         public Customer Customer { get; set;}
 
-        public ICollection<Invoice> Invoices { get; set;} = new List<Invoice>();
-        
-        // public ICollection<Task> Tasks { get; set;}
+        public ICollection<Invoice> Invoices { get; set;}
     }
 }
