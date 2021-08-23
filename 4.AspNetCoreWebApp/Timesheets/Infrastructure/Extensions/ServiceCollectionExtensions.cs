@@ -12,11 +12,25 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Timesheets.Services.Authentication;
 using Microsoft.OpenApi.Models;
+using MediatR;
+using System.Reflection;
+using Timesheets.Infrastructure.Behaviors;
+using FluentValidation;
+using Timesheets.Infrastructure.Validation;
 
 namespace Timesheets.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+         public static IServiceCollection ConfigureMediatR(this IServiceCollection services)
+        {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddSingleton<IErrorCodes, ErrorCodes>();
+            return services;
+        }
+
         public static void ConfigureDbContext(this IServiceCollection services,
             IConfiguration configuration)
         {
