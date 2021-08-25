@@ -10,6 +10,8 @@ namespace Timesheets.DAL.Interfaces
         Task<ICollection<Task>> GetAll();
         
         Task<Task> GetById(int id);
+
+        Task<ICollection<Task>> GetByIdList(IList<int> idList);
         
         Task<Task> Create(Task entity);
     }

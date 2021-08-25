@@ -40,5 +40,10 @@ namespace Timesheets.DAL.Repositories
                 throw new Exception($"Ошибка при создании нового задания: {ex.Message}");
             }
         }
+
+        public async Task<ICollection<Task>> GetByIdList(IList<int> idList)
+        {
+            return await _db.Tasks.Where(item => idList.Contains(item.Id)).Include(p => p.Invoice).ToListAsync();
+        }
     }
 }

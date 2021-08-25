@@ -9,7 +9,7 @@ namespace Timesheets.DAL.Models
         
         public int TaskId { get; set; }
 
-        public Task Task { get; set; }
+        public  Task Task { get; set; }
 
         public int EmployeeId { get; set; }
 

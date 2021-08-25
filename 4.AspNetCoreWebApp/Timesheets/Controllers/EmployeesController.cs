@@ -12,18 +12,17 @@ namespace Timesheets.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : ApiController
     {
 
         private readonly ILogger<EmployeesController> _logger;
-        private readonly IMediator _mediator;
 
-        public EmployeesController(ILogger<EmployeesController> logger, IMediator mediator) => (_logger, _mediator) = (logger, mediator);
+        public EmployeesController(ILogger<EmployeesController> logger) => (_logger) = (logger);
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var response = await _mediator.Send(new GetAllEmployeesQuery());
+            var response = await Mediator.Send(new GetAllEmployeesQuery());
 
             return Ok(response);
 
@@ -32,7 +31,7 @@ namespace Timesheets.Controllers
         [HttpGet("{EmployeeId}/Executions")]
         public async Task<IActionResult> GetEmployeeExecutions([FromRoute]GetEmployeeExecutionsQuery  request)
         {
-            var response = await _mediator.Send(request);
+            var response = await Mediator.Send(request);
 
             return Ok(response);
         }
@@ -41,7 +40,7 @@ namespace Timesheets.Controllers
         [HttpPut("Add")]
         public async Task<IActionResult> Add([FromBody]AddEmployeeCommand request)
         {
-            var response = await _mediator.Send(request);
+            var response = await Mediator.Send(request);
 
             return Ok(response);
         }
@@ -49,7 +48,7 @@ namespace Timesheets.Controllers
         [HttpPut("{EmployeeId}/Task/{TaskId}/Execution/{TimeSpent}")]
         public async Task<IActionResult> AddEmployeeTaskExecution([FromRoute]AddEmployeeTaskExecutionCommand request)
         {
-            var response = await _mediator.Send(request);
+            var response = await Mediator.Send(request);
 
             return Ok(response);
         }

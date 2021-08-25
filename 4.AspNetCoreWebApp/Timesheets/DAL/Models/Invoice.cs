@@ -11,7 +11,7 @@ namespace Timesheets.DAL.Models
 
         public int ContractId { get; set; }
         
-        public Contract Contract { get; set; }
+        public  Contract Contract { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -19,7 +19,7 @@ namespace Timesheets.DAL.Models
 
         public string Description { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public  List<Task> Tasks { get; set; }
 
     }
 }

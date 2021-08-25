@@ -18,8 +18,8 @@ namespace Timesheets.DAL.Models
         
         public int  CustomerId { get; set;}
         
-        public Customer Customer { get; set;}
+        public  Customer Customer { get; set;}
 
-        public ICollection<Invoice> Invoices { get; set;}
+        public  ICollection<Invoice> Invoices { get; set;}
     }
 }
