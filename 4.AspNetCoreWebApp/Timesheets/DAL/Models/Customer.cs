@@ -10,6 +10,6 @@ namespace Timesheets.DAL.Models
         [Required]
         public string Name { get; set;}
         
-        public ICollection<Contract> Contracts { get; set;}
+        public  ICollection<Contract> Contracts { get; set;}
     }
 }

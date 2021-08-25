@@ -10,6 +10,7 @@ using Timesheets.DAL.Models;
 using Timesheets.DAL.Repositories;
 using AutoMapper;
 using Timesheets.Services.Responses.Invoices;
+using Timesheets.Domain.Aggregates.InvoiceAggregate;
 
 namespace Timesheets.Services.Requests.Invoices
 {
@@ -20,9 +21,6 @@ namespace Timesheets.Services.Requests.Invoices
 
         [FromBody]
         public DateTime Date { get; set; }
-
-        [FromBody]
-        public decimal Total{ get; set; }
 
         [FromBody]
         public string Description { get; set; }
@@ -45,21 +43,12 @@ namespace Timesheets.Services.Requests.Invoices
                 Contract contract = await _contractsRepository.GetById(request.ContractId);
                 if (contract != null)
                 {
-                    var invoice = _mapper.Map<Invoice>(request);
-                    invoice.Contract = contract;
+                    var invoiceAggregate = InvoiceAggregate.Create(contract.Id, request.Date, request.Description);
                     
-                    decimal amount = 0;
-                    foreach(var taskId in request.Tasks)
-                    {
-                        var task = await _tasksRepository.GetById(taskId);
-                        invoice.Tasks.Add(task);
-                        amount += task.Amount;
-                    
-                    }
-                    
-                    invoice.Total = amount*contract.HourCost;
-                    invoice = await _invoicesRepository.Create(invoice);
-                    // await _contractsRepository.AddInvoice(invoice);
+                    var tasks = await _tasksRepository.GetByIdList(request.Tasks);
+                    invoiceAggregate.IncludeTasks(tasks, contract.HourCost);
+
+                    var invoice = await _invoicesRepository.Create(invoiceAggregate);
                     _mapper.Map<InvoiceDto>(invoice);
                 }
 
