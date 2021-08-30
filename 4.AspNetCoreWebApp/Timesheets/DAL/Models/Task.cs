@@ -15,10 +15,10 @@ namespace Timesheets.DAL.Models
 
         public bool IsCompleted { get; set;}
 
-        public ICollection<TaskExecution> TaskExecutions { get; set;}
+        public  ICollection<TaskExecution> TaskExecutions { get; set;}
         
         public int? InvoiceId { get; set;}
         
-        public Invoice Invoice { get; set;}
+        public  Invoice Invoice { get; set;}
     }
 }
