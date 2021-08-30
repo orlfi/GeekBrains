@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System.Reflection;
 using MediatR;
 using Timesheets.Filters;
-using Timesheets.DAL;
-using Timesheets.DAL.Interfaces;
-using Timesheets.DAL.Models;
 using Timesheets.Infrastructure.Extensions;
 using Timesheets.Services.Authentication;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using System.Linq;
+using System.Text;
+
 namespace Timesheets
 {
     public class Startup
@@ -42,7 +37,8 @@ namespace Timesheets
 
             services.ConfigureAuthentication();
             services.ConfigureSwagger();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.ConfigureMediatR();
             services.ConfigureDbContext(Configuration);
             services.ConfigureRepositories();
             services.ConfigureMappers();
@@ -54,6 +50,8 @@ namespace Timesheets
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseExceptionsHandling();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
