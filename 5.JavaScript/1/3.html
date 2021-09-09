@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        /*
+        1. 10 плюс 10 = 20 
+        2. неявное преобразование 20 в строку получаем "20"
+        3. конкатенация строки "20" и "10" получаем "2010"
+        4. присваиваем "2010" в переменную result
+        5. с помощью console.log выводим result в консоль
+        */
+        let result = 10 + 10 + "10"; 
+        console.log(result); 
+        
+        /*
+        1. неявное преобразование 10 в строку получаем "10"
+        2. конкатенация строки "10" и "10" получаем "1010"
+        3. неявное преобразование 10 в строку получаем "10"
+        4. конкатенация строки "1010" и "10" получаем "101010"
+        5. присваиваем "101010" в переменную result
+        6. с помощью console.log выводим result в консоль
+        */
+        result = 10 + "10" + 10;
+        console.log(result); 
+
+        /*
+        1. 10 плюс 10 = 20 
+        2. преобразование строки "10" в число 10
+        3. сложение 20 плюс 10 получаем 30
+        4. присваиваем 30 в переменную result
+        5. с помощью console.log выводим result в консоль
+        */
+        result = 10 + 10 + +"10";
+        console.log(result); 
+
+        /*
+        1. преобразование пустой строки в -0
+        2. деление 10 на -0 получаем -Infinity
+        3. присваиваем -Infinity в переменную result
+        4. с помощью console.log выводим result в консоль
+        */
+        result = 10 / -"";
+        console.log(result); 
+
+        /*
+        1. попытка преобразования строки "2,5" в число получаем NaN
+        2. деление 10 на NaN получаем NaN
+        3. присваиваем  NaN в переменную result
+        4. с помощью console.log выводим result в консоль
+        */
+        result = 10 / +"2,5";
+        console.log(result); 
+    </script>
+</body>
+
+</html>
