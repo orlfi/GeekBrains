@@ -11,9 +11,14 @@
 <body>
     <script>
         "use strict";
-        let celsius = prompt("Введите температуру у в градусах по Цельсию");
+        let celsius = +prompt("Введите температуру у в градусах по Цельсию");
+        if (isNaN(celsius))
+            alert("Необходимо ввести число!");
+        else
+        {
         let fahrenheit = (9 / 5) * celsius + 32;
-        alert(`температура у в градусах по Фаренгейту: ${fahrenheit}`);
+        alert(`температура у в градусах по Фаренгейту: ${fahrenheit.toFixed(1)}`);
+        }
     </script>
 </body>
 
