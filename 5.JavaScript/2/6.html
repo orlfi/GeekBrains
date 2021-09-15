@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+
+      let money = +prompt("Введите количество денег (целочисленное значение)");
+      if (isNaN(money) || money % 1 !== 0) {
+        throw new Error("Вы задали не целочисленное значение переменной b");
+      }
+
+      print(money);
+      // print(101);
+      // print(10020);
+      // print(120104);
+
+      function print(value) {
+        console.log(
+          `Ваша сумма в ${value} рубл${getEnding(value)} успешно зачислена."`
+        );
+      }
+
+      function getEnding(value) {
+        let ending = "ей";
+        let tens = value % 10;
+        let hundreds = Math.trunc(value / 10) % 10;
+
+        if (hundreds != 1) {
+          if (tens === 1) {
+            ending = "ь";
+          } else if (tens >= 2 && tens <= 4) {
+            ending = "я";
+          }
+        }
+
+        return ending;
+      }
+    </script>
+  </body>
+</html>

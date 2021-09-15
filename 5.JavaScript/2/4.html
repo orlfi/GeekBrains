@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        console.log(`Сложение Sum(4, 5) = ${sum(4, 5)}`);
+        console.log(`Вычитание Diff(4, 5) = ${diff(4, 5)}`);
+        console.log(`Умножение Mult(4, 5) = ${mult(4, 5)}`);
+        console.log(`Деление Div(4, 5) = ${div(4, 5).toFixed(2)}`);
+        console.log(`Деление Div(4, 0) = ${div(4, 0).toFixed(2)}`);
+
+        function sum(a, b) {
+            return a+b;
+        }
+
+        function diff(a, b) {
+            return a-b;
+        }
+
+        function mult(a, b) {
+            return a*b;
+        }
+
+        function div(a, b) {
+            if (b === 0) {
+                alert(`Деление на 0: Div(${a}, ${b})`);
+                return NaN;
+            }
+
+            return a/b;
+        }
+    </script>
+</body>
+
+</html>
