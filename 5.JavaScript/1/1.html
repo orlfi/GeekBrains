@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        "use strict";
-        let celsius = prompt("Введите температуру у в градусах по Цельсию");
-        let fahrenheit = (9 / 5) * celsius + 32;
-        alert(`температура у в градусах по Фаренгейту: ${fahrenheit}`);
+      "use strict";
+      const celsius = +prompt("Введите температуру у в градусах по Цельсию");
+      if (isNaN(celsius)) {
+        alert("Необходимо ввести число!");
+      } else {
+        const fahrenheit = (9 / 5) * celsius + 32;
+        alert(
+          `температура у в градусах по Фаренгейту: ${fahrenheit.toFixed(1)}`
+        );
+      }
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+      const a = +prompt("Задайте целочисленное значение переменной a");
+      if (!Number.isInteger(a)) {
+        throw new Error("Вы задали не целочисленное значение  переменной a");
+      }
+
+      const b = +prompt("Задайте целочисленное значение переменной b");
+      if (!Number.isInteger(b)) {
+        throw new Error("Вы задали не целочисленное значение переменной b");
+      }
+
+      if (a >= 0 && b >= 0) {
+        alert(`a(${a}) и b(${b}) положительные. Разность a - b = ${a - b}`);
+      } else if (a < 0 && b < 0) {
+        alert(`а(${a}) и b(${b}) отрицательные. Произведение a * b = ${a - b}`);
+      } else {
+        alert(`а(${a}) и b(${b}) разных знаков. Сумма a + b = ${a + b}`);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+
+      const money = +prompt("Введите количество денег (целочисленное значение)");
+      if (!Number.isInteger(money)) {
+        throw new Error("Вы задали не целочисленное значение переменной b");
+      }
+
+      print(money);
+      // print(101);
+      // print(10020);
+      // print(120104);
+
+      /**
+       * outputs the result to the console
+       * @param {number} value - amount of money
+       */
+      function print(value) {
+        console.log(
+          `Ваша сумма в ${value} ${getEnding(value, "рубль", "рубля", "рублей")} успешно зачислена."`
+        );
+      }
+
+      /**
+       * Returns the text in the desired case, depending on the number
+       * @param {string} value - source number
+       * @param {string} nominative - text in the nominative case
+       * @param {string} genitive - text in the genitive case
+       * @param {string} genitive - plural text
+       * @returns {string}
+       */
+      function getEnding(value, nominative, genitive,  plural) {
+        let result = plural;
+        const tens = value % 10;
+        const hundreds = Math.trunc(value / 10) % 10;
+
+        if (hundreds != 1) {
+          if (tens === 1) {
+            result = nominative;
+          } else if (tens >= 2 && tens <= 4) {
+            result = genitive;
+          }
+        }
+
+        return result;
+      }
+    </script>
+  </body>
+</html>

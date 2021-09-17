@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+      console.log(`Сложение mathOperation(4, 5, '+') = ${mathOperation(4, 5, '+')}`);
+      console.log(`Вычитание mathOperation(4, 5, '-') = ${mathOperation(4, 5, '-')}`);
+      console.log(`Умножение mathOperation(4, 5, '*') = ${mathOperation(4, 5, '*')}`);
+      console.log(`Деление mathOperation(4, 5, '/') = ${mathOperation(4, 5, '/').toFixed(2)}`);
+      console.log(`Деление mathOperation(4, 0, '/') = ${mathOperation(4, 0, '/').toFixed(2)}`);
+      console.log(`Деление по модулю mathOperation(4, 0, '%') = ${mathOperation(4, 0, '%')}`);
+
+      /**
+       * Performs mathematical operations on two numbers
+       * @param {*} arg1 - first number
+       * @param {*} arg2 - second number
+       * @param {*} operation - mathematical operation
+       * @returns - the result of performing mathematical operations on two numbers
+       */
+      function mathOperation(arg1, arg2, operation) {
+        switch (operation) {
+          case "+":
+            return arg1 + arg2;
+          case "-":
+            return arg1 - arg2;
+          case "*":
+            return arg1 * arg2;
+          case "/":
+            if (arg2 === 0) {
+              alert(`Деление на 0: arg2 = ${arg2})`);
+              return NaN;
+            }
+            return arg1 / arg2;
+          default:
+            alert(`Недопустимая операция: operation = ${operation}`);
+            return NaN;
+        }
+      }
+    </script>
+  </body>
+</html>
