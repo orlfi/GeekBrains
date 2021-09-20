@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+
+      /**
+       * Product constructor function
+       * @param {string} name Product name
+       * @param {number} price Product price
+       */
+      function Product(name, price) {
+        this.name = name;
+        this.price = price;
+      }
+
+      /**
+       * Product object make 25 percent discount function
+       */
+      Product.prototype.make25PercentDiscount = function () {
+        this.price *= 0.75;
+      };
+
+      const product = new Product("Гвозди", 100);
+      product.make25PercentDiscount();
+    </script>
+  </body>
+</html>

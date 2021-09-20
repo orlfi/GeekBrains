@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+
+      /**
+       * Base post constructor function
+       * @param {string} author Post author
+       * @param {string} text Post text
+       * @param {date} date Post date
+       */
+      function Post(author, text, date) {
+        this.author = author;
+        this.text = text;
+        this.date =date;
+      }
+
+      /**
+       * Edit post text
+       * @param {string} text New post text
+       */
+      Post.prototype.edit = function (text) {
+        this.text = text;
+      };
+
+      const post = new Post("Иванов", "Base post", new Date("2021-09-20"));
+      post.edit("Edited post text");
+
+      /**
+       * Attached post constructor function
+       * @param {string} author Post author
+       * @param {string} text Post text
+       * @param {date} date Post date
+       */
+      function AttachedPost(author, text, date) {
+          Post.call(this, author, text, date);
+          this.highlighted = false;
+
+      }
+
+      AttachedPost.prototype = Object.create(Post.prototype);
+      AttachedPost.prototype.constructor = AttachedPost;
+
+      /**
+       * Make post text highlighted
+       */
+      AttachedPost.prototype.makeTextHighlighted = function() {
+        this.highlighted = true;
+      }
+
+      const attachedPost = new AttachedPost("Иванов", "Attached post", new Date("2021-09-19"));
+      attachedPost.makeTextHighlighted();
+      attachedPost.edit("Edited attached post text");
+    </script>
+  </body>
+</html>

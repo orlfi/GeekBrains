@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      "use strict";
+
+      const result = (convertToObject(+prompt('Введите целое число')));
+
+      /**
+       * Converts a number to an object in which the digits of the number are described in the corresponding properties
+       * @param {number} value Source number
+       * @returns {objet} The result of converting or null if the parameter is not a number
+       */
+      function convertToObject(value) {
+        if (!Number.isInteger(value)) {
+          console.log(`Введенное значение ${value} не целое число`);
+          return null;
+        }
+
+        return {
+          units: value % 10,
+          tens: Math.trunc(value / 10) % 10,
+          hundreds: Math.trunc(value / 100) % 10,
+        };
+      }
+    </script>
+  </body>
+</html>
