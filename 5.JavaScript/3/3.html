@@ -30,10 +30,10 @@
       /**
        * Applies a discount to an array of products
        * @param {array} products Array of products
-       * @param {number} discount Percentage discount
+       * @param {number} percentageDiscount Percentage discount
        */
-      function applyDiscount(products, discount) {
-        discount = (1-discount/100);
+      function applyDiscount(products, percentageDiscount) {
+        const discount = (1-percentageDiscount/100);
         
         products.forEach(element => {
           element.price *= discount;
