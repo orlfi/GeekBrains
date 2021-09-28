@@ -22,4 +22,16 @@ const player = {
       this.y = nextPoint.y;
     }
   },
+
+  /**
+   * Checks whether the point does not go beyond the boundaries
+   * @param {{x: int, y: int}} point Point coordinates
+   * @returns {boolean} Verification result
+   */
+  isPointInBounds(point){
+    return nextPoint.x >= 0 &&
+      nextPoint.x <= config.colsCount &&
+      nextPoint.y >= 0 &&
+      nextPoint.y <= config.rowsCount;
+  }
 };
