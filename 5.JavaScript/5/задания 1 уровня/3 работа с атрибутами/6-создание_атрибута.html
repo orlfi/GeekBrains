@@ -12,8 +12,9 @@
     data-two="два" с помощью метода setAttribute. -->
 
     <script>
-        document.head.setAttribute('data-one', "один")
-        document.head.setAttribute('data-two', "два")
+        const el = document.querySelector('h1');
+        el.setAttribute('data-one', "один")
+        el.setAttribute('data-two', "два")
     </script>
 </body>
 </html>
