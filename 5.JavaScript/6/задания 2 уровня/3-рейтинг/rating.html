@@ -50,7 +50,7 @@
 
             const mouseoutHandler = (event) => {
                 let el = event.target;
-                while (el != null) {
+                while (el) {
                     el.classList.remove(goldenClass);
                     el = el.previousElementSibling;
                 }
