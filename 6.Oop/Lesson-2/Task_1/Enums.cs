@@ -1,4 +1,4 @@
-namespace Lesson_2
+namespace Task_1
 {
     public enum AccountType
     {
