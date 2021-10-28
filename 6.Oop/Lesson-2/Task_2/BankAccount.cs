@@ -5,6 +5,7 @@ namespace Task_2
     public class BankAccount
     {
         private static int lastNumber = 0;
+
         public static int GenerateNumber()
         {
             return lastNumber++;
@@ -27,10 +28,5 @@ namespace Task_2
         public void SetType(AccountType type) => _type = type;
 
         public AccountType GetAccountType() => _type;
-
-        public override string ToString()
-        {
-            return $"Счет {_number} ({_type.ToString()}): {_balance:0.##}";
-        }
     }
 }

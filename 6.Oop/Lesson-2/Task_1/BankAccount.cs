@@ -22,10 +22,5 @@ namespace Task_1
         public void SetAccountType(AccountType type) => _type = type;
 
         public AccountType GetAccountType() => _type;
-
-        public override string ToString()
-        {
-            return $"Счет {_number} ({_type.ToString()}): {_balance:0.##}";
-        }
     }
 }
