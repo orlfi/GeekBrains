@@ -7,6 +7,8 @@ namespace App
     {
         static void Main(string[] args)
         {
+            // var directCreateBuilding = new Building(); not available
+            
             int buildingNumber1 = Creator.CreateBuilding(30, 72, 9, 2);
             Console.WriteLine(Creator.GetBuildingByNumber(buildingNumber1).ToString());
 

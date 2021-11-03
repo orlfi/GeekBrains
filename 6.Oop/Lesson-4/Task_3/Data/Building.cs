@@ -80,7 +80,7 @@ namespace Data
             }
         }
 
-        public Building() => _number = GenerateNumber();
+        internal Building() => _number = GenerateNumber();
 
         public override string ToString()
         {
