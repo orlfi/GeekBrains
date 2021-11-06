@@ -80,6 +80,8 @@ namespace Data
             }
         }
 
+        public static BuildingBuilder CreateBuilder() => new BuildingBuilder();
+
         internal Building() => _number = GenerateNumber();
 
         public override string ToString()

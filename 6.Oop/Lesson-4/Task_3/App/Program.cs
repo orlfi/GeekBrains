@@ -8,7 +8,7 @@ namespace App
         static void Main(string[] args)
         {
             // var directCreateBuilding = new Building(); not available
-            
+
             int buildingNumber1 = Creator.CreateBuilding(30, 72, 9, 2);
             Console.WriteLine(Creator.GetBuildingByNumber(buildingNumber1).ToString());
 
@@ -16,6 +16,9 @@ namespace App
             Console.WriteLine(Creator.GetBuildingByNumber(buildingNumber2).ToString());
 
             Creator.DeleteBuilding(buildingNumber2);
+
+            var fluentBuilding = Building.CreateBuilder().WithHeight(30).WithFlatCount(72).WithFloorCount(9).WithEntranceCount(2).Build();
+            Console.WriteLine($"Builded with fluent api:\r\n{fluentBuilding}");
             Console.ReadKey();
         }
     }
