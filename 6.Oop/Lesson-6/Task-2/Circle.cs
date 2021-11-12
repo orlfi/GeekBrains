@@ -4,7 +4,7 @@ namespace Task_2
 {
     public class Circle : Point
     {
-        private int Radius { get; set; }
+        public int Radius { get; set; }
 
         public Circle(int x, int y, int radius) : this(x, y, radius, Colors.white) { }
 
@@ -13,5 +13,7 @@ namespace Task_2
         public Circle(int x, int y, int radius, Colors color, bool visible) : base(x, y, color, visible) => Radius = radius;
 
         public double GetArea() => Math.PI * Radius * Radius;
+
+        public override string ToString() => base.ToString() + $"\r\nПлощадь: {GetArea()}";
     }
 }

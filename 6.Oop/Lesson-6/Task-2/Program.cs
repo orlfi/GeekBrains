@@ -1,12 +1,18 @@
 ﻿using Task_2;
 using Task_2.Enums;
-// See https://aka.ms/new-console-template for more information
 
-var point = new Point(10, 10);
-Console.WriteLine(point);
+var figures = new List<Figure>(3)
+{
+    new Point(10, 10),
+    new Circle(20, 20, 30),
+    new Rect(30, 20, new Size(10, 20), Colors.green)
+};
 
-var circle = new Point(20, 20);
-Console.WriteLine(circle);
+foreach (var figure in figures)
+{
+    Console.WriteLine(figure);
+    Console.WriteLine();
+}
 
-var rect = new Rect(30, 20, new Size(10, 20), Colors.green);
-Console.WriteLine(rect);
+figures[2].Move(50, 60);
+Console.WriteLine(figures[2]);

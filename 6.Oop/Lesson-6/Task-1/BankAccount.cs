@@ -70,10 +70,7 @@ namespace Task_1
             }
         }
 
-        public override string? ToString()
-        {
-            return $"Cчет {Number} ({AccountType.ToString()}): {Balance:0.##}";
-        }
+        public override string? ToString() => $"Cчет {Number} ({AccountType.ToString()}): {Balance:0.##}";
 
         public bool Equals(BankAccount? other)
         {
