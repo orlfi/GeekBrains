@@ -22,12 +22,6 @@ namespace Task_2
 
         public void Move(int x, int y) => (_x, _y) = (x, y);
 
-        public override string ToString()
-        {
-            string result = $"Фигура: {GetType().Name} \r\nX={X}\r\nY={Y}\r\nColor={Color}\r\nVisible={Visible}";
-            if (this is ICalcArea areaFigure)
-                result += $"\r\nПлощадь: {areaFigure.GetArea()}";
-            return result;
-        }
+        public override string ToString() => $"Фигура: {GetType().Name} \r\nX={X}\r\nY={Y}\r\nColor={Color}\r\nVisible={Visible}";
     }
 }

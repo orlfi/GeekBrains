@@ -14,6 +14,6 @@ namespace Task_2
 
         public double GetArea() => Math.PI * Radius * Radius;
 
-        public override string ToString() => base.ToString() + $"\r\nРадиус: { Radius}";
+        public override string ToString() => base.ToString() + $"\r\nРадиус: { Radius}" + $"\r\nПлощадь: {GetArea()}";
     }
 }

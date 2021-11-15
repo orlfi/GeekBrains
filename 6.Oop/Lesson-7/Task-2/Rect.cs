@@ -14,6 +14,6 @@ namespace Task_2
 
         public double GetArea() => Size.Width * Size.Height;
 
-        public override string ToString() => base.ToString() + $"\r\nВысота x Ширина: {Size.Height} x {Size.Width}";
+        public override string ToString() => base.ToString() + $"\r\nВысота x Ширина: {Size.Height} x {Size.Width}" + $"\r\nПлощадь: {GetArea()}";
     }
 }
