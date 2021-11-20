@@ -16,7 +16,7 @@ namespace Task_1
 
         private decimal _balance;
 
-        public int Number { get => _number; }
+        public int Number => _number;
 
         public AccountType AccountType { get => _type; }
 
