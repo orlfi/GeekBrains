@@ -36,9 +36,9 @@ namespace Task_1
             if (withdrawResult.Success)
             {
                 Deposit(value);
-                return new Result<decimal>() { Data = Balance, Success = true };
+                return Balance;
             }
-            return new Result<decimal>() { Success = false, Error = withdrawResult.Error };
+            return withdrawResult.Error;
         }
 
         private void Deposit(decimal value) => Balance += value;
@@ -48,10 +48,10 @@ namespace Task_1
             if (Balance - value > 0)
             {
                 Balance -= value;
-                return new Result<decimal>() { Data = Balance, Success = true };
+                return Balance;
             }
 
-            return new Result<decimal>() { Success = false, Error = "Недостаточно средств" };
+            return new Exception("Недостаточно средств");
         }
     }
 }

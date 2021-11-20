@@ -26,7 +26,7 @@ namespace Task_1
             }
             else
             {
-                Console.WriteLine(result.Error);
+                Console.WriteLine(result.Error.Message);
             }
             Console.WriteLine($"Баланс счета {account1.Number}: {account1.Balance:0.##}");
             Console.WriteLine($"Баланс счета {account2.Number}: {account2.Balance:0.##}\r\n");
@@ -40,7 +40,7 @@ namespace Task_1
             }
             else
             {
-                Console.WriteLine(result2.Error);
+                Console.WriteLine(result2.Error.Message);
             }
             Console.WriteLine($"Баланс счета {account1.Number}: {account1.Balance:0.##}");
             Console.WriteLine($"Баланс счета {account2.Number}: {account2.Balance:0.##}\r\n");
