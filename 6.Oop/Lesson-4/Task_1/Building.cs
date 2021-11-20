@@ -43,17 +43,7 @@ namespace Task_1
 
         public void SetEntranceCount(int entranceCount) => _entranceCount = entranceCount;
 
-        public double GetFloorHeight()
-        {
-            if (_floorCount != 0)
-            {
-                return _height / _floorCount;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        public double GetFloorHeight() => _floorCount == 0 ? double.NaN : _height / _floorCount;
 
         public int GetFlatCountInEntrance()
         {
