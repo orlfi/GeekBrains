@@ -12,20 +12,18 @@ namespace Task_3
         private readonly string _fileName;
         public EmailParser(string fileName) => _fileName = fileName;
 
-        public async Task<IList<string>> GetEmails()
+        public async IAsyncEnumerable<string> EnumEmailsAsync(CancellationToken Cancel = default)
         {
-            var result = new List<string>();
             using StreamReader sr = new(_fileName);
             while (!sr.EndOfStream)
             {
-                var line = await sr.ReadLineAsync();
+                var line = await sr.ReadLineAsync(Cancel).ConfigureAwait(false);
                 SearchMail(ref line);
-                if (!string.IsNullOrEmpty(line))
+                if (line is { Length: > 0 })
                 {
-                    result.Add(line);
+                    yield return line;
                 }
             }
-            return result;
         }
 
         public static void SearchMail(ref string s)
