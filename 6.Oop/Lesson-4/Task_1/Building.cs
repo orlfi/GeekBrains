@@ -21,7 +21,7 @@ namespace Task_1
 
         private int _entranceCount;
 
-        private static int GenerateNumber() => _lastNumber++;
+        private static int GenerateNumber() => ++_lastNumber;
 
         public Building() => _number = GenerateNumber();
 
