@@ -25,7 +25,7 @@ namespace Data
 
         private int _entranceCount;
 
-        public int Number { get => _number; }
+        public int Number => _number;
 
         public int FloorCount { get => _floorCount; set => _floorCount = value; }
 
@@ -35,50 +35,11 @@ namespace Data
 
         public int EntranceCount { get => _entranceCount; set => _entranceCount = value; }
 
-        public double FloorHeight
-        {
-            get
-            {
-                if (FloorCount != 0)
-                {
-                    return Height / FloorCount;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        public double FloorHeight => FloorCount == 0 ? double.NaN : Height / FloorCount;
 
-        public int FlatCountInEntrance
-        {
-            get
-            {
-                if (EntranceCount != 0)
-                {
-                    return FlatCount / EntranceCount;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        public int FlatCountInEntrance => EntranceCount == 0 ? 0 : FlatCount / EntranceCount;
 
-        public int FlatCountOnFloor
-        {
-            get
-            {
-                if (FloorCount != 0)
-                {
-                    return FlatCountInEntrance / FloorCount;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        public int FlatCountOnFloor => FloorCount == 0 ? 0 : FlatCountInEntrance / FloorCount;
 
         public static BuildingBuilder CreateBuilder() => new BuildingBuilder();
 
