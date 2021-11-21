@@ -8,8 +8,7 @@ namespace Task_3
         static async Task Main(string[] args)
         {
             var parser = new EmailParser("text.txt");
-            var rows = await parser.GetEmails();
-            foreach (var row in rows)
+            await foreach (var row in parser.EnumEmailsAsync())
             {
                 Console.WriteLine(row);
             }
