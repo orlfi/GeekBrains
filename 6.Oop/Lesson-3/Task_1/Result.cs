@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Task_1
 {
-    public class Result<T>
+    public ref readonly struct Result<T>
     {
         public bool Success { get; set; }
 
