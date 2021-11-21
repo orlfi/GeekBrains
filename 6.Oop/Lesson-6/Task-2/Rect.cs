@@ -2,9 +2,9 @@ using Task_2.Enums;
 
 namespace Task_2
 {
-    public class Rect : Point
+    public class Rect : Point, IEquatable<Rect>
     {
-        public Size Size { get; set; }
+        public Size Size { get; }
 
         public Rect(int x, int y, Size size) : this(x, y, size, Colors.white) { }
 
@@ -15,5 +15,29 @@ namespace Task_2
         public int GetArea() => Size.Width * Size.Height;
 
         public override string ToString() => base.ToString() + $"\r\nПлощадь: {GetArea()}";
+
+        public bool Equals(Rect? other)
+        {
+            if (other is null)
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return base.Equals(other)
+                && this.Size == other.Size;
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as Rect);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ Size.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }
