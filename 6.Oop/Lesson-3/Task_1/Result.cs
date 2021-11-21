@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Task_1
 {
-    public struct Result<T>
+    public ref readonly struct Result<T>
     {
         public bool Success => Error is null;
 
