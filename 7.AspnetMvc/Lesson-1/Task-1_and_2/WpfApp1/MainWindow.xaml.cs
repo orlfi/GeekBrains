@@ -14,8 +14,7 @@ namespace WpfApp1
     {
         private int number = 1;
         private NumberFormatInfo f = new NumberFormatInfo { NumberGroupSeparator = " " };
-        private bool executing = false;
-        private static object lockObject = new object();
+        private volatile bool executing = false;
 
         public MainWindow()
         {
@@ -40,10 +39,7 @@ namespace WpfApp1
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            lock (lockObject)
-            {
-                executing = !executing;
-            }
+            executing = !executing;
             if (executing)
             {
                 ((Button)sender).Content = "Стоп";
