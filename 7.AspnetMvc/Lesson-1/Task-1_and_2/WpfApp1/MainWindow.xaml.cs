@@ -43,7 +43,7 @@ namespace WpfApp1
             if (executing)
             {
                 ((Button)sender).Content = "Стоп";
-                Task task = new Task(() => AddNumberAsync());
+                Task task = Task.Run(() => AddNumberAsync());
                 task.Start();   
             }
             else
