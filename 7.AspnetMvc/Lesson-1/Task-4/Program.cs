@@ -19,7 +19,7 @@ public class Program
             }));
             tasks[i].Start();
         }
-        Task.WaitAll(tasks.ToArray());
+        await Task.WhenAll(tasks);
         Console.WriteLine("End");
     }
 }
