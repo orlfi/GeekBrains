@@ -16,7 +16,7 @@ namespace Task_4
             {
                 lock (_lockObject)
                 {
-                    return _list.Count();
+                    return _list.Count;
                 }
             }
         }
