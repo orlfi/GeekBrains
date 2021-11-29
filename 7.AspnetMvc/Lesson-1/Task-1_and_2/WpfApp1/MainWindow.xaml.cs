@@ -44,7 +44,6 @@ namespace WpfApp1
             {
                 ((Button)sender).Content = "Стоп";
                 Task task = Task.Run(() => AddNumberAsync());
-                task.Start();   
             }
             else
             {
