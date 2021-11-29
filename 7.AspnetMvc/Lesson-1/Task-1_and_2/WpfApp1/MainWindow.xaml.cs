@@ -72,7 +72,7 @@ namespace WpfApp1
         // Слишком медленно!!!
         private ulong FibRecursive(ulong n)
         {
-            if (n == 0 || n == 1) return n;
+            if (n < 2) return n;
             return FibRecursive(n - 1) + FibRecursive(n - 2);
         }
 
