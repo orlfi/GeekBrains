@@ -1,17 +1,28 @@
-﻿
-var task = DoWork();
-Console.WriteLine($"Main after DoWork {Thread.CurrentThread.ManagedThreadId}");
-await task;
-Console.WriteLine($"Main done! {Thread.CurrentThread.ManagedThreadId}");
+﻿using ThreadPoolApp;
+
+Random rnd = new Random();
+SimpleThreadPool pool = new SimpleThreadPool(3);
+for (int i = 1; i < 7; i++)
+{
+    pool.EnQueue((threadColor) =>
+    {
+        int taskNumber = i;
+        ConsoleColor color = GetNewColor(threadColor, rnd);
+        $"Запуск выполнения Задачи №{taskNumber}".ThreadInfo(threadColor, color);
+        Thread.Sleep(3000);
+        $"Окончание работы Задачи №-{taskNumber}".ThreadInfo(threadColor, color);
+    });
+    Thread.Sleep(1000);
+}
 Console.ReadLine();
 
-static async Task DoWork()
+static ConsoleColor GetNewColor(ConsoleColor color, Random rnd)
 {
-    Console.WriteLine($"DoWork before TaskRun {Thread.CurrentThread.ManagedThreadId}");
-    await Task.Run(() =>
+    ConsoleColor result;
+    while (true)
     {
-        Console.WriteLine($"In task { Thread.CurrentThread.ManagedThreadId}");
-        Thread.Sleep(1000);
-    }).ConfigureAwait(true);
-    Console.WriteLine($"DoWork after TaskRun {Thread.CurrentThread.ManagedThreadId}");
+        result = (ConsoleColor)rnd.Next(1, 15);
+        if (result != color)
+            return result;
+    }
 }

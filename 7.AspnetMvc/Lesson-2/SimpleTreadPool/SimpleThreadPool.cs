@@ -5,44 +5,70 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleTreadPool
+namespace ThreadPoolApp
 {
     public class SimpleThreadPool
     {
-        private readonly ConcurrentQueue<Action> _actions = new ConcurrentQueue<Action>();
-        private readonly List<Thread> _treads;
+        private readonly ConcurrentQueue<Action<ConsoleColor>> _actions = new ConcurrentQueue<Action<ConsoleColor>>();
+
+        private readonly List<Thread> _threads;
+
+        private readonly AutoResetEvent resetEvent = new AutoResetEvent(false);
+
+        private readonly int _threadCount;
 
         public SimpleThreadPool(int threadCount)
         {
-            _treads = new List<Thread>(threadCount);
-            for (int i = 0; i < threadCount; i++)
+            _threadCount = threadCount;
+            _threads = new List<Thread>(threadCount);
+            Initialize();
+            StartThreads();
+        }
+
+        private void Initialize()
+        {
+            Random rnd = new Random();
+            for (int i = 0; i < _threadCount; i++)
             {
-                var thread = CreateThread();
-                _treads.Add(thread);
+                ConsoleColor color = (ConsoleColor)rnd.Next(1, 15);
+                var thread = CreateThread(color);
+                _threads.Add(thread);
+                "Поток создан".ThreadInfo(color, color);
             }
         }
 
-        public void EnQueue(Action action)
+        private void StartThreads()
         {
-            _actions.Append(action);
+            for (int i = 0; i < _threadCount; i++)
+            {
+                _threads[i].Start();
+            }
         }
 
-        private Thread CreateThread()
+        public void EnQueue(Action<ConsoleColor> action)
         {
-            var thread = new Thread(() => Worker());
+            _actions.Enqueue(action);
+            resetEvent.Set();
+        }
+
+        private Thread CreateThread(ConsoleColor color = ConsoleColor.White)
+        {
+            var thread = new Thread(() => Worker(color));
             thread.IsBackground = true;
-            thread.Start();
             return thread;
         }
 
-        private void Worker()
+        private void Worker(ConsoleColor color)
         {
-            Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} started");
             while (true)
             {
-
+                "Поток ожидает задачу...".ThreadInfo(color, color);
+                resetEvent.WaitOne();
+                if (_actions.TryDequeue(out Action<ConsoleColor> action))
+                {
+                    action(color);
+                }
             }
-            Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} stoped");
         }
     }
 }
