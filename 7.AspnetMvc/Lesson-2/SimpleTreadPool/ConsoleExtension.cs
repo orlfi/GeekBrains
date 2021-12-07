@@ -2,7 +2,7 @@ namespace ThreadPoolApp;
 
 public static class StringExtension
 {
-    static object lockObject = new Object();
+    private static readonly object lockObject = new Object();
 
     public static void ThreadInfo(this string text, ConsoleColor threadColor = ConsoleColor.White, ConsoleColor infoColor = ConsoleColor.Yellow)
     {
