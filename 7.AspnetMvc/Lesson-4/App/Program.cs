@@ -13,7 +13,7 @@ static class Program
 
     public static async Task Main(string[] args)
     {
-        var manager = WeatherManagerBuilder.Create(new HtmlProvider(client))
+        var manager = WeatherManagerBuilder.Create(new WorldWeatherProvider(client))
             .WithOutputStrategy(WeatherForecastOutputStrategyPipeline
             .Create(PipelineConfiguration<IWeatherOutputStrategyPipelineItem>.Create()
                 .With(new ConsoleWeatherOutputStrategyPipelineItem())

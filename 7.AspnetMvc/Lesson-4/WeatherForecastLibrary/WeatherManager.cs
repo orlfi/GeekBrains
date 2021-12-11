@@ -31,7 +31,7 @@ public class WeatherManager : IWeatherManager
         if (_outputStrategyPipeline is null)
             throw new NullReferenceException("Выходная цепочка не задана");
 
-        var html = await _provider.GetPageAsync("https://world-weather.ru/pogoda/russia/novomoskovsk/");
+        var html = await _provider.GetPageAsync();
 
         var data = _parser.GetWeatherForecast(html);
 
