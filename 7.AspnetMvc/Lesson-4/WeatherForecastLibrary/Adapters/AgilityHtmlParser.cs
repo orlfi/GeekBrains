@@ -12,7 +12,7 @@ namespace WeatherForecastLibrary.Adapters
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
 
-            var nodes = htmlDoc.DocumentNode.SelectNodes(".//li[@class='tab-w']");
+            var nodes = htmlDoc.DocumentNode.SelectNodes(".//li[contains(concat(' ', @class, ' '), ' tab-w ')]");
             return nodes.Select(node => GetDayWeatherForecast(node)).ToArray();
         }
 

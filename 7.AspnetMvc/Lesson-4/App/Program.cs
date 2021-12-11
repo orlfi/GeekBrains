@@ -1,4 +1,5 @@
-﻿using Providers;
+﻿using System.ComponentModel;
+using Providers;
 using WeatherForecastLibrary;
 using WeatherForecastLibrary.Adapters;
 using WeatherForecastLibrary.Interfaces;
@@ -18,7 +19,8 @@ static class Program
             .Create(PipelineConfiguration<IWeatherOutputStrategyPipelineItem>.Create()
                 .With(new ConsoleWeatherOutputStrategyPipelineItem())
                 .With(new FileWeatherOutputStrategyPipelineItem("WeatherForecast.txt"))))
-            .WithParser(new AgilityHtmlParser())
+            //.WithParser(new AgilityHtmlParser())
+            .WithParser(new AngleSharpHtmlParser())
             .Build();
 
         try
@@ -30,6 +32,6 @@ static class Program
             Console.WriteLine(ex.Message);
         }
 
-        Console.ReadLine();
+         Console.ReadLine();
     }
 }
