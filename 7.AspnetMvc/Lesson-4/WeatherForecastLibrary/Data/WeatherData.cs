@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace WeatherForecastLibrary.Data;
 
-public class WeatherData
+public readonly struct WeatherData
 {
-    public DateTime Date { get; set; }
+    public DateTime Date { get; init; }
 
-    public int DayTemperature { get; set; }
+    public int DayTemperature { get; init; }
 
-    public int NigthTemperature { get; set; }
+    public int NigthTemperature { get; init; }
 
-    public string? Description { get; set; }
+    public string? Description { get; init; }
 }
