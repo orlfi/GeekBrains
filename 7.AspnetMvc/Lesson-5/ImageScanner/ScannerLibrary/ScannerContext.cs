@@ -1,3 +1,4 @@
+using ScannerLibrary.Data;
 using ScannerLibrary.Interfaces;
 
 namespace ScannerLibrary;
@@ -6,34 +7,43 @@ public class ScannerContext : IScannerContext
 {
     private readonly IScannerDevice? _device;
 
-    private readonly ILogger? _logger;
+    private readonly string _outputDirectory;
 
-    private IScanSaver? _saver;
+    private IPicturePipeline? _imageProcessorPipeline;
 
-    private ScannerContext() { }
-
-    internal ScannerContext(IScannerDevice device, ILogger? logger = null)
+    internal ScannerContext(IScannerDevice device, string outputDirectory)
     {
         _device = device;
-        _logger = logger;
+        _outputDirectory = outputDirectory;
 
-        if (_logger is not null)
-            device.MonitorChanged += (sender, eventArgs) => _logger.Log(eventArgs.Data?.ToString() ?? "");
+        _device.NewScanEvent += (sender, eventArgs) =>
+        {
+            _imageProcessorPipeline?.Run(eventArgs.Picture);
+            Save(eventArgs.FileName, eventArgs.Picture);
+        };
     }
 
-    public void ConfigureProcessor(IScanSaver saver)
+    public void ConfigureImageProcessorPipeline(IPicturePipeline imageProcessorPipeline)
     {
-        _saver = saver;
+        _imageProcessorPipeline = imageProcessorPipeline;
     }
 
-    public void Run(string fileName)
+    public void Run()
     {
         if (_device is null)
             throw new ArgumentNullException("Сканер не найден");
 
-        if (_saver is null)
-            throw new ArgumentNullException("Обработчик не найден");
+        if (_imageProcessorPipeline is null)
+            throw new ArgumentNullException("Обработчик не настроен");
 
-        _saver.ScanAndSave(_device, fileName);
+        _device.Scan();
+    }
+
+    private void Save(string fileName, IPicture picture)
+    {
+        if (!Directory.Exists(_outputDirectory))
+            Directory.CreateDirectory(_outputDirectory);
+
+        File.WriteAllBytes(Path.Combine(_outputDirectory, fileName), picture.Data);
     }
 }

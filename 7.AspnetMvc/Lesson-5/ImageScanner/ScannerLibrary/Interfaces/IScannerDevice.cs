@@ -6,5 +6,5 @@ public interface IScannerDevice
 {
     event EventHandler<NewScanEventArgs>? NewScanEvent;
 
-    Stream Scan();
+    void Scan();
 }

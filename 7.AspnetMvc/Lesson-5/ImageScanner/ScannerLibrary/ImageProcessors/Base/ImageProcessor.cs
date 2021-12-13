@@ -4,5 +4,6 @@ namespace ScannerLibrary.ImageProcessors.Base;
 
 public abstract class ImageProcessor : IImageProcessor
 {
-    public abstract void Execute(byte[] data, string fileName);
+    public abstract void Rotate(IPicture picture, double angle);
+    public abstract void Flip(IPicture picture, FlipMode flipMode);
 }

@@ -10,34 +10,28 @@ namespace ScannerLibrary
     public class ScannerContextBuilder
     {
         private readonly IScannerDevice _device;
-        private IScanSaver? _saver;
-        private ILogger? _logger;
+        IPicturePipeline? _imageProcessorPipeline;
+        private readonly string _outputDirectory;
 
-        private ScannerContextBuilder(IScannerDevice device) => _device = device;
+        private ScannerContextBuilder(IScannerDevice device, string outputDirectory) => (_device, _outputDirectory) = (device, outputDirectory);
 
-        public static ScannerContextBuilder Create(IScannerDevice device)
+        public static ScannerContextBuilder Create(IScannerDevice device, string outputDirectory)
         {
-            return new ScannerContextBuilder(device);
+            return new ScannerContextBuilder(device, outputDirectory);
         }
 
-        public ScannerContextBuilder WithLogger(ILogger logger)
+        public ScannerContextBuilder WithImageProcessorPipeline(IPicturePipeline imageProcessorPipeline)
         {
-            _logger = logger;
-            return this;
-        }
-
-        public ScannerContextBuilder WithSaver(IScanSaver saver)
-        {
-            _saver = saver;
+            _imageProcessorPipeline = imageProcessorPipeline;
             return this;
         }
 
         public IScannerContext Build()
         {
-            var context = new ScannerContext(_device, _logger);
+            var context = new ScannerContext(_device, _outputDirectory);
 
-            if (_saver is not null)
-                context.ConfigureProcessor(_saver);
+            if (_imageProcessorPipeline is not null)
+                context.ConfigureImageProcessorPipeline(_imageProcessorPipeline);
 
             return context;
         }
