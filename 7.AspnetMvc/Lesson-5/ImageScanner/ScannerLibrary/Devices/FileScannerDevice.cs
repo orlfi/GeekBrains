@@ -11,7 +11,7 @@ public class FileScannerDevice : IScannerDevice
 
     private readonly FileSystemWatcher _watcher;
 
-    private string _path;
+    private readonly string _path;
 
     public FileScannerDevice(string path)
     {
@@ -23,17 +23,30 @@ public class FileScannerDevice : IScannerDevice
 
     public void Scan()
     {
-        _watcher.Created += OnNewImage;
+        _watcher.Created += async (sender, e) =>
+        {
+            var data = await ReadFile(e.Name!);
+            var picture = new Picture() { Data = data };
+            NewScanEvent?.Invoke(this, new NewScanEventArgs() { FileName = Path.GetFileName(e.Name), Picture = picture });
+        };
         _watcher.EnableRaisingEvents = true;
     }
 
-    private void OnNewImage(object sender, FileSystemEventArgs e)
+    private async Task<byte[]> ReadFile(string fileName)
     {
-        if (!File.Exists(e.Name))
-            return;
-
-        var picture = new Picture() { Data = File.ReadAllBytes(e.Name) };
-
-        NewScanEvent?.Invoke(this, new NewScanEventArgs() { FileName = Path.GetFileName(e.Name), Picture = picture });
+        await Task.Run(() =>
+        {
+            bool fileLocked = true;
+            while (fileLocked)
+            {
+                try
+                {
+                    using var fs = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                    fileLocked = false;
+                }
+                catch (IOException) { }
+            }
+        });
+        return await File.ReadAllBytesAsync(fileName);
     }
 }

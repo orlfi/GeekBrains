@@ -9,7 +9,7 @@ namespace ScannerLibrary.Pipeline.Base;
 
 public abstract class PipelineItem<TData> : IPipelineItem<TData>
 {
-    public IPipelineItem<TData> Next { get; set; }
+    public IPipelineItem<TData>? Next { get; set; }
 
     public bool Execute(TData data)
     {

@@ -18,8 +18,8 @@ public class ScannerContext : IScannerContext
 
         _device.NewScanEvent += (sender, eventArgs) =>
         {
-            _imageProcessorPipeline?.Run(eventArgs.Picture);
-            Save(eventArgs.FileName, eventArgs.Picture);
+            _imageProcessorPipeline?.Run(eventArgs.Picture!);
+            Save(eventArgs.FileName!, eventArgs.Picture!);
         };
     }
 
