@@ -18,18 +18,13 @@ public class Application
         _logger = logger;
     }
 
-    public Task Run()
+    public void Run()
     {
         try
         {
-            var context = ScannerContextBuilder.Create(new ScannerDevice("scanner.txt"))
-                .WithLogger(new Logger())
-                .WithSaver(new ScanToPdf())
-                .Build();
-
+            _logger.LogInformation("Начало сканирования...");
             _context.Run("result.pdf");
-            _context.ConfigureProcessor(new ScanToWord());
-            _context.Run("result.docx");
+            _logger.LogInformation("Закончено сканирование.");
         }
         catch (Exception ex)
         {
