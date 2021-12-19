@@ -7,9 +7,71 @@
     xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="450" Width="800">
 
     <Window.DataContext>
-        <vm:MainWindowViewModel></vm:MainWindowViewModel>
+        <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid>
-        <Button Content="{Binding TestCommand.Name}" Width="75" Command="{Binding TestCommand}"/>
-    </Grid>
+    <DockPanel LastChildFill="true">
+        <Menu x:Name="menu" DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход" Command="{Binding QuitCommand}"/>
+            </MenuItem>
+            <Image x:Name="myImage" Height="100" Width="100"/>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <Button x:Name="ReportButton" Content="F3 Отчет" Width="Auto" Command="{Binding ReportCommand}"/>
+            <Button x:Name="CopyButton" Content="F5 Копировать" Width="Auto"/>
+            <Button x:Name="MoveButton" Content="F6 Переместить" Width="Auto"/>
+            <Button x:Name="CreateDirectoryButton" Content="F7 Новый каталог" Width="Auto"/>
+            <Button x:Name="DeleteButton" Content="F8 Удалить" Width="Auto"/>
+            <Button x:Name="QuitButton" Content="Alt+F4 Выйти" Width="Auto" Command="{Binding QuitCommand}"/>
+        </StatusBar>
+        <TextBox x:Name="commandTextBox" Text="TextBox" DockPanel.Dock="Bottom" Margin="3"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0"  x:Name="leftPathTextBox" Text="TextBox"/>
+                <ListView Grid.Row="1" x:Name="leftListView" d:ItemsSource="{d:SampleData ItemCount=5}" BorderBrush="{x:Null}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox"/>
+                <ListView   Grid.Row="1"  x:Name="rightListView" d:ItemsSource="{d:SampleData ItemCount=50}" BorderBrush="{x:Null}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16px" Height="16px" Source="{Binding Icon}"/>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
