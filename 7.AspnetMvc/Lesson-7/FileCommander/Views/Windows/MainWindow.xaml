@@ -14,7 +14,6 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Выход" Command="{Binding QuitCommand}"/>
             </MenuItem>
-            <Image x:Name="myImage" Height="100" Width="100"/>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <Button x:Name="ReportButton" Content="F3 Отчет" Width="Auto" Command="{Binding ReportCommand}"/>
@@ -39,7 +38,7 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0"  x:Name="leftPathTextBox" Text="TextBox"/>
+                <TextBox Grid.Row="0" x:Name="leftPathTextBox" Text="TextBox"/>
                 <ListView Grid.Row="1" x:Name="leftListView" d:ItemsSource="{d:SampleData ItemCount=5}" BorderBrush="{x:Null}">
                     <ListView.View>
                         <GridView>
@@ -55,7 +54,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox"/>
-                <ListView   Grid.Row="1"  x:Name="rightListView" d:ItemsSource="{d:SampleData ItemCount=50}" BorderBrush="{x:Null}">
+                <ListView Grid.Row="1" x:Name="rightListView" d:ItemsSource="{d:SampleData ItemCount=50}" BorderBrush="{x:Null}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>

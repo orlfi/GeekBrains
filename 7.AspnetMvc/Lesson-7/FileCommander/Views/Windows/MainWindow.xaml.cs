@@ -36,89 +36,6 @@ namespace FileCommander
             Icon ico = System.Drawing.Icon.ExtractAssociatedIcon(@"C:\WINDOWS\system32\notepad.exe");
             //System.Drawing.Icon.FromHandle();
 
-
-            As Raymond Chen blogged about some time ago, SHDefExtractIcon is your more powerful fallback if IExtractIcon::Extract(which is what the code sample above attempts to use) fails.The power of this function is its nIconSize parameter, which specifies the actual size of the icon that you want to extract.
-
-Adapting Raymond's example:
-
-    HICON ExtractArbitrarySizeIcon(LPCTSTR pszPath, int size)
-            {
-                HICON hIcon;
-                if (SHDefExtractIcon(pszPath, 1, 0, &hIcon, NULL, size) == S_OK)
-                {
-                    return hIcon;
-                }
-                return NULL;  // failure
-            }
-            Whatever you do, remember that whenever an API function returns an HICON, it is transferring ownership of that resource to you.This means that, when you are finished with the icon, you must destroy it by calling the DestroyIcon function to avoid a leak.
-
-
-
-                       //unsafe
-                       //{
-                       //    int readIconCount = 0;
-                       //    IntPtr[] hDummy = new IntPtr[1] { IntPtr.Zero };
-                       //    IntPtr[] hIconEx = new IntPtr[1] { IntPtr.Zero };
-
-                       //    try
-                       //    {
-                       //        if (large)
-                       //            readIconCount = ExtractIconEx(file, 0, hIconEx, hDummy, 1);
-                       //        else
-                       //            readIconCount = ExtractIconEx(file, 0, hDummy, hIconEx, 1);
-
-                       //        if (readIconCount > 0 && hIconEx[0] != IntPtr.Zero)
-                       //        {
-                       //            // GET FIRST EXTRACTED ICON
-                       //            Icon extractedIcon = (Icon)Icon.FromHandle(hIconEx[0]).Clone();
-
-                       //            return extractedIcon;
-                       //        }
-                       //        else // NO ICONS READ
-                       //            return null;
-                       //    }
-                       //    catch (Exception ex)
-                       //    {
-                       //        /* EXTRACT ICON ERROR */
-
-                       //        // BUBBLE UP
-                       //        throw new ApplicationException("Could not extract icon", ex);
-                       //    }
-                       //    finally
-                       //    {
-                       //        // RELEASE RESOURCES
-                       //        foreach (IntPtr ptr in hIconEx)
-                       //            if (ptr != IntPtr.Zero)
-                       //                DestroyIcon(ptr);
-
-                       //        foreach (IntPtr ptr in hDummy)
-                       //            if (ptr != IntPtr.Zero)
-                       //                DestroyIcon(ptr);
-                       //    }
-                       //}
-
-
-
-
-                       //System.Drawing.Image image = ico.ToBitmap();
-
-                       //BitmapImage bi3 = new BitmapImage();
-                       //bi3.BeginInit();
-                       //bi3.UriSource = new Uri(@"e:\tmp\img1.png", UriKind.Absolute);
-                       //bi3.EndInit();
-
-                       Bitmap bitmap = ico.ToBitmap();
-            IntPtr hBitmap = bitmap.GetHbitmap();
-
-            ImageSource wpfBitmap =
-                 Imaging.CreateBitmapSourceFromHBitmap(
-                      hBitmap, IntPtr.Zero, Int32Rect.Empty,
-                      BitmapSizeOptions.FromEmptyOptions());
-
-            myImage.Source = ExtractAssociatedIconApi();
-
-
-
             //image.Save(@"e:\tmp\img1.bmp");
 
             rightListView.ItemsSource = GetFiles(path).Select(item =>
@@ -126,29 +43,6 @@ Adapting Raymond's example:
                 return new { Name = item.Name, Icon = ToImageSource(item) };
             });
         }
-        #region  " Функции API "
-        [DllImport("shell32.dll")]
-        static extern IntPtr ExtractAssociatedIcon(IntPtr hInst, StringBuilder lpIconPath, out ushort lpiIcon);
-        // ExtractIcon эта функция пока не задействована.
-        [DllImport("shell32.dll")]
-        static extern IntPtr ExtractIcon(IntPtr hInst, string lpszExeFileName, int nIconIndex);
-        #endregion
-
-        public static ImageSource ExtractAssociatedIconApi()
-        {
-            ushort uicon;
-            StringBuilder strB = new StringBuilder(@"C:\WINDOWS\system32\notepad.exe");
-            IntPtr handle = ExtractAssociatedIcon(Process.GetCurrentProcess().MainWindowHandle, strB, out uicon);
-
-            ImageSource imageSource = Imaging.CreateBitmapSourceFromHIcon(
-              handle,
-              Int32Rect.Empty,
-              BitmapSizeOptions.FromEmptyOptions());
-            return imageSource;
-            //Icon ico = Icon.FromHandle(handle);
-        }
-
-
 
         public static ImageSource ToImageSource(string path)
         {
