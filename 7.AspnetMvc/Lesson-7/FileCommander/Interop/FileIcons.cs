@@ -1,10 +1,8 @@
 using System;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace FileCommander.Interop;
-
 public static class FileIcons
 {
     private static Icon? _folderLargeIcon;
@@ -17,10 +15,6 @@ public static class FileIcons
 
     public static Icon GetIcon(string path)
     {
-        bool isDirectory = Directory.Exists(path);
-        if (isDirectory)
-            return FolderSmall;
-
         return ExtractFromPath(path);
     }
 
@@ -50,7 +44,6 @@ public static class FileIcons
         return icon;
     }
 
-    //Struct used by SHGetFileInfo function
     [StructLayout(LayoutKind.Sequential)]
     private struct SHFILEINFO
     {
@@ -84,10 +77,16 @@ public static class FileIcons
     private static extern bool DestroyIcon(IntPtr handle);
 
     private const uint SHGFI_ICON = 0x100;
+
     private const uint SHGFI_LARGEICON = 0x0;
+
     private const uint SHGFI_SMALLICON = 0x1;
+
     private const uint SHSIID_FOLDER = 0x3;
+
     private const uint SHGSI_ICON = 0x100;
+
     private const uint SHGSI_LARGEICON = 0x0;
+
     private const uint SHGSI_SMALLICON = 0x1;
 }
