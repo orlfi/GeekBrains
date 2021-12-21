@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using FileCommander.Commands.Base;
@@ -14,7 +15,21 @@ namespace FileCommander.ViewModels
 
         public void OnReportCommand(object? parameter)
         {
-            MessageBox.Show("Отчет");
+            if (_selectedFile is not null)
+                MessageBox.Show(_selectedFile.Name);
+        }
+        #endregion
+
+
+
+        #region QuitCommand
+        private Command? _quitCommand;
+
+        public ICommand QuitCommand => _quitCommand ??= Command.Invoke(OnQuitCommand).WithName("Выход");
+
+        public void OnQuitCommand(object? parameter)
+        {
+            Application.Current.Shutdown();
         }
         #endregion
 
@@ -28,19 +43,5 @@ namespace FileCommander.ViewModels
             MessageBox.Show("test");
         }
         #endregion
-
-        #region QuitCommand
-        private Command? _quitCommand;
-
-        public ICommand QuitCommand => _quitCommand ??= Command.Invoke(OnQuitCommand).WithName("Выход");
-
-        public void OnQuitCommand(object? parameter)
-        {
-            Application.Current.Shutdown();
-        }
-        #endregion
-
-
-
     }
 }

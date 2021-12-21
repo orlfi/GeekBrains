@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:FileCommander"
-    xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="450" Width="800">
+    xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -23,7 +23,7 @@
             <Button x:Name="DeleteButton" Content="F8 Удалить" Width="Auto"/>
             <Button x:Name="QuitButton" Content="Alt+F4 Выйти" Width="Auto" Command="{Binding QuitCommand}"/>
         </StatusBar>
-        <TextBox x:Name="commandTextBox" Text="TextBox" DockPanel.Dock="Bottom" Margin="3"/>
+        <TextBox x:Name="commandTextBox" Text="{Binding FileCommand}" DockPanel.Dock="Bottom" Margin="3"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -31,6 +31,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
+                <Grid.DataContext>
+                    <vm:FilePanelViewModel/>
+                </Grid.DataContext>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
@@ -39,29 +42,41 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" x:Name="leftPathTextBox" Text="TextBox"/>
-                <ListView Grid.Row="1" x:Name="leftListView" d:ItemsSource="{d:SampleData ItemCount=5}" BorderBrush="{x:Null}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox"/>
-                <ListView Grid.Row="1" x:Name="rightListView" d:ItemsSource="{d:SampleData ItemCount=50}" BorderBrush="{x:Null}">
+                <ListView Grid.Row="1" x:Name="leftListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" BorderBrush="{x:Null}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="16px" Height="16px" Source="{Binding Icon}"/>
+                                            <Image Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Icon}" />
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+            <Grid Grid.Column="2">
+                <Grid.DataContext>
+                    <vm:FilePanelViewModel/>
+                </Grid.DataContext>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox"/>
+                <ListView Grid.Row="1" x:Name="rightListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" BorderBrush="{x:Null}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Icon}" />
                                             <TextBlock Text="{Binding Name}"/>
                                         </StackPanel>
                                     </DataTemplate>

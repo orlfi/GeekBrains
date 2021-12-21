@@ -26,7 +26,8 @@ namespace FileCommander.Infrastructure.EventBus
 
         public void Publish(IIntegrationEvent @event)
         {
-            _subscriptions[@event.GetType()]?.Invoke(@event);
+            if (_subscriptions.ContainsKey(@event.GetType()))
+                _subscriptions[@event.GetType()].Invoke(@event);
         }
 
     }

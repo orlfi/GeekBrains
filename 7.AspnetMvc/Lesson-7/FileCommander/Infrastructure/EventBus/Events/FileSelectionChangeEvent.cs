@@ -4,16 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FileCommander.Infrastructure.EventBus.Events.Base;
+using FileCommander.ViewModels.Interfaces;
 
 namespace FileCommander.Infrastructure.EventBus.Events
 {
     public class FileSelectionChangeEvent : IntegrationEvent
     {
-        public FileSystemInfo Selected { get; init; }
+        public IFilePanelItem Selected { get; init; }
 
         public string FilePanelName { get; init; }
 
-        public FileSelectionChangeEvent(FileSystemInfo info, string filePanelName)
+        public FileSelectionChangeEvent(IFilePanelItem info, string filePanelName)
         {
             Selected = info;
             FilePanelName = filePanelName;
