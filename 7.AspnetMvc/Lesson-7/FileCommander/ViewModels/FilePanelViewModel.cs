@@ -1,65 +1,95 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using FileCommander.Commands.Base;
 using FileCommander.Infrastructure.EventBus;
-using FileCommander.Infrastructure.EventBus.Events;
 using FileCommander.ViewModels.Base;
 using FileCommander.ViewModels.Interfaces;
+using FileCommander.ViewModels.ModelEvents;
 
-namespace FileCommander.ViewModels
+namespace FileCommander.ViewModels;
+public partial class FilePanelViewModel : ViewModel
 {
-    public partial class FilePanelViewModel : ViewModel
+    public event EventHandler<FileSelectionChangeEventArgs> FileSelectionChangeEvent;
+
+    public event EventHandler<PathChangeEventArgs> PathChangeEvent;
+
+    public string FilePanelName { get; init; }
+
+    private string _path;
+
+    public string Path
     {
-        private string _path;
-        public string Path
+        get => _path;
+        set
         {
-            get => _path;
-            set => Set(ref _path, value);
+            Set(ref _path, value);
+            PathChangeEvent?.Invoke(this, new PathChangeEventArgs(value));
+            Refresh();
         }
+    }
 
-        public ObservableCollection<IFilePanelItem> Files { get; set; }
+    public ObservableCollection<IFilePanelItem> Files { get; set; } = new ObservableCollection<IFilePanelItem>();
 
-        private IFilePanelItem _selectedFile;
+    private IFilePanelItem _selectedFileItem;
 
-        public IFilePanelItem SelectedFile
+    public IFilePanelItem SelectedFileItem
+    {
+        get => _selectedFileItem;
+        set
         {
-            get => _selectedFile;
-            set
-            {
-                _selectedFile = value;
-                _messageBus.Publish(new FileSelectionChangeEvent(_selectedFile, this.GetType().Name));
-                // OnPropertyChange("SelectedFile", ref value);
-            }
+            Set(ref _selectedFileItem, value);
+            FileSelectionChangeEvent?.Invoke(this, new FileSelectionChangeEventArgs(value));
+            //_messageBus.Publish(new FileSelectionChangeEvent(_selectedFile, FilePanelName!));
+            // OnPropertyChange("SelectedFile", ref value);
         }
+    }
 
-        public void SelectItem(string sourceName)
+    private IFilePanelItem _focusedFileItem;
+
+    public IFilePanelItem FocusedFileItem
+    {
+        get => _focusedFileItem;
+        set
         {
-            MessageBox.Show(sourceName);
+            Set(ref _focusedFileItem, value);
         }
+    }
 
-        private ModelEventBus _messageBus;
 
-        public FilePanelViewModel()
-        {
-            Files = new(GetFiles(@"c:\windows"));
-            _messageBus = ModelEventBus.Instance;
-        }
+    public void SelectItem(string sourceName)
+    {
+        MessageBox.Show(sourceName);
+    }
 
-        // public void OnPropertyChange<T>(string propertyName, ref T value)
-        // {
-        // }
+    private ModelEventBus _messageBus;
 
-        private ICollection<IFilePanelItem> GetFiles(string path)
-        {
-            var di = new DirectoryInfo(path);
-            var directories = di.GetDirectories().Select(item => new DirectoryPanelItem(item) as IFilePanelItem);
-            var files = di.GetFiles().Select(item => new FilePanelItem(item));
-            var result = directories.Union(files);
-            return result.ToArray();
-        }
+    public FilePanelViewModel()
+    {
+        Path = @"c:\windows";
+        SelectedFileItem = Files[0];
+        _messageBus = ModelEventBus.Instance;
+    }
+
+    // public void OnPropertyChange<T>(string propertyName, ref T value)
+    // {
+    // }
+
+    private void Refresh()
+    {
+        Files?.Clear();
+        foreach (var item in GetFiles(Path))
+            Files.Add(item);
+    }
+
+    private ICollection<IFilePanelItem> GetFiles(string path)
+    {
+        var di = new DirectoryInfo(path);
+        var directories = di.GetDirectories().Select(item => new DirectoryPanelItem(item) as IFilePanelItem);
+        var files = di.GetFiles().Select(item => new FilePanelItem(item));
+        var result = directories.Union(files);
+        return result.ToArray();
     }
 }

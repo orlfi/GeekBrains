@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace FileCommander.Commands.Base
 {
-    public abstract class Command : ICommand
+    public abstract class Command: ICommand
     {
         public string Name { get; set; } = "Button";
 

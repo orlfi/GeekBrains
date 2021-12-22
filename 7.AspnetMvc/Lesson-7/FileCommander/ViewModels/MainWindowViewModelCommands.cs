@@ -33,6 +33,39 @@ namespace FileCommander.ViewModels
         }
         #endregion
 
+        #region CopyCommand
+        private Command? _copyCommand;
+
+        public ICommand CopyCommand => _copyCommand ??= Command.Invoke(OnCopyCommand).WithName("Копировать");
+
+        public void OnCopyCommand(object? parameter)
+        {
+            MessageBox.Show("Copy");
+        }
+        #endregion
+
+        #region MoveCommand
+        private Command? _moveCommand;
+
+        public ICommand MoveCommand => _moveCommand ??= Command.Invoke(OnMoveCommand).WithName("Копировать");
+
+        public void OnMoveCommand(object? parameter)
+        {
+            MessageBox.Show("Move");
+        }
+        #endregion
+
+        #region CreateDirectoryCommand
+        private Command? _createDirectoryCommand;
+
+        public ICommand CreateDirectoryCommand => _createDirectoryCommand ??= Command.Invoke(OnCreateDirectoryCommand).WithName("Копировать");
+
+        public void OnCreateDirectoryCommand(object? parameter)
+        {
+            MessageBox.Show("CreateDirectory");
+        }
+        #endregion
+
         #region TestCommand
         private Command? _testCommand;
 
