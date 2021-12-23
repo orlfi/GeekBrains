@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
-namespace FileCommander.ViewModels
+namespace FileCommander.ViewModels.FileItems
 {
     public class DirectoryPanelItem : FilePanelItemBase
     {
@@ -15,6 +15,8 @@ namespace FileCommander.ViewModels
         public override string Name => _info.Name;
 
         public override string Created => _info.CreationTime.ToString(createdTemplate);
+
+        public override string FullName => _info.FullName;
 
         public DirectoryPanelItem(DirectoryInfo info)
         {

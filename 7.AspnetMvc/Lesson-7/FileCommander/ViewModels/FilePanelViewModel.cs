@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using FileCommander.Infrastructure.EventBus;
 using FileCommander.ViewModels.Base;
+using FileCommander.ViewModels.FileItems;
 using FileCommander.ViewModels.Interfaces;
 using FileCommander.ViewModels.ModelEvents;
 

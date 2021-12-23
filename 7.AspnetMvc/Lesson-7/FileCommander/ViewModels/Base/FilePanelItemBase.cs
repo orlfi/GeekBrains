@@ -16,6 +16,8 @@ public abstract class FilePanelItemBase : IFilePanelItem
 
     public abstract string Name { get; }
 
+    public abstract string FullName { get; }
+
     public abstract string Created { get; }
 
     protected long _size;

@@ -15,12 +15,14 @@ namespace FileCommander.ViewModels
 
         public void OnReportCommand(object? parameter)
         {
-            if (_selectedFile is not null)
-                MessageBox.Show(_selectedFile.Name);
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            if (_selectedFile is not null && dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var text = dialog.FileName;
+                System.Windows.MessageBox.Show(text);
+            }
         }
         #endregion
-
-
 
         #region QuitCommand
         private Command? _quitCommand;

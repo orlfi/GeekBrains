@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using FileCommander.Interop;
 
-namespace FileCommander.ViewModels
+namespace FileCommander.ViewModels.FileItems
 {
     public class FilePanelItem : FilePanelItemBase
     {
@@ -18,6 +18,8 @@ namespace FileCommander.ViewModels
         public override string Name => _info.Name;
 
         public override string Created => _info.CreationTime.ToString(createdTemplate);
+
+        public override string FullName => _info.FullName;
 
         public FilePanelItem(FileInfo fileInfo)
         {
