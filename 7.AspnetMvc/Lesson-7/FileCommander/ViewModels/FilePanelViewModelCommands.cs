@@ -35,8 +35,13 @@ public partial class FilePanelViewModel : ViewModel
 
     public ICommand ChangeDirectoryCommand => _changeDirectoryCommand ??= Command.Invoke(OnChangeDirectoryCommand).WithName("Удалить элемент");
 
-    public void OnChangeDirectoryCommand(object? deletedItem)
+    public void OnChangeDirectoryCommand(object? selectedItem)
     {
+        if (selectedItem is null)
+            return;
+
+        Path = (selectedItem as IFilePanelItem).FullName;
+        SelectedFileItem = Files[0];
     }
     #endregion
 
@@ -45,7 +50,7 @@ public partial class FilePanelViewModel : ViewModel
 
     public ICommand ParentDirectoryCommand => _parentDirectoryCommand ??= Command.Invoke(OnParentDirectoryCommand).WithName("Удалить элемент");
 
-    public void OnParentDirectoryCommand(object? deletedItem)
+    public void OnParentDirectoryCommand(object? parameter)
     {
         var parent = Directory.GetParent(_path);
         if (parent is not null)
