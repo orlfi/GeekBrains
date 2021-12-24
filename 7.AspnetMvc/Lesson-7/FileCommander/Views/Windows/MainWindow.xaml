@@ -3,6 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:custom="clr-namespace:CustomBehaviorsLibrary;assembly=CustomBehaviorsLibrary"
     xmlns:local="clr-namespace:FileCommander"
     xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
 
@@ -45,12 +47,13 @@
                 <ListView Grid.Row="1" x:Name="leftListView" ItemsSource="{Binding Files}" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" BorderBrush="{x:Null}">
                     <ListBox.InputBindings>
                         <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
-                        <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <!-- <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/> -->
                         <KeyBinding Gesture="Backspace" Command="{Binding ParentDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
                         <!-- <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand }"> -->
                         <!-- Command="{Binding PlayVideoCommand}" -->
                         <!-- CommandParameter="{Binding ElementName=SmallVideoPreviews, Path=SelectedItem}"/> -->
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=SmallVideoPreviews, Path=SelectedItem}"/>
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <MouseBinding Gesture="Alt+MiddleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
                     </ListBox.InputBindings>
                     <ListView.View>
                         <GridView>
@@ -70,7 +73,7 @@
                     </ListView.View>
                 </ListView>
             </Grid>
-            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Focusable="False"/>
+            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Focusable="False"/>
             <Grid Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}">
                 <!-- <Grid.DataContext>
                     <vm:FilePanelViewModel/>
@@ -80,7 +83,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox" Focusable="False"/>
-                <ListView Grid.Row="1" x:Name="rightListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" BorderBrush="{x:Null}">
+                <ListView Grid.Row="1" x:Name="rightListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFileItem}" BorderBrush="{x:Null}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Имя">

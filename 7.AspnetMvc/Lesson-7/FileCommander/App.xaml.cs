@@ -10,6 +10,7 @@ using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using FileCommander.Reports;
 using FileCommander.Reports.Interfaces;
+using FileCommander.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -30,7 +31,6 @@ public partial class App : Application
 
     public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
-        services.AddSingleton<IReportResolver, ReportResolver>();
         services.AddSingleton<IReportResolver, ReportResolver>();
     }
 

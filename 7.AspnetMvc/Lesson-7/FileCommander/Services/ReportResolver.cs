@@ -2,7 +2,7 @@ using System.IO;
 using Autofac.Features.Indexed;
 using FileCommander.Reports.Interfaces;
 
-namespace FileCommander.Reports;
+namespace FileCommander.Services;
 
 public class ReportResolver : IReportResolver
 {

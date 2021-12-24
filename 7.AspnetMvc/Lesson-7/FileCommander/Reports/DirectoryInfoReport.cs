@@ -8,7 +8,7 @@ namespace FileCommander.Reports
 {
     public class DirectoryInfoReport : IReport
     {
-        public void MakeReport(string reportName, string fileName)
+        public void MakeReport(string reportFileName, string sourceFileName)
         {
         }
     }

@@ -2,7 +2,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using FileCommander.Commands.Base;
+using FileCommander.Services;
 using FileCommander.ViewModels.Base;
+using FileCommander.ViewModels.Interfaces;
 
 namespace FileCommander.ViewModels
 {
@@ -11,15 +13,33 @@ namespace FileCommander.ViewModels
         #region ReportCommand
         private Command? _reportCommand;
 
-        public ICommand ReportCommand => _reportCommand ??= Command.Invoke(OnReportCommand).WithName("Отчет");
+        public ICommand ReportCommand => _reportCommand ??= Command.Invoke(OnReportCommand).WithName("Отчет").When((param) => _selectedFile is not null);
 
         public void OnReportCommand(object? parameter)
         {
-            var dialog = new System.Windows.Forms.OpenFileDialog();
+
+            var item = (parameter as IFilePanelItem) ?? _selectedFile;
+            if (item is not null)
+                CreateReport(item.FullName);
+        }
+
+        private void CreateReport(string fileName)
+        {
+            var dialog = new System.Windows.Forms.SaveFileDialog();
+            dialog.FileName = $"Отчет для ({Path.GetFileName(fileName)}).docx";
+            dialog.DefaultExt = "docx";
+            // dialog.Filter = "Microsoft word files (*.doc)|*.doc|All files (*.*)|*.*";
+            dialog.Filter = "Microsoft word files (*.doc)|*.doc";
+            dialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+
             if (_selectedFile is not null && dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+
                 var text = dialog.FileName;
                 System.Windows.MessageBox.Show(text);
+
+                // var fileService = new FileService();
+                // fileService.CreateReport(dialog.FileName);
             }
         }
         #endregion

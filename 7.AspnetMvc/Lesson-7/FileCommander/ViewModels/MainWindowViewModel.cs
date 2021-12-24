@@ -8,6 +8,7 @@ using FileCommander.Infrastructure.EventBus;
 using FileCommander.Infrastructure.EventBus.Events;
 using FileCommander.Infrastructure.EventBus.Events.Base;
 using FileCommander.Infrastructure.EventBus.Interfaces;
+using FileCommander.Services;
 using FileCommander.ViewModels.Base;
 using FileCommander.ViewModels.Interfaces;
 using FileCommander.ViewModels.ModelEvents;

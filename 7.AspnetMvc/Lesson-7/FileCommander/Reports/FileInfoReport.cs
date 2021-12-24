@@ -11,11 +11,11 @@ namespace FileCommander.Reports
     public class FileInfoReport : IReport
     {
         public const string reportTemplate = "FileInfoTemplate.docx";
-        public void MakeReport(string reportName, string fileName)
+        public void MakeReport(string reportFileName, string sourceFileName)
         {
-            FileInfo fi = new FileInfo(fileName);
+            FileInfo fi = new FileInfo(sourceFileName);
 
-            File.Copy(reportTemplate, reportName);
+            File.Copy(reportTemplate, reportFileName);
 
             var valuesToFill = new Content(
                 new FieldContent("FileName", fi.Name),
@@ -25,7 +25,7 @@ namespace FileCommander.Reports
                 new FieldContent("HiddenAttribute", fi.Attributes.HasFlag(FileAttributes.Hidden) ? "true" : "false")
             );
 
-            using (var outputDocument = new TemplateProcessor(reportName)
+            using (var outputDocument = new TemplateProcessor(reportFileName)
                 .SetRemoveContentControls(true))
             {
                 outputDocument.FillContent(valuesToFill);
