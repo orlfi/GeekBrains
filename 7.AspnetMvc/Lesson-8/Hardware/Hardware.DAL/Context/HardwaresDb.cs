@@ -12,5 +12,12 @@ namespace Hardwares.DAL.Context
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Hardware>()
+                .Property(p => p.Cost)
+                .HasColumnType("decimal(18,2)");
+        }
     }
 }
