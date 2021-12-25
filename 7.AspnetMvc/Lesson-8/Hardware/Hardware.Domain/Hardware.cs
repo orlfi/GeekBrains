@@ -1,7 +1,10 @@
-﻿using Hardware.Domain.Base;
+﻿using Hardwares.Domain.Base;
 
-namespace Hardware.Domain;
+namespace Hardwares.Domain;
 
+/// <summary>
+/// Аппаратное обеспечение
+/// </summary>
 public class Hardware : NamedEntity
 {
     public string Description { get; set; }
@@ -9,8 +12,4 @@ public class Hardware : NamedEntity
     public decimal  Cost { get; set; }
 
     public DateTime InstallationDate { get; set; }
-
-    public HardwareType HardwareType { get; set; }
-
-    public Office Office { get; set; }
 }

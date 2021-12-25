@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hardwares.Interfaces.Common;
 
-namespace Hardware.Domain.Base;
+namespace Hardwares.Domain.Base;
 
-public class NamedEntity: Entity
+public class NamedEntity: Entity, INamedEntity
 {
     public string Name { get; set; }
 }

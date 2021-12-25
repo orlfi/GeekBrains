@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hardwares.Interfaces.Common;
 
-namespace Hardware.Domain.Base
+namespace Hardwares.Domain.Base;
+
+public class Entity : IEntity
 {
-    public class Entity
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

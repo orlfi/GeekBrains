@@ -1,4 +1,4 @@
-namespace Hardware.MVC.Models
+namespace Hardwares.MVC.Models
 {
     public class ErrorViewModel
     {

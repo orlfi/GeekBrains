@@ -1,8 +1,8 @@
-﻿using Hardware.MVC.Models;
+﻿using Hardwares.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Hardware.MVC.Controllers
+namespace Hardwares.MVC.Controllers
 {
     public class HomeController : Controller
     {
