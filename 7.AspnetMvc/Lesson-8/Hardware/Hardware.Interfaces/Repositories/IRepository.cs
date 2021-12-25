@@ -9,7 +9,7 @@ namespace Hardwares.Interfaces.Repositories;
 
 public interface IRepository<T> where T : class, IEntity
 {
-    Task<IEnumerable<T>> GetAllAsync(int id, CancellationToken token = default);
+    Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default);
 
     Task<T> GetAsync(int id, CancellationToken token = default);
 

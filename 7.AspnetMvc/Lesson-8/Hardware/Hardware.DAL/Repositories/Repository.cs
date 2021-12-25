@@ -16,9 +16,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
     private readonly HardwaresDb _db;
     private readonly ILogger<Repository<T>> _logger;
 
-    DbSet<T> Set { get; }
+    protected DbSet<T> Set { get; }
 
-    IQueryable<T> Items => Set;
+    protected virtual IQueryable<T> Items => Set;
 
     public Repository(HardwaresDb db, ILogger<Repository<T>> logger)
     {
@@ -27,15 +27,15 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
         Set = db.Set<T>();
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(int id, CancellationToken token = default)
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default)
     {
-        var result = await Items.ToArrayAsync().ConfigureAwait(false);
+        var result = await Items.ToArrayAsync(token).ConfigureAwait(false);
         return result;
     }
 
     public async Task<T> GetAsync(int id, CancellationToken token = default)
     {
-        var result = await Items.SingleOrDefaultAsync(item => item.Id == id).ConfigureAwait(false);
+        var result = await Items.SingleOrDefaultAsync(item => item.Id == id, token).ConfigureAwait(false);
         return result;
     }
 
