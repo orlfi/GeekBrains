@@ -1,6 +1,8 @@
 ﻿using Autofac.Extensions.DependencyInjection;
+using Hardwares.DAL;
 using Hardwares.DAL.Context;
 using Hardwares.DAL.Repositories;
+using Hardwares.Interfaces;
 using Hardwares.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 namespace Hardwares.ConsoleTests;
 public static class Program
 {
-    private static IHost __host;
+    private static IHost? __host;
 
     public static IHost Hosting => __host ??= CreateHostBuilder(Environment.GetCommandLineArgs())
         .UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -25,7 +27,8 @@ public static class Program
     {
         services.AddDbContext<HardwaresDb>(opt => opt.UseSqlServer(context.Configuration.GetConnectionString("default")));
         services.AddSingleton<Application>();
-        services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddTransient<IDbInitalizer, DbInitalizer>();
     }
 
     public static async Task Main(string[] args)

@@ -42,7 +42,7 @@ public class DbInitalizer : IDbInitalizer
             sw.Stop();
             _logger.LogInformation("База данных удалена за {0} мс", sw.ElapsedMilliseconds);
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
             _logger.LogInformation("Удаление базы данных было прервано");
             throw;
@@ -61,6 +61,7 @@ public class DbInitalizer : IDbInitalizer
     /// <param name="cancel">токен отмены операции</param>
     public async Task Initialize(bool remove, CancellationToken cancel = default)
     {
+        cancel.ThrowIfCancellationRequested();
         _logger.LogInformation("Инициализация базы данных...");
         try
         {
@@ -78,7 +79,7 @@ public class DbInitalizer : IDbInitalizer
             sw.Stop();
             _logger.LogInformation("База данных заполнена данными за {0} мс", sw.ElapsedMilliseconds);
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
             _logger.LogInformation("Инициализация базы данных прервана");
             throw;
@@ -87,7 +88,7 @@ public class DbInitalizer : IDbInitalizer
         {
             _logger.LogError(ex, "Ошибка при инициализации базы данных {0}", ex.Message);
             throw;
-        }    
+        }
     }
 
     private async Task InitializeHardwaresData(CancellationToken cancel = default)
@@ -104,14 +105,13 @@ public class DbInitalizer : IDbInitalizer
         var sw = Stopwatch.StartNew();
         var hardwares = Enumerable.Range(1, 10).Select(index => new Hardware
         {
-            Id = index,
             Name = $"Оборудование - {index}",
             Description = $"Конфигурация оборудования - {index}",
             Cost = Random.Shared.Next(10, 100) * 1000,
-            InstallationDate = DateTime.Today.AddYears(-Random.Shared.Next(2,7))
+            InstallationDate = DateTime.Today.AddYears(-Random.Shared.Next(2, 7))
         });
 
-        await _db.Hardwares.AddRangeAsync(hardwares,cancel).ConfigureAwait(false);
+        await _db.Hardwares.AddRangeAsync(hardwares, cancel).ConfigureAwait(false);
         await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
         sw.Stop();
         _logger.LogInformation("Таблица {0} заполнена за {1} мс", nameof(_db.Hardwares), sw.ElapsedMilliseconds);
