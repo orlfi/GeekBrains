@@ -7,7 +7,7 @@ namespace Hardwares.Domain;
 /// </summary>
 public class Hardware : NamedEntity
 {
-    public string Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public decimal  Cost { get; set; }
 

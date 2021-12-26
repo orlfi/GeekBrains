@@ -4,5 +4,5 @@ namespace Hardwares.Domain.Base;
 
 public class NamedEntity: Entity, INamedEntity
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }
