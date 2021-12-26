@@ -99,7 +99,8 @@ public class DbInitalizer : IDbInitalizer
             return;
         }
 
-        using var transaction = await _db.Database.BeginTransactionAsync(cancel).ConfigureAwait(false);
+        // await нужен, т.к. BeginTransactionAsync возвращает DbTransaction с интерфейсом IAsyncDisposable !!!
+        await using var transaction = await _db.Database.BeginTransactionAsync(cancel).ConfigureAwait(false);
 
         _logger.LogInformation("Заполнение таблицы {0}...", nameof(_db.Hardwares));
         var sw = Stopwatch.StartNew();

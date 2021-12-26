@@ -9,21 +9,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.MVC", "Hardware.M
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F84F421B-742D-4184-895F-29D59F20C96C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardwares.Domain", "Hardware.Domain\Hardwares.Domain.csproj", "{B826D518-3A4E-4435-907E-FA3826319BA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.Domain", "Hardware.Domain\Hardwares.Domain.csproj", "{B826D518-3A4E-4435-907E-FA3826319BA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{26505D7E-1702-4A28-8B22-F9AC24C31398}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardwares.DAL", "Hardware.DAL\Hardwares.DAL.csproj", "{91F4F5A0-7A2C-451B-86F7-C13373F5D958}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.DAL", "Hardware.DAL\Hardwares.DAL.csproj", "{91F4F5A0-7A2C-451B-86F7-C13373F5D958}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{D2ED4347-C4D2-45E0-B525-79B9B8DDE84F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardwares.Interfaces", "Hardware.Interfaces\Hardwares.Interfaces.csproj", "{64F003E4-6B8F-4766-A737-0DCF4B35A433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.Interfaces", "Hardware.Interfaces\Hardwares.Interfaces.csproj", "{64F003E4-6B8F-4766-A737-0DCF4B35A433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardwares.Interfaces.Common", "Hardware.Interfaces.Common\Hardwares.Interfaces.Common.csproj", "{31551207-A2B4-4987-BE8E-EBC2AB35ECDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.Interfaces.Common", "Hardware.Interfaces.Common\Hardwares.Interfaces.Common.csproj", "{31551207-A2B4-4987-BE8E-EBC2AB35ECDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EE389D24-E821-48E0-ACAF-059D5E0A90BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardwares.ConsoleTests", "Hardwares.ConsoleTests\Hardwares.ConsoleTests.csproj", "{281C3F1A-CA96-4CCF-8FA3-6922B6325649}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardwares.ConsoleTests", "Hardwares.ConsoleTests\Hardwares.ConsoleTests.csproj", "{281C3F1A-CA96-4CCF-8FA3-6922B6325649}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

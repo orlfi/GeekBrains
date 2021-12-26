@@ -1,4 +1,4 @@
-﻿using Hardwares.MVC.Models;
+﻿using Hardwares.MVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

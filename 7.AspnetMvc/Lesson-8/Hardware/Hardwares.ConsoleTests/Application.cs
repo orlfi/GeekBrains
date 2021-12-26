@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Hardwares.ConsoleTests;
 
+/// <summary>
+/// Главный класс приложения
+/// </summary>
 public class Application
 {
     private readonly IRepository<Hardware> _hardwareRepository;
@@ -42,6 +45,10 @@ public class Application
         }
     }
 
+    /// <summary>
+    /// Выводит на экран информацию из таблицы оборудования
+    /// </summary>
+    /// <param name="cancel"></param>
     private async Task TestHardwareRepository(CancellationToken cancel = default)
     {
         _logger.LogInformation("Тестируем запрос всех записей оборудования из БД...");
