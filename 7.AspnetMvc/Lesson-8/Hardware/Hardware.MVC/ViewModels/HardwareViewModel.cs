@@ -19,14 +19,16 @@ namespace Hardwares.MVC.ViewModels
 
         [Display(Name = "Дата установки")]
         [Required(ErrorMessage = "Обязательно")]
+        [DataType(DataType.Date)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        //[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime InstallationDate { get; set; }
 
         [Display(Name = "Стоимость")]
         [Required(ErrorMessage = "Обязательно")]
-        [Range(0, 9999999.99)]
-        [DisplayFormat(DataFormatString = "{0:C1}")]
-        //[RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        //[Range(0, 9999999999999999.99)]
+        [Range(0, 999999999.99)]
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public decimal Cost { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

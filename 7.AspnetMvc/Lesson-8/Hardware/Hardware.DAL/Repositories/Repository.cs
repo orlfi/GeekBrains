@@ -64,7 +64,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
             _logger.LogInformation("Удаляемый объект {0} не найден в базе", entity);
             return false;
         }
-        _db.Entry<T>(entity).State = EntityState.Detached;
+        _db.Entry<T>(entity).State = EntityState.Deleted;
         await _db.SaveChangesAsync(token).ConfigureAwait(false);
         _logger.LogInformation("Объект {0} удален", entity);
         return true;

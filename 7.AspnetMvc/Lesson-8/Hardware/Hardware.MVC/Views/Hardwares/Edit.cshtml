@@ -1,12 +1,12 @@
 ﻿@model Hardwares.MVC.ViewModels.HardwareViewModel
 
 @{
-    ViewData["Title"] = "Редактирование";
+    ViewData["Title"] = (Model.Id == 0 ? "Создание" : "Редактирование");
 }
 
-<h1>View</h1>
+<h1>@(Model.Id == 0 ? "Создание" : "Редактирование")</h1>
 
-<h4>HardwareViewModel</h4>
+<h4>Оборудование</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,6 +43,6 @@
     <a asp-action="Index">Назад к списку</a>
 </div>
 
-@section Scripts {
+@*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+}*@
