@@ -26,8 +26,9 @@ public abstract class FilePanelItemBase : IFilePanelItem
 
     protected static ImageSource ToImageSource(string path)
     {
-
         var icon = FileIcons.GetIcon(path);
+        if (icon is null)
+            return null;
 
         ImageSource imageSource = Imaging.CreateBitmapSourceFromHIcon(
             icon.Handle,

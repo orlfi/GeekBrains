@@ -41,7 +41,8 @@ public partial class FilePanelViewModel : ViewModel
             return;
 
         Path = (selectedItem as IFilePanelItem).FullName;
-        SelectedFileItem = Files[0];
+
+        SelectedFileItem = Files.Count > 0 ? Files[0] : null;
     }
     #endregion
 

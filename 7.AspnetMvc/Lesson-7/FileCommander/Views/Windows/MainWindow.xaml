@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:custom="clr-namespace:CustomBehaviorsLibrary;assembly=CustomBehaviorsLibrary"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:FileCommander"
     xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
 
@@ -17,6 +16,15 @@
                 <MenuItem Header="Выход" Command="{Binding QuitCommand}" Focusable="False"/>
             </MenuItem>
         </Menu>
+        <Button Content="2x" DockPanel.Dock="Top">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction 
+                Command="{Binding DoubleCommand}"
+                CommandParameter="{Binding SelectedPhone}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
         <StatusBar DockPanel.Dock="Bottom">
             <Button x:Name="ReportButton" Content="F3 Отчет" Width="Auto" Command="{Binding ReportCommand}" Focusable="False"/>
             <Button x:Name="CopyButton" Content="F5 Копировать" Width="Auto" Command="{Binding CopyCommand}" Focusable="False"/>
@@ -52,9 +60,16 @@
                         <!-- <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand }"> -->
                         <!-- Command="{Binding PlayVideoCommand}" -->
                         <!-- CommandParameter="{Binding ElementName=SmallVideoPreviews, Path=SelectedItem}"/> -->
-                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <!--<MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>-->
                         <MouseBinding Gesture="Alt+MiddleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
                     </ListBox.InputBindings>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction 
+                                Command="{Binding ChangeDirectoryCommand}"
+                                CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Имя">

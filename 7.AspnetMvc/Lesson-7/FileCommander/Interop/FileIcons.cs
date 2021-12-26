@@ -26,6 +26,9 @@ public static class FileIcons
             0, ref shinfo, (uint)Marshal.SizeOf(shinfo),
             SHGFI_ICON | SHGFI_SMALLICON);
 
+        if (shinfo.hIcon == IntPtr.Zero)
+            return null;
+
         var icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone(); // Get a copy that doesn't use the original handle
         DestroyIcon(shinfo.hIcon); // Clean up native icon to prevent resource leak
         return (icon);

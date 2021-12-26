@@ -89,9 +89,9 @@ namespace FileCommander.ViewModels
         #endregion
 
         #region TestCommand
-        private Command? _testCommand;
+        private Command? _DoubleCommand;
 
-        public ICommand TestCommand => _testCommand ??= Command.Invoke(OnTestCommand).WithName("Нажми меня");
+        public ICommand DoubleCommand => _DoubleCommand ??= Command.Invoke(OnTestCommand).WithName("Нажми меня");
 
         public void OnTestCommand(object? parameter)
         {
