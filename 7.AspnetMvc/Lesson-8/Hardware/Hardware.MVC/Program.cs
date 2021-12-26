@@ -1,7 +1,9 @@
+using Autofac.Extensions.DependencyInjection;
 using Hardwares.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
