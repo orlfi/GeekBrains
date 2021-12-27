@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using FileCommander.Infrastructure.EventBus;
 using FileCommander.ViewModels.Base;
 using FileCommander.ViewModels.FileItems;
@@ -42,6 +43,7 @@ public partial class FilePanelViewModel : ViewModel
         set
         {
             Set(ref _selectedFileItem, value);
+            // _selectedFileItem.IsSelected = !_selectedFileItem.IsSelected;
             FileSelectionChangeEvent?.Invoke(this, new FileSelectionChangeEventArgs(value));
             //_messageBus.Publish(new FileSelectionChangeEvent(_selectedFile, FilePanelName!));
             // OnPropertyChange("SelectedFile", ref value);
@@ -58,7 +60,6 @@ public partial class FilePanelViewModel : ViewModel
             Set(ref _focusedFileItem, value);
         }
     }
-
 
     public void SelectItem(string sourceName)
     {
@@ -82,7 +83,7 @@ public partial class FilePanelViewModel : ViewModel
     {
         Files?.Clear();
         foreach (var item in GetFiles(Path))
-            Files.Add(item);
+            Files?.Add(item);
     }
 
     private ICollection<IFilePanelItem> GetFiles(string path)

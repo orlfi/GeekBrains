@@ -13,12 +13,12 @@ public static class FileIcons
 
     public static Icon FolderSmall => _folderSmallIcon ?? (_folderSmallIcon = GetStockIcon(SHSIID_FOLDER, SHGSI_SMALLICON));
 
-    public static Icon GetIcon(string path)
+    public static Icon? GetIcon(string path)
     {
         return ExtractFromPath(path);
     }
 
-    private static Icon ExtractFromPath(string path)
+    private static Icon? ExtractFromPath(string path)
     {
         SHFILEINFO shinfo = new SHFILEINFO();
         SHGetFileInfo(

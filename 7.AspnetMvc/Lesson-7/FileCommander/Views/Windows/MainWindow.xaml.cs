@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FileCommander.Interop;
+using FileCommander.ViewModels;
 
 namespace FileCommander;
 
@@ -20,63 +21,47 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        // string[] items = { "test", "ewfewf" };
-        // string path = @"c:\windows\";
-        // leftPathTextBox.KeyDown += PathTextBox_KeyDown;
-        // rightPathTextBox.KeyDown += PathTextBox_KeyDown;
-
-        // var files = GetFiles(path).Select(item =>
-        // {
-        //     return new { Name = item.Name, Icon = ToImageSource(item) };
-        // }).ToList();
-
-        // leftListView.ItemsSource = files;
-        // rightListView.ItemsSource = files;
     }
 
-    public static ImageSource ToImageSource(string path)
+    protected void HandleDoubleClick(object sender, MouseButtonEventArgs e)
     {
+        if (sender is not ListViewItem listViewItem)
+            return;
 
-        var icon = FileIcons.GetIcon(path);
+        if (ItemsControl.ItemsControlFromItemContainer(listViewItem) is not ListView listView)
+            return;
 
-        ImageSource imageSource = Imaging.CreateBitmapSourceFromHIcon(
-            icon.Handle,
-            Int32Rect.Empty,
-            BitmapSizeOptions.FromEmptyOptions());
-
-        return imageSource;
+        var context = (FilePanelViewModel)listView.DataContext;
+        if (context.ChangeDirectoryCommand.CanExecute(null))
+            context.ChangeDirectoryCommand.Execute(listViewItem.DataContext);
     }
 
-    public static ImageSource ToImageSource(FileSystemInfo fileSystemInfo)
+    private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        return ToImageSource(fileSystemInfo.FullName);
+        if (sender is not ListView listView)
+            return;
+
+        if (listView.IsLoaded)
+            CalculateListView(listView);
     }
 
-    private void PathTextBox_KeyDown(object sender, KeyEventArgs e)
+    private void ListView_Loaded(object sender, RoutedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (e.Key == Key.Enter && Directory.Exists(textBox.Text))
+        if (sender is ListView listView)
+            CalculateListView(listView);
+    }
+
+    private void CalculateListView(ListView listView)
+    {
+        if (listView.View is GridView gridView)
         {
-            if (textBox.Name == "leftPathTextBox")
-                leftListView.ItemsSource = GetFiles(textBox.Text).Select(item =>
-                {
-                    return new { Name = item.Name, Icon = ToImageSource(item) };
-                });
-            else
-                rightListView.ItemsSource = GetFiles(textBox.Text).Select(item =>
-                {
-                    return new { Name = item.Name, Icon = ToImageSource(item) };
-                });
+            var actualWidth = listView.ActualWidth - SystemParameters.VerticalScrollBarWidth;
+            for (int i = 1; i < gridView.Columns.Count; i++)
+            {
+                actualWidth = actualWidth - gridView.Columns[i].ActualWidth;
+            }
+            gridView.Columns[0].Width = actualWidth;
         }
-    }
-
-    private ICollection<FileSystemInfo> GetFiles(string path)
-    {
-        var di = new DirectoryInfo(path);
-        var directories = di.GetFileSystemInfos().Where(item => item.Attributes.HasFlag(FileAttributes.Directory));
-        var files = di.GetFileSystemInfos().Where(item => !item.Attributes.HasFlag(FileAttributes.Directory));
-        var result = directories.Union(files);
-        return result.ToArray();
     }
 }
 

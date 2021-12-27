@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using FileCommander.Commands.Base;
@@ -60,11 +61,11 @@ namespace FileCommander.ViewModels
             // _messageBus.Subscribe<FileSelectionChangeEvent>(OnSelectionChanded);
             // Files = new ObservableCollection<FileSystemInfo>(GetFileSystem(@"c:\windows"));
         }
-        private void OnFileSelectionChanged(object sender, FileSelectionChangeEventArgs args)
+        private void OnFileSelectionChanged(object? sender, FileSelectionChangeEventArgs? args)
         {
             _selectedFilePanelViewModel = sender as FilePanelViewModel;
-            _selectedFile = args.SelectedFile;
-            FileCommand = _selectedFile?.Name??"" + "\t" + _selectedFilePanelViewModel.FilePanelName;
+            _selectedFile = args?.SelectedFile;
+            FileCommand = _selectedFile?.Name ?? "" + "\t" + _selectedFilePanelViewModel?.FilePanelName + $"Выбрано {_selectedFilePanelViewModel.Files.Count(item => item.IsSelected)} файлов";
         }
 
         // private void OnSelectionChanded(IIntegrationEvent @event)
@@ -75,7 +76,7 @@ namespace FileCommander.ViewModels
 
         public void OnPropertyChange<T>(string propertyName, ref T value)
         {
-            MessageBox.Show(value.ToString());
+            MessageBox.Show(value?.ToString());
         }
 
         // private ICollection<FileSystemInfo> GetFileSystem(string path)

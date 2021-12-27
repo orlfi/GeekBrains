@@ -30,6 +30,20 @@ public partial class FilePanelViewModel : ViewModel
     }
     #endregion
 
+
+    #region DoubleClickCommand
+    private Command? _doubleClickCommand;
+
+    public ICommand DoubleClickCommand => _doubleClickCommand ??= Command.Invoke(OnDoubleClickCommand);
+
+    public void OnDoubleClickCommand(object? ev)
+    {
+        if (ev is null)
+            return;
+
+    }
+    #endregion
+
     #region ChangeDirectoryCommand
     private Command? _changeDirectoryCommand;
 
@@ -58,6 +72,26 @@ public partial class FilePanelViewModel : ViewModel
         {
             Path = parent.FullName;
         }
+    }
+    #endregion
+
+    #region SelectFileCommand
+    private Command? _selectFileCommand;
+
+    public ICommand SelectFileCommand => _selectFileCommand ??= Command.Invoke(OnSelectFileCommand);
+
+    public void OnSelectFileCommand(object? parameter)
+    {
+        if (parameter is IFilePanelItem item)
+        {
+            item.IsSelected = !item.IsSelected;
+        }
+
+        // var parent = Directory.GetParent(_path);
+        // if (parent is not null)
+        // {
+        //     Path = parent.FullName;
+        // }
     }
     #endregion
 }
