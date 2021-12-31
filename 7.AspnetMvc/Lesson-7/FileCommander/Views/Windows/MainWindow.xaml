@@ -5,12 +5,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:FileCommander"
-    xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
-    <!-- <Window.Resources>
-        <Style TargetType="ListViewItem">
+    xmlns:vm="clr-namespace:FileCommander.ViewModels" 
+    xmlns:uc="clr-namespace:FileCommander.Views.Windows"
+    mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
+    <Window.Resources>
+        <!--<Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        </Style>
-    </Window.Resources> -->
+        </Style>-->
+        <!--<DataTemplate x:Key="DrivesDataTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Center" Command="{Binding ChangeDriveCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/HardDrive.png"/>
+                        <TextBlock Margin="5,1,3,1" Text="{Binding}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </DataTemplate>-->
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -20,14 +33,14 @@
                 <MenuItem Header="Выход" Command="{Binding QuitCommand}"/>
             </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom" KeyboardNavigation.TabNavigation="None">
+        <UniformGrid DockPanel.Dock="Bottom" KeyboardNavigation.TabNavigation="None" Columns="6">
             <Button x:Name="ReportButton" Content="F3 Отчет" Width="Auto" Command="{Binding ReportCommand}" />
             <Button x:Name="CopyButton" Content="F5 Копировать" Width="Auto" Command="{Binding CopyCommand}" />
             <Button x:Name="MoveButton" Content="F6 Переместить" Width="Auto" Command="{Binding MoveCommand}" />
             <Button x:Name="CreateDirectoryButton" Content="F7 Новый каталог" Width="Auto" Command="{Binding CreateDirectoryCommand}" />
             <Button x:Name="DeleteButton" Content="F8 Удалить" Width="Auto" />
             <Button x:Name="QuitButton" Content="Alt+F4 Выйти" Width="Auto" Command="{Binding QuitCommand}" />
-        </StatusBar>
+        </UniformGrid>
         <TextBox x:Name="commandTextBox" Text="{Binding FileCommand}" DockPanel.Dock="Bottom" Margin="3" KeyboardNavigation.TabNavigation="None"/>
         <Grid>
             <Grid.Resources>
@@ -37,7 +50,7 @@
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                            <Setter Property="Foreground" Value="Red" />
+                            <Setter Property="Foreground" Value="Green" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -48,16 +61,67 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" DataContext="{Binding LeftFilePanelViewModel}">
+                <Grid.Resources>
+                    <!--<DataTemplate x:Key="DrivesDataTemplate">
+                        <StackPanel Orientation="Horizontal">
+                            <Button HorizontalAlignment="Center" Command="{Binding ElementName=DrivesList, Path=DataContext.ChangeDriveCommand}" CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/HardDrive.png"/>
+                                    <TextBlock Margin="5,1,3,1" Text="{Binding Name}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>-->
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" x:Name="leftPathTextBox" Text="{Binding Path}" Focusable="False"/>
+                <ListView  x:Name="DrivesList" Grid.Row="0" 
+                           ScrollViewer.VerticalScrollBarVisibility="Disabled"  
+                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                           ItemsSource="{Binding Drives}"
+                           SelectedItem="{Binding SelectedDrive}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <!--<Button HorizontalAlignment="Center" Command="{Binding ElementName=DrivesList, Path=DataContext.ChangeDriveCommand}" CommandParameter="{Binding}">-->
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/HardDrive.png"/>
+                                <TextBlock Margin="5,1,3,1" Text="{Binding Name}"/>
+                            </StackPanel>
+                            <!--</Button>-->
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!--<ItemsControl Grid.Row="1" x:Name="DrivesList" ItemsSource="{Binding Drives}" ItemTemplate="{StaticResource DrivesDataTemplate}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>-->
+                <TextBox Grid.Row="1" x:Name="leftPathTextBox" Text="{Binding Path}" Focusable="False"/>
 
-                <ListView SizeChanged="ListView_SizeChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource ItemStyle}" Loaded="ListView_Loaded" Grid.Row="1" x:Name="leftListView" HorizontalAlignment="Stretch" ItemsSource="{Binding Files}" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" BorderBrush="{x:Null}">
+                <ListView Grid.Row="2" 
+                          x:Name="leftListView"
+                          SizeChanged="ListView_SizeChanged" 
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                          ItemContainerStyle="{StaticResource ItemStyle}" 
+                          Loaded="ListView_Loaded" 
+                          HorizontalAlignment="Stretch" 
+                          ItemsSource="{Binding Files}" 
+                          IsSynchronizedWithCurrentItem="True" 
+                          SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" 
+                          BorderBrush="{x:Null}">
                     <ListBox.InputBindings>
                         <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
                         <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
@@ -99,34 +163,7 @@
                 </ListView>
             </Grid>
             <GridSplitter Grid.Column="1" ShowsPreview="False" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Focusable="False"/>
-            <Grid Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}">
-                <!-- <Grid.DataContext>
-                    <vm:FilePanelViewModel/>
-                </Grid.DataContext> -->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox" Focusable="False"/>
-                <ListView Grid.Row="1" x:Name="rightListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFileItem}" BorderBrush="{x:Null}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Имя">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Icon}" />
-                                            <TextBlock Text="{Binding Name}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Размер" DisplayMemberBinding="{Binding Size}"/>
-                            <GridViewColumn Header="Изменен" DisplayMemberBinding="{Binding Created}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
+            <uc:FilePanel  Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}"></uc:FilePanel>
         </Grid>
     </DockPanel>
 </Window>

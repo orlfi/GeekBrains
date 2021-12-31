@@ -33,7 +33,26 @@ public partial class FilePanelViewModel : ViewModel
         }
     }
 
+    private DrivesViewModel _drivesViewModel;
+    
+    public DrivesViewModel DrivesViewModel => _drivesViewModel ??= new DrivesViewModel();
+
     public ObservableCollection<IFilePanelItem> Files { get; set; } = new ObservableCollection<IFilePanelItem>();
+    
+
+    public ObservableCollection<IDriveItem> Drives { get; set; } = new ObservableCollection<IDriveItem>();
+
+    private IDriveItem _selectedDrive;
+
+    public IDriveItem SelectedDrive
+    {
+        get => _selectedDrive;
+        set
+        {
+            Set(ref _selectedDrive, value);
+            Path = value.Path;
+        }
+    }
 
     private IFilePanelItem _selectedFileItem;
 
@@ -70,9 +89,17 @@ public partial class FilePanelViewModel : ViewModel
 
     public FilePanelViewModel()
     {
+        Initialize();
+        _messageBus = ModelEventBus.Instance;
+    }
+
+    private void Initialize()
+    {
+        foreach (var item in GetDrives())
+            Drives?.Add(item);
+
         Path = @"c:\windows";
         SelectedFileItem = Files[0];
-        _messageBus = ModelEventBus.Instance;
     }
 
     // public void OnPropertyChange<T>(string propertyName, ref T value)
@@ -93,5 +120,11 @@ public partial class FilePanelViewModel : ViewModel
         var files = di.GetFiles().Select(item => new FilePanelItem(item));
         var result = directories.Union(files);
         return result.ToArray();
+    }
+
+    private ICollection<IDriveItem> GetDrives()
+    {
+        var drives = DriveInfo.GetDrives();
+        return drives.Select(item => new DriveItem { Name = item.Name, Path = item.RootDirectory.FullName }).ToArray();
     }
 }

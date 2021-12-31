@@ -63,5 +63,10 @@ public partial class MainWindow : Window
             gridView.Columns[0].Width = actualWidth;
         }
     }
+
+    //private void Button_Click(object sender, RoutedEventArgs e)
+    //{
+    //    MessageBox.Show((sender as Button).Content.ToString());
+    //}
 }
 

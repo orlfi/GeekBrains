@@ -18,7 +18,7 @@ namespace FileCommander.ViewModels
 {
     public partial class MainWindowViewModel : ViewModel
     {
-        public string Title { get; set; } = "Привет из VSCode";
+        public string Title { get; set; } = "File Commander";
 
         public FilePanelViewModel _leftFilePanelViewModel;
         public FilePanelViewModel LeftFilePanelViewModel => _leftFilePanelViewModel ??= new FilePanelViewModel() { FilePanelName = "Left" };
