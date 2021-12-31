@@ -50,19 +50,21 @@
         <TextBox Grid.Row="1" x:Name="leftPathTextBox" Text="{Binding Path}" Focusable="False"/>
 
         <ListView Grid.Row="2" 
-                          x:Name="leftListView"
+                          x:Name="filesList"
+                          SizeChanged="ListView_SizeChanged" 
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                           ItemContainerStyle="{StaticResource ItemStyle}" 
+                          Loaded="ListView_Loaded" 
                           HorizontalAlignment="Stretch" 
                           ItemsSource="{Binding Files}" 
                           IsSynchronizedWithCurrentItem="True" 
                           SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" 
                           BorderBrush="{x:Null}">
             <ListBox.InputBindings>
-                <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
-                <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
-                <KeyBinding Gesture="Backspace" Command="{Binding ParentDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
-                <KeyBinding Gesture="Space" Command="{Binding SelectFileCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand}" CommandParameter="{Binding ElementName=filesList, Path=SelectedItem}"/>
+                <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=filesList, Path=SelectedItem}"/>
+                <KeyBinding Gesture="Backspace" Command="{Binding ParentDirectoryCommand}" CommandParameter="{Binding ElementName=filesList, Path=SelectedItem}"/>
+                <KeyBinding Gesture="Space" Command="{Binding SelectFileCommand}" CommandParameter="{Binding ElementName=filesList, Path=SelectedItem}"/>
             </ListBox.InputBindings>
             <ListView.View>
                 <GridView x:Name="leftGridView">
