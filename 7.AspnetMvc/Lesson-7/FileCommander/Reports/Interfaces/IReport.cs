@@ -1,7 +1,6 @@
-namespace FileCommander.Reports.Interfaces
+namespace FileCommander.Reports.Interfaces;
+
+public interface IReport
 {
-    public interface IReport
-    {
-        void MakeReport(string reportFileName, string sourceFileName);
-    }
+    void MakeReport(string reportFileName, string sourceFileName, CreateReportOptions options);
 }

@@ -6,27 +6,12 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:FileCommander"
     xmlns:vm="clr-namespace:FileCommander.ViewModels" 
-    xmlns:uc="clr-namespace:FileCommander.Views.Windows"
-    mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
-    <Window.Resources>
-        <!--<Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        </Style>-->
-        <!--<DataTemplate x:Key="DrivesDataTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Center" Command="{Binding ChangeDriveCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Images/HardDrive.png"/>
-                        <TextBlock Margin="5,1,3,1" Text="{Binding}"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </DataTemplate>-->
-    </Window.Resources>
-
-    <Window.DataContext>
+    xmlns:uc="clr-namespace:FileCommander.Views.Controls"
+    mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}"
+    DataContext="{Binding MainModel, Source={StaticResource Locator}}">
+    <!--<Window.DataContext>
         <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <DockPanel LastChildFill="true">
         <Menu x:Name="menu" DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="None">
             <MenuItem Header="Файл" Focusable="False">
@@ -60,9 +45,9 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <uc:FilePanel x:Name="leftFilePanel"  Grid.Column="0" DataContext="{Binding LeftFilePanelViewModel}"></uc:FilePanel>
+            <uc:FilesPanel x:Name="leftFilePanel"  Grid.Column="0" DataContext="{Binding LeftFilePanelViewModel}"></uc:FilesPanel>
             <GridSplitter Grid.Column="1" ShowsPreview="False" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Focusable="False"/>
-            <uc:FilePanel x:Name="rightFilePanel"  Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}"></uc:FilePanel>
+            <uc:FilesPanel x:Name="rightFilePanel"  Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}"></uc:FilesPanel>
         </Grid>
     </DockPanel>
 </Window>

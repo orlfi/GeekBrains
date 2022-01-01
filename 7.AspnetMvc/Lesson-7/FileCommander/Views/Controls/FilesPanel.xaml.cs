@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileCommander.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FileCommander.ViewModels;
 
-namespace FileCommander.Views.Windows
+namespace FileCommander.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for FilePanel.xaml
+    /// Interaction logic for FilesPanel.xaml
     /// </summary>
-    public partial class FilePanel : UserControl
+    public partial class FilesPanel : UserControl
     {
-        public FilePanel()
+        public FilesPanel()
         {
             InitializeComponent();
         }
@@ -65,6 +65,20 @@ namespace FileCommander.Views.Windows
                 }
                 gridView.Columns[0].Width = actualWidth;
             }
+        }
+
+        private void leftPathTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+           var textBox = sender as TextBox;
+            if (e.Key == Key.Enter)
+            {
+                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            }
+        }
+
+        private void leftPathTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 }

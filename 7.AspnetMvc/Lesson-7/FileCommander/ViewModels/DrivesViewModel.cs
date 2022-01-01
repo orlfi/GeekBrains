@@ -1,4 +1,5 @@
 ﻿using FileCommander.ViewModels.Base;
+using FileCommander.ViewModels.ModelEvents;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,8 @@ namespace FileCommander.ViewModels;
 
 public class DrivesViewModel : ViewModel
 {
+    public event EventHandler<FileChangeEventArgs> DriveSelectionChangeEvent;
+
     private DriveInfo _selectedDrive;
 
     public DriveInfo SelectedDrive
@@ -19,6 +22,7 @@ public class DrivesViewModel : ViewModel
         set
         {
             Set(ref _selectedDrive, value);
+            DriveSelectionChangeEvent?.Invoke(this, new FileChangeEventArgs(value.Name));
         }
     }
 
@@ -27,6 +31,9 @@ public class DrivesViewModel : ViewModel
     public DrivesViewModel()
     {
         ReadDrives();
+        
+        if (Drives.Count >0 )
+            SelectedDrive = Drives[0];
     }
 
     private void ReadDrives()

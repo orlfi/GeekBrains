@@ -94,4 +94,17 @@ public partial class FilePanelViewModel : ViewModel
         // }
     }
     #endregion
+
+    #region ReportFileCommand
+    private Command? _reportCommand;
+
+    public ICommand ReportCommand => _reportCommand ??= Command.Invoke(OnReportCommand);
+
+    public void OnReportCommand(object? parameter)
+    {
+        var fileItem = parameter as IFilePanelItem;
+        if (fileItem is not null)
+            CreateReportEvent?.Invoke(this, new ModelEvents.CreateReportEventArgs(fileItem.FullName));
+    }
+    #endregion
 }

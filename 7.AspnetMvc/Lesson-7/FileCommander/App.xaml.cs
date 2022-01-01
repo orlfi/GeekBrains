@@ -11,6 +11,8 @@ using Autofac.Extensions.DependencyInjection;
 using FileCommander.Reports;
 using FileCommander.Reports.Interfaces;
 using FileCommander.Services;
+using FileCommander.Services.Interfaces;
+using FileCommander.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -25,13 +27,17 @@ public partial class App : Application
 
     public static IHost Hosting => _host ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
 
+    public static IServiceProvider Services => Hosting.Services;
+
     public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
         .ConfigureServices(ConfigureServices)
         .UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigureAutofacServices));
 
     public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
-        services.AddSingleton<IReportResolver, ReportResolver>();
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IReportResolver, ReportResolver>();
+        services.AddScoped<MainWindowViewModel>();
     }
 
     private static void ConfigureAutofacServices(ContainerBuilder containerBuilder)
@@ -39,6 +45,21 @@ public partial class App : Application
         // для шаблона Strategy
         containerBuilder.RegisterType<FileInfoReport>().Named<IReport>("file").SingleInstance();
         containerBuilder.RegisterType<DirectoryInfoReport>().Named<IReport>("directory").SingleInstance();
+    }
+
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        var host = Hosting;
+        await host.StartAsync().ConfigureAwait(true);
+
+        base.OnStartup(e);
+    }
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
+
+        using var host = Hosting;
+        await host.StopAsync().ConfigureAwait(true);
     }
 
 }

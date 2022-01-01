@@ -14,13 +14,13 @@ using FileCommander.ViewModels.ModelEvents;
 namespace FileCommander.ViewModels;
 public partial class FilePanelViewModel : ViewModel
 {
+    public event EventHandler<CreateReportEventArgs> CreateReportEvent;
+
     public event EventHandler<FileSelectionChangeEventArgs> FileSelectionChangeEvent;
 
     public event EventHandler<PathChangeEventArgs> PathChangeEvent;
 
     public string FilePanelName { get; init; }
-
-    private string _path;
 
     public string Path
     {
@@ -32,29 +32,13 @@ public partial class FilePanelViewModel : ViewModel
             Refresh();
         }
     }
+    private string _path;
+  
+    public DrivesViewModel DrivesViewModel { get; } = new DrivesViewModel();
+    //private DrivesViewModel _drivesViewModel;
 
-    private DrivesViewModel _drivesViewModel;
-    
-    public DrivesViewModel DrivesViewModel => _drivesViewModel ??= new DrivesViewModel();
+    public ObservableCollection<IFilePanelItem> Files { get; } = new ObservableCollection<IFilePanelItem>();
 
-    public ObservableCollection<IFilePanelItem> Files { get; set; } = new ObservableCollection<IFilePanelItem>();
-    
-
-    public ObservableCollection<IDriveItem> Drives { get; set; } = new ObservableCollection<IDriveItem>();
-
-    private IDriveItem _selectedDrive;
-
-    public IDriveItem SelectedDrive
-    {
-        get => _selectedDrive;
-        set
-        {
-            Set(ref _selectedDrive, value);
-            Path = value.Path;
-        }
-    }
-
-    private IFilePanelItem _selectedFileItem;
 
     public IFilePanelItem SelectedFileItem
     {
@@ -68,8 +52,7 @@ public partial class FilePanelViewModel : ViewModel
             // OnPropertyChange("SelectedFile", ref value);
         }
     }
-
-    private IFilePanelItem _focusedFileItem;
+    private IFilePanelItem _selectedFileItem;
 
     public IFilePanelItem FocusedFileItem
     {
@@ -79,6 +62,7 @@ public partial class FilePanelViewModel : ViewModel
             Set(ref _focusedFileItem, value);
         }
     }
+    private IFilePanelItem _focusedFileItem;
 
     public void SelectItem(string sourceName)
     {
@@ -90,21 +74,16 @@ public partial class FilePanelViewModel : ViewModel
     public FilePanelViewModel()
     {
         Initialize();
+        DrivesViewModel.DriveSelectionChangeEvent += (sender, e) => Path = e.Path; 
         _messageBus = ModelEventBus.Instance;
     }
 
     private void Initialize()
     {
-        foreach (var item in GetDrives())
-            Drives?.Add(item);
-
         Path = @"c:\windows";
         SelectedFileItem = Files[0];
     }
 
-    // public void OnPropertyChange<T>(string propertyName, ref T value)
-    // {
-    // }
 
     private void Refresh()
     {
@@ -120,11 +99,5 @@ public partial class FilePanelViewModel : ViewModel
         var files = di.GetFiles().Select(item => new FilePanelItem(item));
         var result = directories.Union(files);
         return result.ToArray();
-    }
-
-    private ICollection<IDriveItem> GetDrives()
-    {
-        var drives = DriveInfo.GetDrives();
-        return drives.Select(item => new DriveItem { Name = item.Name, Path = item.RootDirectory.FullName }).ToArray();
     }
 }

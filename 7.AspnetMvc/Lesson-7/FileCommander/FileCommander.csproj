@@ -20,9 +20,19 @@
     <PackageReference Include="TemplateEngine.Docx" Version="1.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="FileInfoTemplate.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Images\HardDrive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ServiceLocator.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="DirectoryReportTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FileReportTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
