@@ -35,9 +35,15 @@ namespace MailService.Services
         public string Password { get; init; } = null!;
 
         /// <summary>
-        /// Отправитель, будет подставляться в поле From
+        /// Имя отправителя, будет подставляться в поле From
         /// </summary>
         /// <value></value>
-        public string Sender { get; init; } = null!;
+        public string SenderName { get; init; } = null!;
+
+        /// <summary>
+        /// email отправителя, будет подставляться в поле From
+        /// </summary>
+        /// <value></value>
+        public string SenderEmail { get; init; } = null!;
     }
 }

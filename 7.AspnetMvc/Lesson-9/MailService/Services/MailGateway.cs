@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using MailService.Data;
 using Microsoft.Extensions.Options;
+using MimeKit;
+using MimeKit.Text;
 
 namespace MailService.Services;
 
@@ -20,6 +23,19 @@ public class MailGateway : IDisposable
         _options = options;
         Initialize();
     }
+
+    public async Task SendAsync(Message message, CancellationToken cancel = default)
+    {
+        MimeMessage mimeMessage = new MimeMessage();
+        mimeMessage.From.Add(new MailboxAddress(_options.SenderName, _options.SenderEmail));
+        mimeMessage.To.Add(new MailboxAddress(message.Name, message.To));
+        mimeMessage.Body = new TextPart(message.IsHtml ? TextFormat.Html : TextFormat.Text)
+        {
+            Text = message.Body
+        };
+        await _client.SendAsync(mimeMessage, cancel).ConfigureAwait(false);
+    }
+
     private void Initialize()
     {
         _client.Connect(_options.SmtpServer, _options.Port);

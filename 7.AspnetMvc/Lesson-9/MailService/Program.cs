@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using MailService;
+using MailService.Services;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -16,6 +17,7 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<Application>();
+    services.AddTransient<MailGateway>((services)=> );
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
