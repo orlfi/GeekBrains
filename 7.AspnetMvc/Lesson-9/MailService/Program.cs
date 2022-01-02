@@ -4,6 +4,9 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using MailService;
 using MailService.Services;
+using MailService.Services.Interfaces;
+using MailService.DAL;
+using MailService.DAL.Repositories;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -16,14 +19,15 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddSingleton<Application>();
-    services.AddTransient<MailGateway>((services)=> );
+    services.AddScoped<Application>();
+    services.AddScoped<IMailGatewayBuilder, MailGatewayBuilder>();
+    services.AddScoped<MemoryDatabase>();
+    services.AddScoped(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
 {
     config.ReadFrom.Configuration(context.Configuration);
-
 }
 
 using IHost host = CreateHostBuilder(args).Build();
