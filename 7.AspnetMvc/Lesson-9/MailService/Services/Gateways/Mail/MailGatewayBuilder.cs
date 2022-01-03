@@ -18,7 +18,7 @@ public class MailGatewayBuilder : IMailGatewayBuilder
         return this;
     }
 
-    public async Task<MailGateway> Build(CancellationToken cancel = default)
+    public async Task<MailGateway> Async(CancellationToken cancel = default)
     {
         if (_options is null)
             throw new NullReferenceException("Настройки почтового сервера не заполнены");

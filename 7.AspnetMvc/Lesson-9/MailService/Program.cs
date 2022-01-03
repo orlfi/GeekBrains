@@ -7,6 +7,7 @@ using MailService.DAL;
 using MailService.DAL.Repositories;
 using MailService.Interfaces.Services;
 using MailService.Services.Mail;
+using ReportSender.Interfaces.Reports;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -23,6 +24,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddScoped<IMailGatewayBuilder, MailGatewayBuilder>();
     services.AddScoped<MemoryDatabase>();
     services.AddScoped(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
+    services.AddScoped<IEmployeeReport, EmployeeHtmlReport>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
