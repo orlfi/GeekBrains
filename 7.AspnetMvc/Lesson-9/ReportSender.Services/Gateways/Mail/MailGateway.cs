@@ -15,7 +15,7 @@ public class MailGateway : IDisposable, IGateway
 
     private readonly MailGatewayOptions _options;
 
-    public MailGateway(MailGatewayOptions options, ILogger<MailGateway> logger)
+    internal MailGateway(MailGatewayOptions options, ILogger<MailGateway> logger)
     {
 
         if (options is null)
