@@ -3,10 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using MailService;
-using MailService.Services;
-using MailService.Services.Interfaces;
 using MailService.DAL;
 using MailService.DAL.Repositories;
+using MailService.Interfaces.Services;
+using MailService.Services.Mail;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)

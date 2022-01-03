@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using MailService.Domain.Entities;
 using MailService.Interfaces.Common;
 
 namespace MailService.DAL;
 
-public class MemoryDatabase
+public sealed class MemoryDatabase
 {
     private Dictionary<Type, object> _sets = new Dictionary<Type, object>();
     public IList<Employee> Employees { get; set; } = new List<Employee>();
