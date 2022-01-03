@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-    <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
@@ -21,6 +20,12 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReportSender.DAL\ReportSender.DAL.csproj" />
+    <ProjectReference Include="..\ReportSender.Interfaces\ReportSender.Interfaces.csproj" />
+    <ProjectReference Include="..\ReportSender.Services\ReportSender.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

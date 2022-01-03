@@ -3,13 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using MailService;
-using MailService.DAL;
-using MailService.DAL.Repositories;
-using MailService.Interfaces.Services;
-using MailService.Services.Mail;
 using ReportSender.Interfaces.Reports;
 using ReportSender.Interfaces;
 using ReportSender.Services;
+using ReportSender.Interfaces.Gateways;
+using ReportSender.Services.Gateways.Mail;
+using ReportSender.DAL;
+using ReportSender.Interfaces.Repositories;
+using ReportSender.DAL.Repositories;
+using ReportSender.Services.Reports;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)

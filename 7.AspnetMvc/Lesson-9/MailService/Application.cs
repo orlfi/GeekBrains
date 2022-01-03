@@ -1,12 +1,5 @@
-using MailService.DAL;
-using MailService.DAL.Repositories;
-using MailService.Data;
-using MailService.Domain.Entities;
-using MailService.Interfaces.Services;
 using Microsoft.Extensions.Logging;
-using ReportSender.Interfaces.Reports;
-using ReportSender.Services;
-using System.Diagnostics;
+using ReportSender.Interfaces;
 
 namespace MailService;
 
@@ -15,12 +8,12 @@ public class Application
     private static string _path = null!;
     public static string Path => _path ??= System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
 
-    private readonly ReportManager _reportManager;
+    private readonly IReportManager _reportManager;
 
     private readonly ILogger _logger;
 
 
-    public Application(ReportManager reportManager, ILogger<Application> logger)
+    public Application(IReportManager reportManager, ILogger<Application> logger)
     {
         _reportManager = reportManager;
         _logger = logger;
