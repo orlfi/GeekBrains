@@ -7,7 +7,7 @@ namespace MailService.Data;
 
 public sealed class Message
 {
-    public string Header { get; init; } = null!;
+    public string Subject { get; init; } = null!;
 
     public string Body { get; init; } = null!;
 

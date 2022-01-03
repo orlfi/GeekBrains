@@ -32,12 +32,13 @@ public class Application
     {
         try
         {
-            _mailGateway = await _mailGatewayBuilder.Async(cancel).ConfigureAwait(false);
+            _mailGateway = await _mailGatewayBuilder.BuildAsync(cancel).ConfigureAwait(false);
+            //_mailGateway = _mailGatewayBuilder.Build();
             await Task.Run(() => _logger.LogInformation("Application started"));
-            foreach (var employee in _employees.GetAll())
+            foreach (var item in _employees.GetAll())
             {
-                Console.WriteLine("{0} {1}", employee.Name, employee.Email);
-                foreach (var order in employee.Orders)
+                Console.WriteLine("{0} {1}", item.Name, item.Email);
+                foreach (var order in item.Orders)
                 {
                     Console.WriteLine("\t{0,-20} {1,10} {2,10} {3,10}", order.Product.Name, order.Product.Price, order.Count, order.Total);
                 }
@@ -47,10 +48,7 @@ public class Application
             if (employee is null)
                 return;
 
-
-            var fileName = "report.html";
-            await File.WriteAllTextAsync(fileName, report);
-            Process.Start(new ProcessStartInfo { FileName = fileName, UseShellExecute = true });
+            await SendEmployeeReportByMail(employee, cancel).ConfigureAwait(false);
 
         }
         catch (System.Exception ex)
@@ -69,7 +67,7 @@ public class Application
         var message = new Message
         {
             Body = report,
-            Header = "Заказы сотрудника",
+            Subject = "Заказы сотрудника",
             IsHtml = true,
             Name = "Сервис",
             To = "orlfi@mail.ru"

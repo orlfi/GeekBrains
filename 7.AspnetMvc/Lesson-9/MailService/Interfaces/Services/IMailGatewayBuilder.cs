@@ -4,6 +4,9 @@ namespace MailService.Interfaces.Services;
 
 public interface IMailGatewayBuilder
 {
-    Task<MailGateway> Async(CancellationToken cancel = default);
+    MailGateway Build();
+
+    Task<MailGateway> BuildAsync(CancellationToken cancel = default);
+
     MailGatewayBuilder WithOptions(MailGatewayOptions options);
 }
