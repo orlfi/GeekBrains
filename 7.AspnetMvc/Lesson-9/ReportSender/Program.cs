@@ -12,6 +12,11 @@ using ReportSender.DAL;
 using ReportSender.Interfaces.Repositories;
 using ReportSender.DAL.Repositories;
 using ReportSender.Services.Reports;
+using Scheduler;
+using Scheduler.Jobs;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -24,12 +29,17 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
+    services.AddTransient<MemoryDatabase>();
+    services.AddTransient(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
+    services.AddTransient<IReportManager, ReportManager>();
     services.AddScoped<Application>();
-    services.AddScoped<IReportManager, ReportManager>();
     services.AddScoped<IMailGatewayBuilder, MailGatewayBuilder>();
-    services.AddScoped<MemoryDatabase>();
-    services.AddScoped(typeof(IMemoryRepository<>), typeof(MemoryRepository<>));
     services.AddScoped<IEmployeeReport, EmployeeHtmlReport>();
+    services.AddScoped<ISchedulerFactory, StdSchedulerFactory>();
+    services.AddScoped<IJobFactory, JobFactory>();
+    services.AddSingleton<EmailSenderJob>();
+    services.AddSingleton(new JobSchedule(typeof(EmailSenderJob), context.Configuration.GetValue<string>("CronExpression")));
+    services.AddHostedService<ScheduleHostedService>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

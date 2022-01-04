@@ -26,6 +26,7 @@
     <ProjectReference Include="..\ReportSender.DAL\ReportSender.DAL.csproj" />
     <ProjectReference Include="..\ReportSender.Interfaces\ReportSender.Interfaces.csproj" />
     <ProjectReference Include="..\ReportSender.Services\ReportSender.Services.csproj" />
+    <ProjectReference Include="..\Scheduler\Scheduler.csproj" />
   </ItemGroup>
 
   <ItemGroup>

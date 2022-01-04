@@ -19,18 +19,17 @@ public class Application
         _logger = logger;
     }
 
-    public async Task RunAsync(CancellationToken cancel = default)
+    public Task RunAsync(CancellationToken cancel = default)
     {
         try
         {
             _logger.LogInformation("Application started");
-            _reportManager.PrintEmployeesReports();
-            await _reportManager.SendEmployeesReportsAsync(cancel);
         }
         catch (System.Exception ex)
         {
             _logger.LogError(ex, "Необработанная ошибка {0}", ex.Message);
         }
+        return Task.CompletedTask;
     }
 
 }
