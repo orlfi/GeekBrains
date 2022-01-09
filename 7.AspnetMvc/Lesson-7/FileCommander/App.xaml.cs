@@ -9,6 +9,7 @@ using FileCommander.Services.Reports;
 using FileCommander.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace FileCommander;
 
@@ -25,7 +26,8 @@ public partial class App : Application
 
     public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
         .ConfigureServices(ConfigureServices)
-        .UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigureAutofacServices));
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigureAutofacServices))
+        .UseSerilog(ConfigureLogger);
 
     public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
@@ -39,6 +41,11 @@ public partial class App : Application
         // для шаблона Strategy
         containerBuilder.RegisterType<FileInfoReport>().Named<IReport>("file").SingleInstance();
         containerBuilder.RegisterType<DirectoryInfoReport>().Named<IReport>("directory").SingleInstance();
+    }
+
+    static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
+    {
+        config.ReadFrom.Configuration(context.Configuration);
     }
 
     protected override async void OnStartup(StartupEventArgs e)
