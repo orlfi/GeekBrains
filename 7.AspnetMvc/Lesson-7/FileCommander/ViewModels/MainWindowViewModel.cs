@@ -1,16 +1,8 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using FileCommander.Commands.Base;
 using FileCommander.Infrastructure.EventBus;
-using FileCommander.Infrastructure.EventBus.Events;
-using FileCommander.Infrastructure.EventBus.Events.Base;
-using FileCommander.Infrastructure.EventBus.Interfaces;
-using FileCommander.Services;
-using FileCommander.Services.Interfaces;
+using FileCommander.Interfaces;
 using FileCommander.ViewModels.Base;
 using FileCommander.ViewModels.Interfaces;
 using FileCommander.ViewModels.ModelEvents;

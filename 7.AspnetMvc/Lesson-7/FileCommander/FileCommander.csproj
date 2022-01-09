@@ -17,7 +17,14 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="TemplateEngine.Docx" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FileCommander.Interfaces\FileCommander.Interfaces.csproj" />
+    <ProjectReference Include="..\FileCommander.Services\FileCommander.Services.csproj" />
+    <ProjectReference Include="..\Infrastructure\FileCommander.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\HardDrive.png" />
