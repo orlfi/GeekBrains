@@ -1,6 +1,8 @@
+using BankCards.Domain.Base;
+
 namespace BankCards.Domain;
 
-public class Card
+public class Card : Entity
 {
     /// <summary>
     /// Номер карты
