@@ -10,6 +10,6 @@ namespace BankCards.Domain.Base
         /// <summary>
         /// Id
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 }
