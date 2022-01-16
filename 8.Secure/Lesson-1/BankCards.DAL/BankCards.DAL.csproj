@@ -1,23 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BankCards.Interfaces\BankCards.Interfaces.csproj" />
     <ProjectReference Include="..\BankCards.Domain\BankCards.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Serilog.Expressions" Version="3.2.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
