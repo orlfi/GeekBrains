@@ -1,12 +1,12 @@
 ﻿using BankCards.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using BankCards.ApiOrm.Mappers;
-using BankCards.ApiOrm.DTO.Cards;
+using BankCards.ApiSql.Mappers;
+using BankCards.ApiSql.DTO.Cards;
 using System.Runtime.CompilerServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BankCards.ApiOrm.Controllers;
+namespace BankCards.ApiSql.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -21,8 +21,8 @@ public class CardsController : ControllerBase
 
     public CardsController(ICardRepository db, ILogger<CardsController> logger)
     {
-        this._db = db;
-        this._logger = logger;
+        _db = db;
+        _logger = logger;
     }
 
     // GET: api/<CardsController>

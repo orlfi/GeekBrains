@@ -1,11 +1,20 @@
+using BankCards.DAL.Context;
+using BankCards.DAL.Repositories;
+using BankCards.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var services = builder.Services;
+services.AddDbContext<BankContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddScoped<ICardRepository, CardsRepositoryOrm>();
+
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+
 
 var app = builder.Build();
 

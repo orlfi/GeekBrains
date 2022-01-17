@@ -31,7 +31,6 @@ public class CardsRepositoryOrm : ICardRepository
         return result;
     }
 
-
     /// <summary>
     /// Возвращает карты по совпадению части номера
     /// EF функции sql inject безопасны
@@ -44,7 +43,7 @@ public class CardsRepositoryOrm : ICardRepository
 
     public async Task<int> CreateAsync(Card entity, CancellationToken cancel = default)
     {
-        await _set.AddAsync(entity, default).ConfigureAwait(false);
+        await _set.AddAsync(entity, cancel).ConfigureAwait(false);
         await _db.SaveChangesAsync(default).ConfigureAwait(false);
         _logger.LogInformation("Новая карта добавлена в БД");
         return entity.Id;
