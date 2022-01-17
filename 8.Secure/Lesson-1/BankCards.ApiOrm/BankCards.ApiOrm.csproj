@@ -19,7 +19,6 @@
     <ProjectReference Include="..\BankCards.DAL\BankCards.DAL.csproj" />
     <ProjectReference Include="..\BankCards.Domain\BankCards.Domain.csproj" />
     <ProjectReference Include="..\BankCards.Interfaces\BankCards.Interfaces.csproj" />
-    <ProjectReference Include="..\BankCards.Services\BankCards.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,27 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.ApiSql", "BankCards.ApiSql\BankCards.ApiSql.csproj", "{FD97A619-D097-48E6-9957-E7033C3887F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.ApiSql", "BankCards.ApiSql\BankCards.ApiSql.csproj", "{FD97A619-D097-48E6-9957-E7033C3887F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.ApiOrm", "BankCards.ApiOrm\BankCards.ApiOrm.csproj", "{46E7CC6D-C267-4C78-A97C-E0967A46F3AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.ApiOrm", "BankCards.ApiOrm\BankCards.ApiOrm.csproj", "{46E7CC6D-C267-4C78-A97C-E0967A46F3AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.DAL", "BankCards.DAL\BankCards.DAL.csproj", "{19292A81-6378-4EA5-906E-AF55EE826E58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.DAL", "BankCards.DAL\BankCards.DAL.csproj", "{19292A81-6378-4EA5-906E-AF55EE826E58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.Domain", "BankCards.Domain\BankCards.Domain.csproj", "{7EB3DF79-D510-43A3-8EAC-D38BACDD359C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.Domain", "BankCards.Domain\BankCards.Domain.csproj", "{7EB3DF79-D510-43A3-8EAC-D38BACDD359C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.Services", "BankCards.Services\BankCards.Services.csproj", "{EC2E33B8-0DC4-43BA-B67A-8F363847B7BE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.Interfaces", "BankCards.Interfaces\BankCards.Interfaces.csproj", "{5ECE6B8D-67E5-4C66-B073-B616D638549C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.Interfaces", "BankCards.Interfaces\BankCards.Interfaces.csproj", "{5ECE6B8D-67E5-4C66-B073-B616D638549C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD97A619-D097-48E6-9957-E7033C3887F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,13 +35,15 @@ Global
 		{7EB3DF79-D510-43A3-8EAC-D38BACDD359C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EB3DF79-D510-43A3-8EAC-D38BACDD359C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EB3DF79-D510-43A3-8EAC-D38BACDD359C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC2E33B8-0DC4-43BA-B67A-8F363847B7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC2E33B8-0DC4-43BA-B67A-8F363847B7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC2E33B8-0DC4-43BA-B67A-8F363847B7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC2E33B8-0DC4-43BA-B67A-8F363847B7BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ECE6B8D-67E5-4C66-B073-B616D638549C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ECE6B8D-67E5-4C66-B073-B616D638549C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECE6B8D-67E5-4C66-B073-B616D638549C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECE6B8D-67E5-4C66-B073-B616D638549C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9C952E7-9EEB-4916-845A-F33079A235A0}
 	EndGlobalSection
 EndGlobal
