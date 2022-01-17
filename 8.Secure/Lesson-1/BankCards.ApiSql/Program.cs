@@ -1,5 +1,7 @@
+using BankCards.DAL;
 using BankCards.DAL.Context;
 using BankCards.DAL.Repositories;
+using BankCards.Interfaces;
 using BankCards.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +11,8 @@ var services = builder.Services;
 services.AddDbContext<BankContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
-services.AddScoped<ICardRepository, CardsRepositoryOrm>();
+services.AddScoped<IConnectionManager, ConnectionManager>();
+services.AddScoped<ICardRepository, CardsRepositorySql>();
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();
