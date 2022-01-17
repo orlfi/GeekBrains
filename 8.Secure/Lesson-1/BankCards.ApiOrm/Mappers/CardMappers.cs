@@ -44,6 +44,6 @@ public static class CardMappers
     public static CardsResponse ToResponse(this IEnumerable<Card> entity) =>
         new CardsResponse()
         {
-            Cards = entity.Select(x => x.ToResponse()),
+            Cards = entity.Select(x => x.ToResponse()!),
         };
 }

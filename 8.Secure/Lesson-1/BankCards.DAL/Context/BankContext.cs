@@ -7,13 +7,15 @@ public class BankContext : DbContext
 {
     public DbSet<Card> Cards { get; set; }
 
-    public BankContext() : base()
+    public BankContext()
     {
+        Database.EnsureCreated();
     }
 
     public BankContext(DbContextOptions<BankContext> options)
         : base(options)
     {
+        // Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

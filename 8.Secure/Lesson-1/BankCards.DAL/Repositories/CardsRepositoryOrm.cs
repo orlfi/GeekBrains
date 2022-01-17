@@ -25,9 +25,20 @@ public class CardsRepositoryOrm : ICardRepository
         return cards;
     }
 
-    public async Task<Card?> GetAsync(int id, CancellationToken cancel = default)
+    public async Task<Card?> GetByIdAsync(int id, CancellationToken cancel = default)
     {
         var result = await _set.SingleOrDefaultAsync(item => item.Id == id, cancel).ConfigureAwait(false);
+        return result;
+    }
+
+
+    /// <summary>
+    /// Возвращает карты по совпадению части номера
+    /// EF функции sql inject безопасны
+    /// </summary>
+    public async Task<IEnumerable<Card>> GetByNumberAsync(string numberPattern, CancellationToken cancel = default)
+    {
+        var result = await _set.Where(item => EF.Functions.Like(item.Number, numberPattern)).ToArrayAsync(cancel).ConfigureAwait(false);
         return result;
     }
 

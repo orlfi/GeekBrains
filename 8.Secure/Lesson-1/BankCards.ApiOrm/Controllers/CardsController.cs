@@ -48,7 +48,7 @@ public class CardsController : ControllerBase
     {
         try
         {
-            var card = await _db.GetAsync(id);
+            var card = await _db.GetByIdAsync(id);
             if (card is null)
                 return NotFound("Карта не найдена");
 
@@ -59,6 +59,27 @@ public class CardsController : ControllerBase
         {
             LogError(ex);
             return BadRequest($"Ошибка получения карты {id}");
+        }
+    }
+
+
+    // GET api/<CardsController>/234234
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CardResponse>> GetByNumber(string pattern)
+    {
+        try
+        {
+            var card = await _db.GetByNumberAsync(pattern);
+            if (card is null)
+                return NotFound("Карта не найдена");
+
+            var result = card.ToResponse();
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            LogError(ex);
+            return BadRequest($"Ошибка получения карт, отвечающих условию поиска {pattern}");
         }
     }
 
