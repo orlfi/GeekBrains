@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+//services.AddDbContext<BankContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 services.AddDbContext<BankContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("postgres")));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 

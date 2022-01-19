@@ -18,8 +18,11 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<Application>();
+    //services.AddDbContext<BankContext>(options =>
+    //    options.UseSqlServer(context.Configuration.GetConnectionString("default")));
     services.AddDbContext<BankContext>(options =>
-        options.UseSqlServer(context.Configuration.GetConnectionString("default")));
+        options.UseNpgsql(context.Configuration.GetConnectionString("postgres")));
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

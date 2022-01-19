@@ -30,9 +30,13 @@ public class BankContext : DbContext
 
             entity.Property(p => p.Owner).IsRequired().HasMaxLength(100); ;
 
-            entity.Property(p => p.Created).IsRequired().HasColumnType("datetime");
+            //entity.Property(p => p.Created).IsRequired().HasColumnType("datetime");
 
-            entity.Property(p => p.ValidThru).IsRequired().HasColumnType("datetime");
+            //entity.Property(p => p.ValidThru).IsRequired().HasColumnType("datetime");
+
+            entity.Property(p => p.Created).IsRequired();
+
+            entity.Property(p => p.ValidThru).IsRequired();
         });
     }
 }
