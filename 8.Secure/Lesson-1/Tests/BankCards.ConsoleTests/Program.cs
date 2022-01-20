@@ -18,11 +18,21 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<Application>();
-    //services.AddDbContext<BankContext>(options =>
-    //    options.UseSqlServer(context.Configuration.GetConnectionString("default")));
     services.AddDbContext<BankContext>(options =>
-        options.UseNpgsql(context.Configuration.GetConnectionString("postgres")));
-    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    {
+        var useDbOption = context.Configuration["UseDb"]?.ToLower();
+
+        switch (useDbOption)
+        {
+            case "postgres":
+                options.UseNpgsql(context.Configuration.GetConnectionString("postgres"));
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+                break;
+            default:
+                options.UseSqlServer(context.Configuration.GetConnectionString("default"));
+                break;
+        }
+    });
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

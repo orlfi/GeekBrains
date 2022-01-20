@@ -1,5 +1,7 @@
+using System.Net;
 using BankCards.DAL.Context;
 using BankCards.Domain;
+using BankCards.Exceptions;
 using BankCards.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -51,10 +53,19 @@ public class CardsRepositoryOrm : ICardRepository
 
     public async Task<bool> UpdateAsync(Card entity, CancellationToken cancel = default)
     {
-        _db.Entry<Card>(entity).State = EntityState.Modified;
-        await _db.SaveChangesAsync(default).ConfigureAwait(false);
-        _logger.LogInformation("Данные по карте изменены {0}", entity.Number);
-        return true;
+        try
+        {
+            _db.Entry<Card>(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync(default).ConfigureAwait(false);
+            _logger.LogInformation("Данные по карте изменены {0}", entity.Number);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при изменении банковской карты {0}", entity.Id);
+            throw new DbException(HttpStatusCode.BadRequest, "Ошибка БД");
+        }
+
     }
 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancel = default)

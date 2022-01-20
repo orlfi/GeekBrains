@@ -1,23 +1,19 @@
-using BankCards.DAL.Context;
 using BankCards.DAL.Repositories;
 using BankCards.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
+using BankCards.ApiOrm.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-//services.AddDbContext<BankContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
-services.AddDbContext<BankContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("postgres")));
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+services.AddDatabase(builder.Configuration);
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
-
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+// Используем обработчик ошибок для всех запросов
+app.UseErrorHandling(app.Environment.IsDevelopment());
 
 if (app.Environment.IsDevelopment())
 {
@@ -32,3 +28,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
