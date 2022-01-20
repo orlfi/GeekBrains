@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.ConsoleTests", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.Exceptions", "BankCards.Exceptions\BankCards.Exceptions.csproj", "{DCE9D6FE-0CB1-4659-A4F8-16ACD4D78149}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankCards.Services", "BankCards.Services\BankCards.Services.csproj", "{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{DCE9D6FE-0CB1-4659-A4F8-16ACD4D78149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE9D6FE-0CB1-4659-A4F8-16ACD4D78149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE9D6FE-0CB1-4659-A4F8-16ACD4D78149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

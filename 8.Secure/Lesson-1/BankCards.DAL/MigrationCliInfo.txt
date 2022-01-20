@@ -1,0 +1,2 @@
+dotnet ef --startup-project ../BankCards.ApiOrm migrations add 'migration name'
+dotnet ef --startup-project ../BankCards.ApiOrm database update

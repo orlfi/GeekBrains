@@ -1,16 +1,12 @@
 using BankCards.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankCards.DAL.Context;
 
-public class BankContext : DbContext
+public class BankContext : IdentityDbContext<AppUser>
 {
     public DbSet<Card> Cards { get; set; }
-
-    public BankContext()
-    {
-        Database.EnsureCreated();
-    }
 
     public BankContext(DbContextOptions<BankContext> options)
         : base(options)
@@ -38,5 +34,6 @@ public class BankContext : DbContext
 
             entity.Property(p => p.ValidThru).IsRequired();
         });
+        base.OnModelCreating(modelBuilder);
     }
 }
