@@ -1,3 +1,4 @@
+using BankCards.DAL.Configuration;
 using BankCards.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,24 +17,7 @@ public class BankContext : IdentityDbContext<AppUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Card>(entity =>
-        {
-            entity.Property(p => p.Id).ValueGeneratedOnAdd();
-
-            entity.Property(p => p.Number).IsRequired().HasMaxLength(16);
-
-            entity.Property(p => p.Type).IsRequired();
-
-            entity.Property(p => p.Owner).IsRequired().HasMaxLength(100); ;
-
-            //entity.Property(p => p.Created).IsRequired().HasColumnType("datetime");
-
-            //entity.Property(p => p.ValidThru).IsRequired().HasColumnType("datetime");
-
-            entity.Property(p => p.Created).IsRequired();
-
-            entity.Property(p => p.ValidThru).IsRequired();
-        });
+        modelBuilder.ApplyConfiguration(new CardsConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

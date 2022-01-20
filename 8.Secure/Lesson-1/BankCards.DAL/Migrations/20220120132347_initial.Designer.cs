@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankCards.DAL.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20220120123724_initial")]
+    [Migration("20220120132347_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,38 @@ namespace BankCards.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9591),
+                            Cvc = 111,
+                            Number = "1234567812345678",
+                            Owner = "TEST OWNER 1",
+                            Type = 0,
+                            ValidThru = new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9605)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Created = new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614),
+                            Cvc = 222,
+                            Number = "1111222233334444",
+                            Owner = "TEST OWNER 2",
+                            Type = 0,
+                            ValidThru = new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Created = new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614),
+                            Cvc = 333,
+                            Number = "1111111111111111",
+                            Owner = "TEST OWNER 3",
+                            Type = 0,
+                            ValidThru = new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614)
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

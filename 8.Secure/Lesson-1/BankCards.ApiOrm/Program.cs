@@ -11,26 +11,19 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
-// services.AddDatabase(builder.Configuration);
-// services.AddDbContext<BankContext>(options =>
-//             options.UseSqlServer(builder.Configuration.GetConnectionString("default"), x => x.MigrationsAssembly("../BankCards.DAL"))
-// );
-services.AddDbContext<BankContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("default"))
-);
+services.AddDatabase(builder.Configuration);
 
 services.TryAddSingleton<ISystemClock, SystemClock>();
 var identityBuilder = services.AddIdentityCore<AppUser>();
-// var identityBuilder = new IdentityBuilder(identityBuilderCore.UserType, builder.Services);
 identityBuilder.AddEntityFrameworkStores<BankContext>();
 identityBuilder.AddSignInManager<SignInManager<AppUser>>();
-
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+app.MigrateDatabase();
 // Используем обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 

@@ -173,6 +173,21 @@ namespace BankCards.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Cards",
+                columns: new[] { "Id", "Created", "Cvc", "Number", "Owner", "Type", "ValidThru" },
+                values: new object[] { 1, new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9591), 111, "1234567812345678", "TEST OWNER 1", 0, new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9605) });
+
+            migrationBuilder.InsertData(
+                table: "Cards",
+                columns: new[] { "Id", "Created", "Cvc", "Number", "Owner", "Type", "ValidThru" },
+                values: new object[] { 2, new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614), 222, "1111222233334444", "TEST OWNER 2", 0, new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614) });
+
+            migrationBuilder.InsertData(
+                table: "Cards",
+                columns: new[] { "Id", "Created", "Cvc", "Number", "Owner", "Type", "ValidThru" },
+                values: new object[] { 3, new DateTime(2022, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614), 333, "1111111111111111", "TEST OWNER 3", 0, new DateTime(2025, 1, 20, 16, 23, 47, 255, DateTimeKind.Local).AddTicks(9614) });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
