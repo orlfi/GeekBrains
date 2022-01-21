@@ -18,6 +18,7 @@ public class BankContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new CardsConfiguration());
+        modelBuilder.ApplyConfiguration(new UsersConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }
