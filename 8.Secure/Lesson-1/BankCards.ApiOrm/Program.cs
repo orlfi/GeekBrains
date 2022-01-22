@@ -7,6 +7,8 @@ using BankCards.DAL.Context;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
+using BankCards.DAL;
+using BankCards.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -18,12 +20,19 @@ var identityBuilder = services.AddIdentityCore<AppUser>();
 identityBuilder.AddEntityFrameworkStores<BankContext>();
 identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
+services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
-app.MigrateDatabase();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    await dbInitializer.InitializeAsync();
+}
+
 // Используем обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 
