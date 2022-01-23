@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BankCards.ApiOrm.Mappers;
 using BankCards.ApiOrm.DTO.Cards;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,6 +11,7 @@ namespace BankCards.ApiOrm.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+//[Authorize]
 public class CardsController : ControllerBase
 {
     private readonly ICardRepository _db;

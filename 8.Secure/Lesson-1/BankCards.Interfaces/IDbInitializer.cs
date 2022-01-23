@@ -2,5 +2,5 @@
 
 public interface IDbInitializer
 {
-    Task InitializeAsync(CancellationToken cancel = default);
+    Task InitializeAsync(bool removeFirst = false, CancellationToken cancel = default);
 }
