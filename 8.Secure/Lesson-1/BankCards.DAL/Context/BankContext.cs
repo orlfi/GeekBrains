@@ -1,5 +1,6 @@
 using BankCards.DAL.Configuration;
 using BankCards.Domain;
+using BankCards.Domain.Account;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ public class BankContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new CardsConfiguration());
-        modelBuilder.ApplyConfiguration(new UsersConfiguration());
+        //modelBuilder.ApplyConfiguration(new UsersConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

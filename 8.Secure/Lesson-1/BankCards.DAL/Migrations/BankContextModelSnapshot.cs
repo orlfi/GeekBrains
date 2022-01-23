@@ -22,7 +22,7 @@ namespace BankCards.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BankCards.Domain.AppUser", b =>
+            modelBuilder.Entity("BankCards.Domain.Account.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -34,10 +34,6 @@ namespace BankCards.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -45,11 +41,23 @@ namespace BankCards.DAL.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -89,36 +97,6 @@ namespace BankCards.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "52c9b010-87ec-4ba2-adb3-b33884de7d35",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "568c8314-b24c-46df-be36-fe2c0f5e5932",
-                            DisplayName = "TestUserFirst",
-                            Email = "testuserfirst@test.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "d5da0614-00b1-4e04-a37e-e6f962d4f69c",
-                            TwoFactorEnabled = false,
-                            UserName = "TestUserFirst"
-                        },
-                        new
-                        {
-                            Id = "e30918b0-5ef6-40b4-97b4-580453e2578a",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "29f312e2-f479-48b4-8b42-054f02e70f33",
-                            DisplayName = "TestUserSecond",
-                            Email = "testusersecond@test.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "caab7b3a-59bf-4a75-bf8e-b1b370823d55",
-                            TwoFactorEnabled = false,
-                            UserName = "TestUserSecond"
-                        });
                 });
 
             modelBuilder.Entity("BankCards.Domain.Card", b =>
@@ -159,32 +137,32 @@ namespace BankCards.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5155),
+                            Created = new DateTime(2022, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3061),
                             Cvc = 111,
                             Number = "1234567812345678",
                             Owner = "TEST OWNER 1",
                             Type = 0,
-                            ValidThru = new DateTime(2025, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5174)
+                            ValidThru = new DateTime(2025, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3067)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2022, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5179),
+                            Created = new DateTime(2022, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3074),
                             Cvc = 222,
                             Number = "1111222233334444",
                             Owner = "TEST OWNER 2",
                             Type = 0,
-                            ValidThru = new DateTime(2025, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5179)
+                            ValidThru = new DateTime(2025, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3074)
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2022, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5183),
+                            Created = new DateTime(2022, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3076),
                             Cvc = 333,
                             Number = "1111111111111111",
                             Owner = "TEST OWNER 3",
                             Type = 0,
-                            ValidThru = new DateTime(2025, 1, 21, 11, 32, 30, 457, DateTimeKind.Local).AddTicks(5183)
+                            ValidThru = new DateTime(2025, 1, 23, 20, 52, 17, 337, DateTimeKind.Local).AddTicks(3076)
                         });
                 });
 
@@ -332,7 +310,7 @@ namespace BankCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("BankCards.Domain.AppUser", null)
+                    b.HasOne("BankCards.Domain.Account.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -341,7 +319,7 @@ namespace BankCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("BankCards.Domain.AppUser", null)
+                    b.HasOne("BankCards.Domain.Account.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,7 +334,7 @@ namespace BankCards.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BankCards.Domain.AppUser", null)
+                    b.HasOne("BankCards.Domain.Account.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,7 +343,7 @@ namespace BankCards.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("BankCards.Domain.AppUser", null)
+                    b.HasOne("BankCards.Domain.Account.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
