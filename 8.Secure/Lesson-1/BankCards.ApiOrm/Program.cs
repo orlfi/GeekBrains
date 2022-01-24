@@ -112,7 +112,7 @@ await using (var scope = app.Services.CreateAsyncScope())
     await dbInitializer.InitializeAsync(false);
 }
 
-// Используем обработчик ошибок для всех запросов
+// Используем middleware обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 
 if (app.Environment.IsDevelopment())

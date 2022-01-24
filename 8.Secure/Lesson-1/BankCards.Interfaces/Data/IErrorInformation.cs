@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BankCards.Interfaces.Data;
 
-namespace BankCards.Interfaces.Data
+public interface IErrorInformation
 {
-    public interface IErrorInformation
-    {
-        public string Message { get; }
-    }
+    public string Message { get; }
 }

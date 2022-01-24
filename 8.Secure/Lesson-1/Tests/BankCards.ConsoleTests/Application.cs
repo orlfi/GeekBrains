@@ -22,17 +22,12 @@ namespace BankCards.ConsoleTests;
 public class Application
 {
     private static string _path = null!;
-
     public static string Path => _path ??= System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
 
     private readonly HttpClient _client;
-
     private readonly IServiceProvider _services;
-
     private readonly ILogger _logger;
-
     private readonly BankContext _db;
-
     private readonly ILoginRequest _loginRequest;
 
     private string? _token = null;

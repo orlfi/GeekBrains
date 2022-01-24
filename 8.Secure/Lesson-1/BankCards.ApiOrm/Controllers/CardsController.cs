@@ -15,7 +15,6 @@ namespace BankCards.ApiOrm.Controllers;
 public class CardsController : ControllerBase
 {
     private readonly ICardRepository _db;
-
     private readonly ILogger<CardsController> _logger;
 
     private void LogError(Exception ex, [CallerMemberName] string methodName = default) =>

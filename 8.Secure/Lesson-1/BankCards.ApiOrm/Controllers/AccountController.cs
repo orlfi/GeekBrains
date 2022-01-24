@@ -12,7 +12,6 @@ namespace BankCards.ApiOrm.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly IAccountManager _accountManager;
-
     private readonly ILogger<AccountController> _logger;
 
     public AccountController(IAccountManager accountManager, ILogger<AccountController> logger)

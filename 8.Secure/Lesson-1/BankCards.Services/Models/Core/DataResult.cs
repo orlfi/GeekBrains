@@ -7,14 +7,12 @@ namespace BankCards.Domain.Core;
 public readonly struct Result<TData> : IResult<TData>
 {
     public bool Succeeded => Errors.Count == 0;
-
-    public IReadOnlyCollection<IErrorInformation> Errors { get; } 
-
+    public IReadOnlyCollection<IErrorInformation> Errors { get; }
     public TData Data { get; }
 
     public Result(TData data) : this(data, new List<IErrorInformation>()) { }
 
-    public Result(IErrorInformation error) : this(default!, new List<IErrorInformation>() { error}) { }
+    public Result(IErrorInformation error) : this(default!, new List<IErrorInformation>() { error }) { }
 
     public Result(IReadOnlyCollection<IErrorInformation> errors) : this(default!, errors) { }
 
@@ -29,7 +27,7 @@ public readonly struct Result<TData> : IResult<TData>
     public static implicit operator Result<TData>(ErrorInformation error) => new Result<TData>(error);
 
     public static implicit operator Result<TData>(List<ErrorInformation> errors) => new Result<TData>(errors);
-    
+
     public static implicit operator Result<TData>(ErrorInformation[] errors) => new Result<TData>(new ReadOnlyCollection<ErrorInformation>(errors));
 
     public static implicit operator TData(Result<TData> result) => result.Data;
