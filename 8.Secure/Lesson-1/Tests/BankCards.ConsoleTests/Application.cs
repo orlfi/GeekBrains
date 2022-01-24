@@ -1,10 +1,7 @@
-using System.Collections.ObjectModel;
-using System.Net;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
-using System.Threading.Channels;
 using BankCards.ConsoleTests.DTO.Cards;
 using BankCards.ConsoleTests.Mappings;
+using BankCards.ConsoleTests.Runtime;
 using BankCards.DAL.Context;
 using BankCards.Domain;
 using BankCards.Domain.Account;
@@ -12,7 +9,6 @@ using BankCards.Interfaces.Data.Account;
 using BankCards.Services.DTO;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -25,17 +21,21 @@ public class Application
     public static string Path => _path ??= System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
 
     private readonly HttpClient _client;
-    private readonly IServiceProvider _services;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
     private readonly BankContext _db;
     private readonly ILoginRequest _loginRequest;
-
     private string? _token = null;
 
-    public Application(HttpClient client, IServiceProvider services, BankContext db, IOptions<LoginRequest> loginOptions, ILogger<Application> logger)
+    public Application(
+        HttpClient client,
+        IServiceProvider serviceProvider,
+        BankContext db,
+        IOptions<LoginRequest> loginOptions,
+        ILogger<Application> logger)
     {
         _client = client;
-        _services = services;
+        _serviceProvider = serviceProvider;
         _logger = logger;
         _db = db;
         _loginRequest = loginOptions.Value;
@@ -46,12 +46,22 @@ public class Application
         try
         {
             _logger.LogInformation("Application started");
+            PrintColorText();
             await PrintInfoFromDb().ConfigureAwait(false);
             await PrintInfoFromApi().ConfigureAwait(false);
         }
         catch (System.Exception ex)
         {
             _logger.LogError(ex, "Необработанная ошибка {0}", ex.Message);
+        }
+    }
+
+    private void PrintColorText()
+    {
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var manager = scope.ServiceProvider.GetRequiredService<RuntimePrintManager>();
+            manager.Print("Тестовая строка", ConsoleColor.Red, ConsoleColor.Yellow);
         }
     }
 
@@ -67,11 +77,8 @@ public class Application
     {
         try
         {
-            // var cardsTask = GetCardsFromApi().ConfigureAwait(false);
-            // var cards = await cardsTask;
-            Console.WriteLine("Из API:");
+            Console.WriteLine("\r\nИз API:");
             await CheckTokenExpiration();
-            // PrintCards(cards);
         }
         catch (HttpRequestException ex)
         {
@@ -115,14 +122,14 @@ public class Application
         var usersTask = GetUsersFromDb();
         await Task.WhenAll(cardsTask, usersTask).ConfigureAwait(false);
 
-        Console.WriteLine("Из БД:");
+        Console.WriteLine("\r\nИз БД:");
         PrintCards(cardsTask.Result);
         PrintUsers(usersTask.Result);
     }
 
     private async Task<IEnumerable<Card>> GetCardsFromDb()
     {
-        var scope = _services.CreateAsyncScope();
+        var scope = _serviceProvider.CreateAsyncScope();
         var db = scope.ServiceProvider.GetRequiredService<BankContext>();
         var cards = await db.Cards.ToArrayAsync().ConfigureAwait(false);
         return cards;
@@ -137,7 +144,7 @@ public class Application
     }
     private async Task<IEnumerable<AppUser>> GetUsersFromDb()
     {
-        using var scope = _services.CreateAsyncScope();
+        using var scope = _serviceProvider.CreateAsyncScope();
         var db = scope.ServiceProvider.GetRequiredService<BankContext>() as IdentityDbContext<AppUser>;
         var users = await db.Users.ToArrayAsync().ConfigureAwait(false); ;
         return users;
@@ -147,7 +154,7 @@ public class Application
     {
         foreach (var item in users)
         {
-            Console.WriteLine($"{item.UserName,-20} {item.Email,-30} {item.LastName}.{item.FirstName[0]}.{item.MiddleName[0]} ");
+            Console.WriteLine($"{item.UserName,-20} {item.Email,-30} {item.LastName}.{item.FirstName.FirstOrDefault()}.{item.MiddleName.FirstOrDefault()} ");
         }
     }
 
