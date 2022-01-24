@@ -44,6 +44,8 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
         IssuerSigningKey = key,
         ValidateAudience = false,
         ValidateIssuer = false,
+        ValidateLifetime = true,
+        ClockSkew = new TimeSpan(0), // убираю 5 минутное смещение к ValidateLifetime
     };
 });
 // Требование аутентификации для всех запросов
@@ -107,7 +109,7 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await dbInitializer.InitializeAsync(true);
+    await dbInitializer.InitializeAsync(false);
 }
 
 // Используем обработчик ошибок для всех запросов

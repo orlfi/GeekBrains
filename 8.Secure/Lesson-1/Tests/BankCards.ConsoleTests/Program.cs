@@ -5,6 +5,8 @@ using Serilog;
 using Microsoft.EntityFrameworkCore;
 using BankCards.ConsoleTests;
 using BankCards.DAL.Context;
+using BankCards.Interfaces.Data.Account;
+using BankCards.Services.DTO;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -17,7 +19,13 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddSingleton<Application>();
+    services.Configure<LoginRequest>(context.Configuration.GetSection("LoginOptions"));
+
+    services.AddHttpClient<Application>(options =>
+    {
+        options.BaseAddress = new Uri(context.Configuration["ApiUrl"]);
+    });
+
     services.AddDbContext<BankContext>(options =>
     {
         var useDbOption = context.Configuration["UseDb"]?.ToLower();

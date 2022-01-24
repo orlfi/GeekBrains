@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
@@ -28,6 +30,7 @@
     <ProjectReference Include="..\..\BankCards.DAL\BankCards.DAL.csproj" />
     <ProjectReference Include="..\..\BankCards.Domain\BankCards.Domain.csproj" />
     <ProjectReference Include="..\..\BankCards.Interfaces\BankCards.Interfaces.csproj" />
+    <ProjectReference Include="..\..\BankCards.Services\BankCards.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
