@@ -34,6 +34,13 @@ public class RuntimePrintManager : IDisposable
     {
         var assemblyPath = Path.Combine(Directory.GetCurrentDirectory(), _pluginPath);
         Assembly assembly = _context.LoadFromAssemblyPath(assemblyPath);
+        var publicKeyToken = assembly.GetName().GetPublicKeyToken();
+        Console.Write("Имя сборки {0} {1}", 
+            assembly.FullName,
+            publicKeyToken is not null && publicKeyToken.Length > 0 
+                ? $"Сборка подписана: публичный ключ: {Convert.ToHexString(publicKeyToken)}"
+                : "Сборка не подписана"
+        );
 
         PrintAssemblies();
         

@@ -47,8 +47,8 @@ public class Application
         try
         {
             _logger.LogInformation("Application started");
-            // PrintColorText();
-            // await PrintInfoFromDb().ConfigureAwait(false);
+             PrintColorText();
+            await PrintInfoFromDb().ConfigureAwait(false);
             await PrintInfoFromApi().ConfigureAwait(false);
         }
         catch (System.Exception ex)
