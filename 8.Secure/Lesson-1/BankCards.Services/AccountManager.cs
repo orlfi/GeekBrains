@@ -4,7 +4,6 @@ using BankCards.Domain.Core;
 using BankCards.Interfaces;
 using BankCards.Interfaces.Data;
 using BankCards.Interfaces.Data.Account;
-using BankCards.Interfaces.Data.Base;
 using BankCards.Interfaces.Security;
 using BankCards.Services.DTO;
 using BankCards.Services.Models;
@@ -37,23 +36,23 @@ public class AccountManager : IAccountManager
         var user = await _userManager.FindByNameAsync(login.UserName);
         if (user == null)
         {
-            result = new ErrorInformation($"Пользователь {login.UserName} не найден");
+            result = new ErrorInformation($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {login.UserName} пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
             return result;
         }
 
         var loginResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
-        if(loginResult.Succeeded)
+        if (loginResult.Succeeded)
         {
-            _logger.LogInformation("Пользователь {0} залогинился", login.UserName);
-            result = new LoginResponse() 
-            { 
-                Token = _jwtGenerator.CreateToken(user) 
+            _logger.LogInformation("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {0} пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", login.UserName);
+            result = new LoginResponse()
+            {
+                Token = _jwtGenerator.CreateToken(user)
             };
             return result;
         }
 
-        _logger.LogInformation("Ошибка аутентификации пользователя {0}", login.UserName);
-        result = new ErrorInformation("Ошибка аутентификации");
+        _logger.LogInformation("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {0}", login.UserName);
+        result = new ErrorInformation("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         return result;
     }
 
@@ -70,11 +69,11 @@ public class AccountManager : IAccountManager
             Email = registerUser.Email
         };
 
-        var registerResult = await  _userManager.CreateAsync(user, registerUser.Password).ConfigureAwait(false);
-        
+        var registerResult = await _userManager.CreateAsync(user, registerUser.Password).ConfigureAwait(false);
+
         if (registerResult.Succeeded)
         {
-            result = new RegisterUserResponse() 
+            result = new RegisterUserResponse()
             {
                 Token = _jwtGenerator.CreateToken(user)
             };

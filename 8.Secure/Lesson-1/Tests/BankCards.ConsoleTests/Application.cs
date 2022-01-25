@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Net.Http.Json;
 using BankCards.ConsoleTests.DTO.Cards;
 using BankCards.ConsoleTests.Mappings;
@@ -46,8 +47,8 @@ public class Application
         try
         {
             _logger.LogInformation("Application started");
-            PrintColorText();
-            await PrintInfoFromDb().ConfigureAwait(false);
+            // PrintColorText();
+            // await PrintInfoFromDb().ConfigureAwait(false);
             await PrintInfoFromApi().ConfigureAwait(false);
         }
         catch (System.Exception ex)
@@ -109,7 +110,7 @@ public class Application
         if (string.IsNullOrEmpty(_token))
             await Authenticate(cancel).ConfigureAwait(false);
 
-        var cards = await _client.GetFromJsonAsync<List<CardResponse>>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
+        var cards = await _client.GetFromJsonAsync<ReadOnlyCollection<CardResponse>>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
 
         if (cards is null)
             throw new NullReferenceException("Список карточек не может быть null");
