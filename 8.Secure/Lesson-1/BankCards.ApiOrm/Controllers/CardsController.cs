@@ -26,10 +26,16 @@ public class CardsController : ControllerBase
         this._logger = logger;
     }
 
-    // GET: api/<CardsController>
+    /// <summary>
+    /// Возвращает список банковских карт
+    /// GET: api/<CardsController> 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<CardsResponse>> Get()
+    public async Task<ActionResult<IEnumerable<CardResponse>>> Get()
     {
+        _logger.LogInformation("Запрос списка всех карт");
+
         var cards = await _db.GetAllAsync();
         var result = cards.ToResponse();
         return Ok(result);
@@ -39,6 +45,8 @@ public class CardsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CardResponse>> Get(int id)
     {
+        _logger.LogInformation("Запрос информации по карте с id {0}", id);
+
         var card = await _db.GetByIdAsync(id);
         if (card is null)
             return NotFound("Карта не найдена");

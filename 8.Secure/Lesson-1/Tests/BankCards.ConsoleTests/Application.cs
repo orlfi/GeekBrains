@@ -105,15 +105,16 @@ public class Application
 
     private async Task<IEnumerable<Card>> GetCardsFromApi(CancellationToken cancel)
     {
+        _logger.LogInformation("Запрашиваем информацию о картах с WEB API...");
         if (string.IsNullOrEmpty(_token))
             await Authenticate(cancel).ConfigureAwait(false);
 
-        var cards = await _client.GetFromJsonAsync<CardsResponse>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
+        var cards = await _client.GetFromJsonAsync<List<CardResponse>>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
 
         if (cards is null)
             throw new NullReferenceException("Список карточек не может быть null");
-
-        return cards.Cards.ToCard();
+        _logger.LogInformation("Получено {0} записей", cards.Count);
+        return cards.ToCard();
     }
 
     private async Task PrintInfoFromDb()

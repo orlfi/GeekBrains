@@ -41,9 +41,9 @@ public static class CardMappers
             Owner = entity.Owner,
         };
 
-    public static CardsResponse ToResponse(this IEnumerable<Card> entity) =>
-        new CardsResponse()
-        {
-            Cards = entity.Select(x => x.ToResponse()!),
-        };
+    public static IEnumerable<CardResponse> ToResponse(this IEnumerable<Card> entity) =>
+        entity.Select(x => x.ToResponse()!);
+    // {
+    //     Cards = entity.Select(x => x.ToResponse()!),
+    // };
 }

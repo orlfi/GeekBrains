@@ -10,11 +10,17 @@ namespace BankCards.Security;
 
 public class JwtGenerator : IJwtGenerator
 {
+    private const int defaultTokenLifeTime = 300;
+
     private readonly SymmetricSecurityKey _key;
+    private readonly int _tokenLifeTime;
+
+    public int TokenLifeTime => _tokenLifeTime == 0 ? defaultTokenLifeTime : _tokenLifeTime;
 
     public JwtGenerator(IConfiguration config)
     {
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+        _tokenLifeTime = config.GetValue<int>("TokenLifeTime");
     }
 
     public string CreateToken(AppUser user)
@@ -26,7 +32,7 @@ public class JwtGenerator : IJwtGenerator
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddSeconds(30),
+            Expires = DateTime.Now.AddSeconds(TokenLifeTime),
             SigningCredentials = credidentals,
         };
 
