@@ -47,7 +47,7 @@ public class Application
         try
         {
             _logger.LogInformation("Application started");
-             PrintColorText();
+            PrintColorText();
             await PrintInfoFromDb().ConfigureAwait(false);
             await PrintInfoFromApi().ConfigureAwait(false);
         }
@@ -110,7 +110,7 @@ public class Application
         if (string.IsNullOrEmpty(_token))
             await Authenticate(cancel).ConfigureAwait(false);
 
-        var cards = await _client.GetFromJsonAsync<ReadOnlyCollection<CardResponse>>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
+        var cards = await _client.GetFromJsonAsync<ICollection<CardResponse>>("api/cards", cancellationToken: cancel).ConfigureAwait(false);
 
         if (cards is null)
             throw new NullReferenceException("Список карточек не может быть null");
