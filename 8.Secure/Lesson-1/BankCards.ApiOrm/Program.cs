@@ -101,6 +101,7 @@ services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+    // c.IncludeXmlComments();
 });
 
 
@@ -115,10 +116,18 @@ await using (var scope = app.Services.CreateAsyncScope())
 // Используем middleware обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 
-if (app.Environment.IsDevelopment())
+// Включаем поддержку Sawagger в зависимости от настроки параметра UseSwagger
+if (app.Configuration.GetValue<bool>("UseSwagger"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BankCards Cards API V1");
+        // Задаем Sawagger страницей по умолчанию в зависимости от настроки параметра SetSwaggerDefaultPage
+        if (app.Configuration.GetValue<bool>("SetSwaggerDefaultPage"))
+            c.RoutePrefix = "";
+    });
 }
 
 app.UseHttpsRedirection();
