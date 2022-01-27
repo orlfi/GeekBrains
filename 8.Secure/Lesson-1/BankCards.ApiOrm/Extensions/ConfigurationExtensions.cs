@@ -1,5 +1,8 @@
 using BankCards.DAL.Context;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System.Data.Common;
 
 namespace BankCards.ApiOrm.Extensions;
 
@@ -14,7 +17,9 @@ public static class ConfigurationExtensions
             switch (useDbOption)
             {
                 case "postgres":
-                    options.UseNpgsql(config.GetConnectionString("postgres"));
+                    NpgsqlConnectionStringBuilder connectionStringBuilder = new NpgsqlConnectionStringBuilder(config.GetConnectionString("postgres"));
+                    connectionStringBuilder.Password = config["DbPassword"];
+                    options.UseNpgsql(connectionStringBuilder.ConnectionString);
                     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                     break;
                 default:
