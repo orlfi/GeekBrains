@@ -16,6 +16,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using BankCards.ApiOrm.DTO.Cards;
+using BankCards.ApiOrm.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,10 @@ services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddScoped<IJwtGenerator, JwtGenerator>();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
+
+services.AddFluentValidation();
+services.AddScoped<IValidator<CardCreateRequest>, CardCreateRequestValidator>();
+services.AddScoped<IValidator<CardUpdateRequest>, CardUpdateRequestValidator>();
 
 #region Добавляем аутентификацию и авторизацию
 services.TryAddSingleton<ISystemClock, SystemClock>();
@@ -132,9 +140,12 @@ if (app.Configuration.GetValue<bool>("UseSwagger"))
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseAuthentication();
 
-app.UseAuthorization();
+    app.UseAuthorization();
+}
 
 app.MapControllers();
 
