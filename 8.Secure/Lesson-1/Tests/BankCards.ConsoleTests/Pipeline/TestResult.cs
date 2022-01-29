@@ -1,8 +1,11 @@
+using BankCards.Domain;
+using BankCards.Domain.Account;
+
 namespace BankCards.ConsoleTests.Pipeline;
 
 public class TestResult
 {
-    public IEnumerable<string> RuntimeLibraryInfo { get; set; } = null!;
-    public IEnumerable<string> WebApiInfo { get; set; } = null!;
-    public IEnumerable<string> DbInfo { get; set; } = null!;
+    public IEnumerable<Card> CardsFromDb { get; set; } = null!;
+    public IEnumerable<AppUser> UsersFromDb { get; set; } = null!;
+    public IEnumerable<Card> CardsFromApi { get; set; } = null!;
 }

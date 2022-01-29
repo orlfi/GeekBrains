@@ -27,5 +27,11 @@ public class PipelineBuilder<T> : IPipelineBuilder<T>
         return this;
     }
 
-    public IPipelineHandler<T> Build() => _first;
+    public IPipelineHandler<T> Build()
+    { 
+        if (_first is null)
+            throw new NullReferenceException("Цепочка не содержит обработчиков");
+
+        return _first;
+    }
 }
