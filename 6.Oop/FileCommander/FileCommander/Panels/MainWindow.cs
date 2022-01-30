@@ -462,8 +462,8 @@ namespace FileCommander
             if (ActiveWindow is TotalProgressWindow)
                 progressWindow.Close();
 
-            foreach (var panel in Controls.Where(item => item is FilePanel))
-                ((FilePanel)panel).Refresh();
+            foreach (var panel in Controls.OfType<FilePanel>())
+                panel.Refresh();
         }
 
         /// <summary>
