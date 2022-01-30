@@ -73,7 +73,7 @@ namespace FileCommander
         /// </summary>
         /// <param name="columns">Column list</param>
         /// <returns></returns>
-        public static int GetStaticColumnWidth(List<FilePanelColumn> columns)
+        public static int GetStaticColumnWidth(IEnumerable<FilePanelColumn> columns)
         {
             return columns.Where(item => item.Flex == 0).Sum(item => item.Width);
         }
