@@ -1,8 +1,8 @@
 ﻿using BankCards.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using BankCards.ApiOrm.Mappers;
 using BankCards.ApiOrm.DTO.Cards;
-using System.Runtime.CompilerServices;
+using AutoMapper;
+using BankCards.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,15 +14,14 @@ namespace BankCards.ApiOrm.Controllers;
 public class CardsController : ControllerBase
 {
     private readonly ICardRepository _db;
+    private readonly IMapper _mapper;
     private readonly ILogger<CardsController> _logger;
 
-    private void LogError(Exception ex, [CallerMemberName] string methodName = default) =>
-        _logger.LogError(ex, "Ошибка выполнения {0}", methodName);
-
-    public CardsController(ICardRepository db, ILogger<CardsController> logger)
+    public CardsController(ICardRepository db, IMapper mapper, ILogger<CardsController> logger)
     {
-        this._db = db;
-        this._logger = logger;
+        _db = db;
+        _mapper = mapper;
+        _logger = logger;
     }
 
     /// <summary>
@@ -36,7 +35,7 @@ public class CardsController : ControllerBase
         _logger.LogInformation("Запрос списка всех карт");
 
         var cards = await _db.GetAllAsync();
-        var result = cards.ToResponse();
+        var result = _mapper.Map<IEnumerable<CardResponse>>(cards);
         return Ok(result);
     }
 
@@ -50,7 +49,7 @@ public class CardsController : ControllerBase
         if (card is null)
             return NotFound("Карта не найдена");
 
-        var result = card.ToResponse();
+        var result = _mapper.Map<CardResponse>(card);
         return Ok(result);
     }
 
@@ -63,7 +62,7 @@ public class CardsController : ControllerBase
         if (card is null)
             return NotFound("Карта не найдена");
 
-        var result = card.ToResponse();
+        var result = _mapper.Map<CardResponse>(card);
         return Ok(result);
     }
 
@@ -74,11 +73,11 @@ public class CardsController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var model = request.ToCard();
+        var model = _mapper.Map<Card>(request);
         await _db.CreateAsync(model);
         _logger.LogInformation("Карта успешно создана");
 
-        var result = model.ToResponse();
+        var result = _mapper.Map<CardResponse>(model);
         return Ok(result);
     }
 
@@ -89,11 +88,11 @@ public class CardsController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var model = request.ToCard();
+        var model = _mapper.Map<Card>(request);
         await _db.UpdateAsync(model);
         _logger.LogInformation("Карта {0} успешно изменена", request.Id);
 
-        var result = model.ToResponse();
+        var result = _mapper.Map<CardResponse>(model);
         return Ok(result);
     }
 

@@ -11,6 +11,7 @@ using BankCards.ConsoleTests.Options;
 using BankCards.ConsoleTests.Runtime;
 using BankCards.ConsoleTests.Pipeline;
 using Microsoft.Extensions.Options;
+using BankCards.ConsoleTests.Mappings;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -53,6 +54,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
         options.BaseAddress = new Uri(context.Configuration["ApiUrl"]);
     });
     services.AddScoped<TestDbHandler>();
+    services.AddMappers();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

@@ -20,11 +20,11 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using BankCards.ApiOrm.DTO.Cards;
 using BankCards.ApiOrm.Validators;
+using BankCards.ApiOrm.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
-
 services.AddDatabase(builder.Configuration);
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
@@ -32,17 +32,14 @@ services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddScoped<IJwtGenerator, JwtGenerator>();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
-
-services.AddFluentValidation();
-services.AddScoped<IValidator<CardCreateRequest>, CardCreateRequestValidator>();
-services.AddScoped<IValidator<CardUpdateRequest>, CardUpdateRequestValidator>();
+services.AddValidators();
+services.AddMappers();
 
 #region Добавляем аутентификацию и авторизацию
 services.TryAddSingleton<ISystemClock, SystemClock>();
 var identityBuilder = services.AddIdentityCore<AppUser>()
     .AddEntityFrameworkStores<BankContext>()
     .AddSignInManager<SignInManager<AppUser>>();
-
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {

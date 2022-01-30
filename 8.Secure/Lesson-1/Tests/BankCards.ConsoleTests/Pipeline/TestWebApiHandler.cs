@@ -1,3 +1,4 @@
+using AutoMapper;
 using BankCards.ConsoleTests.DTO.Cards;
 using BankCards.ConsoleTests.Mappings;
 using BankCards.Domain;
@@ -17,11 +18,13 @@ public class TestWebApiHandler : AbstractPipelineHandler<TestResult>
     private readonly ILogger _logger;
     private string? _token = null;
     private readonly ILoginRequest _loginRequest = null!;
+    private readonly IMapper _mapper;
 
-    public TestWebApiHandler(HttpClient client, LoginRequest loginRequest, ILogger<TestWebApiHandler> logger)
+    public TestWebApiHandler(HttpClient client, LoginRequest loginRequest, IMapper mapper, ILogger<TestWebApiHandler> logger)
     {
         _client = client;
         _loginRequest = loginRequest;
+        _mapper = mapper;
         _logger = logger;
     }
 
@@ -69,6 +72,6 @@ public class TestWebApiHandler : AbstractPipelineHandler<TestResult>
         if (cards is null)
             throw new NullReferenceException("Список карточек не может быть null");
         _logger.LogInformation("Получено {0} записей", cards.Count);
-        return cards.ToCard();
+        return _mapper.Map<IEnumerable<Card>>(cards);
     }
 }
