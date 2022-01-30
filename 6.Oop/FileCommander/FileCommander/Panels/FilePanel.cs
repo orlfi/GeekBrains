@@ -183,7 +183,13 @@ namespace FileCommander
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new Exception("Set path error", ex);
+                throw new InvalidOperationException("Set path error", ex)
+                {
+                    Data = 
+                    {
+                        {  "path", path }
+                    }
+                };
             }
         }
 
