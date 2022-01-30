@@ -84,7 +84,7 @@ namespace FileCommander
         /// <param name="columns">Column list</param>
         /// <param name="panelWidth">Parent control width </param>
         /// <returns></returns>
-        public static Dictionary<FilePanelColumn, int> GetFlexColumsWidth(List<FilePanelColumn> columns, int panelWidth)
+        public static Dictionary<FilePanelColumn, int> GetFlexColumsWidth(IReadOnlyCollection<FilePanelColumn> columns, int panelWidth)
         {
             Dictionary<FilePanelColumn, int> result = new Dictionary<FilePanelColumn, int>();
             int flexSum = columns.Sum(item => item.Flex);
