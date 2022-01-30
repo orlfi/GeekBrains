@@ -59,7 +59,7 @@ namespace FileCommander
         /// </summary>
         public ModalWindowResult ModalResult { get; set; }
 
-        //List<Control> Buttons => Components.Where(item => item.GetType() == typeof(Button)).Cast<Control>().ToList();
+        //List<Control> Buttons => Components.OfType<Button>().Cast<Control>().ToList();
 
         /// <summary>
         /// Set to true if you need a default action when pressing Enter 
