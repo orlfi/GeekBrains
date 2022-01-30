@@ -89,10 +89,8 @@ namespace FileCommander
             Dictionary<FilePanelColumn, int> result = new Dictionary<FilePanelColumn, int>();
             int flexSum = columns.Sum(item => item.Flex);
             int staticWidth = GetStaticColumnWidth(columns);
-            foreach (var flexColumn in columns.Where(item => item.Flex > 0))
-            {
-                result.Add(flexColumn, (panelWidth - staticWidth) * flexColumn.Flex / flexSum);
-            }
+            result = columns.Where(item => item.Flex > 0)
+                .ToDictionary(v => v, flexColumn => (panelWidth - staticWidth) * flexColumn.Flex / flexSum);
             int remainder = panelWidth - staticWidth - result.Sum(item => item.Value);
             result[result.First().Key] += remainder;
             return result;
