@@ -3,7 +3,7 @@
     /// <summary>
     /// Contains information to confirm the operation
     /// </summary>
-    public class ConfirmationEventArgs
+    public class ConfirmationEventArgs : EventArgs
     {
         /// <summary>
         /// Gets or sets a text message 
