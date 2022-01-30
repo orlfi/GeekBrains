@@ -79,7 +79,7 @@ namespace FileCommander
             set
             {
                 var files = Controls;
-                int max = Math.Min(MaxItems - 1, (files.Count == 0 ? 0 : files.Count - 1));
+                int max = Math.Min(MaxItems - 1, Math.Max(0, files.Count - 1));
                 if (value < 0)
                 {
                     if (OffsetY > 0)
