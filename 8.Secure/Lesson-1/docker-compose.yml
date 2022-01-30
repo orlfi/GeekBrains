@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  bankcards.apiorm:
+    image: ${DOCKER_REGISTRY-}bankcardsapiorm
+    build:
+      context: .
+      dockerfile: BankCards.ApiOrm/Dockerfile

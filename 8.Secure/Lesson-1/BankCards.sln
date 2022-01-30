@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.Security", "BankC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrintPlugin", "PrintPlugin\PrintPlugin.csproj", "{D5033A39-B183-4108-AD5C-F9EE51385E39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orlfi.CommonLibrary", "orlfi.commonlibrary\Orlfi.CommonLibrary.csproj", "{6EA050AE-E07A-445C-A2EA-7FE179507377}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orlfi.CommonLibrary", "orlfi.commonlibrary\Orlfi.CommonLibrary.csproj", "{6EA050AE-E07A-445C-A2EA-7FE179507377}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A48586D4-8D44-4AD6-8884-997C58134403}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{6EA050AE-E07A-445C-A2EA-7FE179507377}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EA050AE-E07A-445C-A2EA-7FE179507377}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EA050AE-E07A-445C-A2EA-7FE179507377}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A48586D4-8D44-4AD6-8884-997C58134403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A48586D4-8D44-4AD6-8884-997C58134403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A48586D4-8D44-4AD6-8884-997C58134403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A48586D4-8D44-4AD6-8884-997C58134403}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
