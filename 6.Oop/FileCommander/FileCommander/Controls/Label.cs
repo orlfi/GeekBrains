@@ -167,7 +167,7 @@ namespace FileCommander
 
             if (MultiLine)
             {
-                for (int i = 0; i < Math.Min(TextLines.Count, Height); i++)
+                for (int (i, count) = (0, Math.Min(TextLines.Count, Height)); i < count; i++)
                     buffer.WriteAt(TextLines[i+_offSet].Fit(Width), X + targetX, Y + targetY + i, ForegroundColor, BackgroundColor);
 
                 if (_offSet > 0)
