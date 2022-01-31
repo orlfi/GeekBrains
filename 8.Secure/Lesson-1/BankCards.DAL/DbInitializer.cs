@@ -49,7 +49,7 @@ public class DbInitializer : IDbInitializer
         }
     }
 
-    public async Task InitializeAsync(bool removeFirst = false, CancellationToken cancel = default)
+    public async Task InitializeAsync(bool removeFirst = false, bool initializeDatabaseWithTestData = false, CancellationToken cancel = default)
     {
         try
         {
@@ -63,7 +63,9 @@ public class DbInitializer : IDbInitializer
                 await _db.Database.MigrateAsync(cancel).ConfigureAwait(false);
                 _logger.LogInformation("Миграция БД выполнена");
             }
-            DataSeed.SeedDataAsync(_db, _userManager).Wait();
+
+            if (initializeDatabaseWithTestData)
+                await DataSeed.SeedDataAsync(_db, _userManager, cancel).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

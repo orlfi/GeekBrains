@@ -1,2 +1,6 @@
 dotnet ef --startup-project ../BankCards.ApiOrm migrations add 'migration name'
 dotnet ef --startup-project ../BankCards.ApiOrm database update
+
+Миграции в отдельных сборках:
+dotnet ef migrations add MyMigration --project ../SqlServerMigrations -- --provider BankCards.PostgresMigrations
+Add-Migration MyMigration -Args "--provider BankCards.PostgresMigrations"

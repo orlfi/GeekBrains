@@ -115,7 +115,9 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await dbInitializer.InitializeAsync(builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
+    await dbInitializer.InitializeAsync(
+        builder.Configuration.GetValue<bool>("RemoveDatabase"),
+        builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
 }
 
 // Используем middleware обработчик ошибок для всех запросов
