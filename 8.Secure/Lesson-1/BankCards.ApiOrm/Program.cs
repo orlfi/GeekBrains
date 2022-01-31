@@ -63,14 +63,15 @@ services.AddAuthorization(options =>
 
 services.Configure<IdentityOptions>(opt =>
 {
-#if DEBUG
-    opt.Password.RequireDigit = false;
-    opt.Password.RequireLowercase = false;
-    opt.Password.RequireUppercase = false;
-    opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 3;
-    opt.Password.RequiredUniqueChars = 3;
-#endif
+    if (builder.Environment.IsDevelopment())
+    {
+        opt.Password.RequireDigit = false;
+        opt.Password.RequireLowercase = false;
+        opt.Password.RequireUppercase = false;
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequiredLength = 3;
+        opt.Password.RequiredUniqueChars = 3;
+    }
 
     opt.User.RequireUniqueEmail = false;
     opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ1234567890";

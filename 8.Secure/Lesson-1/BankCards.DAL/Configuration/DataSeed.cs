@@ -30,12 +30,21 @@ namespace BankCards.DAL.Configuration
                         LastName = "Иванов",
                         UserName = "TestUserSecond",
                         Email = "testusersecond@test.com"
+                    },
+                    new AppUser
+                    {
+                        FirstName = "Админ",
+                        MiddleName = "",
+                        LastName = "",
+                        UserName = "admin",
+                        Email = "admin@test.com"
                     }
                 };
 
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "qazWSX123!@#").ConfigureAwait(false);
+                    //await userManager.CreateAsync(user, "qazWSX123!@#").ConfigureAwait(false);
+                    await userManager.CreateAsync(user, "123456").ConfigureAwait(false);
                 }
             }
 

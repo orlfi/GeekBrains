@@ -36,14 +36,14 @@ public class AccountManager : IAccountManager
         var user = await _userManager.FindByNameAsync(login.UserName);
         if (user == null)
         {
-            result = new ErrorInformation($"������������ {login.UserName} �� ������");
+            result = new ErrorInformation($"The user with the name  {login.UserName} was not found");
             return result;
         }
 
         var loginResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (loginResult.Succeeded)
         {
-            _logger.LogInformation("������������ {0} �����������", login.UserName);
+            _logger.LogInformation("The user {0} has been successfully logged in", login.UserName);
             result = new LoginResponse()
             {
                 Token = _jwtGenerator.CreateToken(user)
@@ -51,8 +51,8 @@ public class AccountManager : IAccountManager
             return result;
         }
 
-        _logger.LogInformation("������ �������������� ������������ {0}", login.UserName);
-        result = new ErrorInformation("������ ��������������");
+        _logger.LogInformation("User {0} authentication error", login.UserName);
+        result = new ErrorInformation("Authentication error");
         return result;
     }
 

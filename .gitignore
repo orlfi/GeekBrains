@@ -43,6 +43,8 @@ bld/
 
 **/wwwroot/lib/
 
+**/db/
+
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
