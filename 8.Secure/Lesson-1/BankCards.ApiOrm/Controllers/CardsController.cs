@@ -39,9 +39,6 @@ public class CardsController : ControllerBase
         return Ok(result);
     }
 
-
-
-
     /// <summary>
     /// Возвращает карту по ID
     /// GET api/Cards/5
@@ -60,7 +57,6 @@ public class CardsController : ControllerBase
         var result = _mapper.Map<CardResponse>(card);
         return Ok(result);
     }
-
 
     /// <summary>
     /// Возвращает карту по номеру
