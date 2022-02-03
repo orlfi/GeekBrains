@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/BankCards.ApiSql/bin/Debug/net6.0/BankCards.ApiSql.dll",
+            "program": "${workspaceFolder}/BankCards.ApiOrm/bin/Debug/net6.0/BankCards.ApiOrm.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/BankCards.ApiSql",
+            "cwd": "${workspaceFolder}/BankCards.ApiOrm",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

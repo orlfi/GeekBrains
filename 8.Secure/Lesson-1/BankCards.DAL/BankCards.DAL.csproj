@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BankCards.Interfaces\BankCards.Interfaces.csproj" />
     <ProjectReference Include="..\BankCards.Domain\BankCards.Domain.csproj" />
+    <ProjectReference Include="..\BankCards.Exceptions\BankCards.Exceptions.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

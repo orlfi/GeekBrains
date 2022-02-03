@@ -15,9 +15,7 @@ namespace BankCards.DAL.Repositories;
 public class CardsRepositorySql : ICardRepository
 {
     private IConnectionManager _connectionManager;
-
     private SqlConnection _connection => (SqlConnection)_connectionManager.GetOpenedConnection();
-
     private readonly ILogger<CardsRepositoryOrm> _logger;
 
     public CardsRepositorySql(IConnectionManager connectionManager, ILogger<CardsRepositoryOrm> logger)

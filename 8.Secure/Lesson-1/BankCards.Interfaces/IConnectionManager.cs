@@ -1,10 +1,9 @@
 using System.Data.Common;
 
-namespace BankCards.Interfaces
+namespace BankCards.Interfaces;
+
+public interface IConnectionManager
 {
-    public interface IConnectionManager
-    {
-        void Dispose();
-        DbConnection GetOpenedConnection();
-    }
+    void Dispose();
+    DbConnection GetOpenedConnection();
 }

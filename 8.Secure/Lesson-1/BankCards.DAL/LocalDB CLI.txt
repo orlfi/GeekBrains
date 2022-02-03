@@ -1,0 +1,13 @@
+In POWERSHELL
+1. sqllocaldb start "MSSQLLocalDB"
+2. invoke-sqlcmd -Server '(localdb)\MSSQLLocalDB' -Query "Select @@servername"
+3. sqlcmd -S '(localdb)\MSSQLLocalDB' -Q "Select @@servername"
+4. sqlcmd -S '(localdb)\MSSQLLocalDB' -d BankCard.db -E
+5. SELECT * FROM sys.objects WHERE type in (N'U')   - список таблиц
+
+
+Подключение в плагине  SQL Server:
+1. (localdb)\MSSQLLocalDB
+2. <Enter>
+3. Integrated
+4. <Enter>

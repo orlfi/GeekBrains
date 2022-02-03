@@ -13,8 +13,8 @@ namespace BankCards.DAL
     public class ConnectionManager : IDisposable, IConnectionManager
     {
         private readonly string _connectionString;
-
         private readonly object _lockObject = new object();
+
         private DbConnection _connection;
 
         public ConnectionManager(IConfiguration config)
