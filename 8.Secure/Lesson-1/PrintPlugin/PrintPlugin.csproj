@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BaseOutputPath></BaseOutputPath>
+    <Product>PrinPlugin</Product>
+    <Description>Сборка со строгим именем</Description>
+    <Authors>Orlfi</Authors>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>E:\Projects\GeekBrains\8.Secure\Lesson-1\orlfi.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+</Project>

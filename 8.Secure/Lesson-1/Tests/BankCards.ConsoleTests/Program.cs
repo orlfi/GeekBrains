@@ -7,6 +7,8 @@ using BankCards.ConsoleTests;
 using BankCards.DAL.Context;
 using BankCards.Interfaces.Data.Account;
 using BankCards.Services.DTO;
+using BankCards.ConsoleTests.Options;
+using BankCards.ConsoleTests.Runtime;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -20,6 +22,7 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.Configure<LoginRequest>(context.Configuration.GetSection("LoginOptions"));
+    services.Configure<PluginOptions>(context.Configuration.GetSection(PluginOptions.SectionName));
 
     services.AddHttpClient<Application>(options =>
     {
@@ -41,6 +44,9 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
                 break;
         }
     });
+
+    services.AddScoped<PluginAssemblyLoadContext>();
+    services.AddScoped<RuntimePrintManager>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
