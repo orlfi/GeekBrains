@@ -9,6 +9,9 @@ using BankCards.Interfaces.Data.Account;
 using BankCards.Services.DTO;
 using BankCards.ConsoleTests.Options;
 using BankCards.ConsoleTests.Runtime;
+using BankCards.ConsoleTests.Pipeline;
+using Microsoft.Extensions.Options;
+using BankCards.ConsoleTests.Mappings;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -22,12 +25,10 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.Configure<LoginRequest>(context.Configuration.GetSection("LoginOptions"));
+    services.AddScoped<LoginRequest>(services => services.GetRequiredService<IOptions<LoginRequest>>().Value);
     services.Configure<PluginOptions>(context.Configuration.GetSection(PluginOptions.SectionName));
 
-    services.AddHttpClient<Application>(options =>
-    {
-        options.BaseAddress = new Uri(context.Configuration["ApiUrl"]);
-    });
+    services.AddScoped<Application>();
 
     services.AddDbContext<BankContext>(options =>
     {
@@ -47,6 +48,13 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 
     services.AddScoped<PluginAssemblyLoadContext>();
     services.AddScoped<RuntimePrintManager>();
+    services.AddScoped<TestRuntimeLibraryHandler>();
+    services.AddHttpClient<TestWebApiHandler>(options =>
+    {
+        options.BaseAddress = new Uri(context.Configuration["ApiUrl"]);
+    });
+    services.AddScoped<TestDbHandler>();
+    services.AddMappers();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

@@ -1,0 +1,1 @@
+docker run --name pgadmin-test -e PGADMIN_DEFAULT_EMAIL='pgadmin4@pgadmin.org' -e PGADMIN_DEFAULT_PASSWORD='123456' -p 5050:80 -d dpage/pgadmin4

@@ -18,6 +18,15 @@ public class RuntimePrintManager : IDisposable
         _context = context;
     }
 
+    public void Print(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black)
+    {
+        var type = assembly.GetType("PrintPlugin.ConsolePrinter");
+        var printMethod = type.GetMethod("PrintColorLine");
+        var instance = Activator.CreateInstance(type);
+        printMethod.Invoke(instance, new object[] { text, foregroundColor, backgroundColor });
+    }
+
+
     public void Dispose()
     {
         Console.WriteLine($"Выгружаем контекст...");
@@ -45,14 +54,6 @@ public class RuntimePrintManager : IDisposable
         PrintAssemblies();
         
         return assembly;
-    }
-
-    public void Print(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black)
-    {
-        var type = assembly.GetType("PrintPlugin.ConsolePrinter");
-        var printMethod = type.GetMethod("PrintColorLine");
-        var instance = Activator.CreateInstance(type);
-        printMethod.Invoke(instance, new object[] { text, foregroundColor, backgroundColor });
     }
 
     private void PrintAssemblies()

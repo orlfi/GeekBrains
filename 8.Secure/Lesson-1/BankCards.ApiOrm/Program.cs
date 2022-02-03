@@ -16,11 +16,16 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using BankCards.ApiOrm.DTO.Cards;
+using BankCards.ApiOrm.Validators;
+using BankCards.ApiOrm.Mappings;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
-
 services.AddDatabase(builder.Configuration);
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
@@ -28,13 +33,14 @@ services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddScoped<IJwtGenerator, JwtGenerator>();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
+services.AddValidators();
+services.AddMappers();
 
 #region Добавляем аутентификацию и авторизацию
 services.TryAddSingleton<ISystemClock, SystemClock>();
 var identityBuilder = services.AddIdentityCore<AppUser>()
     .AddEntityFrameworkStores<BankContext>()
     .AddSignInManager<SignInManager<AppUser>>();
-
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]));
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
@@ -58,14 +64,15 @@ services.AddAuthorization(options =>
 
 services.Configure<IdentityOptions>(opt =>
 {
-#if DEBUG
-    opt.Password.RequireDigit = false;
-    opt.Password.RequireLowercase = false;
-    opt.Password.RequireUppercase = false;
-    opt.Password.RequireNonAlphanumeric = false;
-    opt.Password.RequiredLength = 3;
-    opt.Password.RequiredUniqueChars = 3;
-#endif
+    if (builder.Environment.IsDevelopment())
+    {
+        opt.Password.RequireDigit = false;
+        opt.Password.RequireLowercase = false;
+        opt.Password.RequireUppercase = false;
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequiredLength = 3;
+        opt.Password.RequiredUniqueChars = 3;
+    }
 
     opt.User.RequireUniqueEmail = false;
     opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ1234567890";
@@ -76,10 +83,15 @@ services.Configure<IdentityOptions>(opt =>
 });
 #endregion
 
-services.AddSwaggerGen(c =>
+services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BankCards", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BankCards",
+        Description = "Учебный проект по курсу Безопасность",
+        Version = "v1"
+    });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
         Name = "Authorization",
@@ -87,7 +99,7 @@ services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -101,7 +113,10 @@ services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
-    // c.IncludeXmlComments();
+
+    // включаем документацию
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 
@@ -110,7 +125,9 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await dbInitializer.InitializeAsync(builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
+    await dbInitializer.InitializeAsync(
+        builder.Configuration.GetValue<bool>("RemoveDatabase"),
+        builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
 }
 
 // Используем middleware обработчик ошибок для всех запросов
@@ -132,9 +149,12 @@ if (app.Configuration.GetValue<bool>("UseSwagger"))
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseAuthentication();
 
-app.UseAuthorization();
+    app.UseAuthorization();
+}
 
 app.MapControllers();
 

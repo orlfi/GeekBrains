@@ -19,11 +19,13 @@ public static class ConfigurationExtensions
                 case "postgres":
                     NpgsqlConnectionStringBuilder connectionStringBuilder = new NpgsqlConnectionStringBuilder(config.GetConnectionString("postgres"));
                     connectionStringBuilder.Password = config["DbPassword"];
-                    options.UseNpgsql(connectionStringBuilder.ConnectionString);
+                    options.UseNpgsql(connectionStringBuilder.ConnectionString,
+                        x => x.MigrationsAssembly("BankCards.PostgresMigrations"));
                     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                     break;
                 default:
-                    options.UseSqlServer(config.GetConnectionString("default"));
+                    options.UseSqlServer(config.GetConnectionString("default"),
+                        x => x.MigrationsAssembly("BankCards.MsSqlServerMigrations"));
                     break;
             }
         });

@@ -7,6 +7,5 @@ public class CardUpdateRequest : CardCreateRequest
     /// <summary>
     /// Id
     /// </summary>
-    [Required(ErrorMessage = "Укажите ID карты")]
     public int Id { get; set; }
 }
