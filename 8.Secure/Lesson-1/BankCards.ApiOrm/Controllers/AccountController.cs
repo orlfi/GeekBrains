@@ -20,6 +20,11 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Аутентификация пользователя
+    /// </summary>
+    /// <param name="loginRequest">Логин и пароль</param>
+    /// <returns>Bearer token</returns>
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
     {
@@ -34,6 +39,11 @@ public class AccountController : ControllerBase
         return BadRequest(loginResult.Errors);
     }
 
+    /// <summary>
+    /// Регистрация нового пользователя
+    /// </summary>
+    /// <param name="registerUserRequest">Логин, email и пароль</param>
+    /// <returns>Bearer token</returns>
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync(RegisterUserRequest registerUserRequest)
     {

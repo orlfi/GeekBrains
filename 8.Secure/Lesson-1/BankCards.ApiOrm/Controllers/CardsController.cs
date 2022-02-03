@@ -26,9 +26,9 @@ public class CardsController : ControllerBase
 
     /// <summary>
     /// Возвращает список банковских карт
-    /// GET: api/<CardsController> 
+    /// GET: api/Cards
     /// </summary>
-    /// <returns></returns>
+    /// <returns>IEnumerable of CardResponse</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CardResponse>>> Get()
     {
@@ -39,7 +39,15 @@ public class CardsController : ControllerBase
         return Ok(result);
     }
 
-    // GET api/<CardsController>/5
+
+
+
+    /// <summary>
+    /// Возвращает карту по ID
+    /// GET api/Cards/5
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>CardResponse</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<CardResponse>> Get(int id)
     {
@@ -54,7 +62,12 @@ public class CardsController : ControllerBase
     }
 
 
-    // GET api/<CardsController>/%234234%
+    /// <summary>
+    /// Возвращает карту по номеру
+    /// GET api/Cards/GetByNumber/%234234%
+    /// </summary>
+    /// <param name="pattern">шаблон поиска может содержать подстановочные знаки %</param>
+    /// <returns>CardResponse</returns>
     [HttpGet("GetByNumber/{pattern}")]
     public async Task<ActionResult<CardResponse>> GetByNumber(string pattern)
     {
@@ -66,7 +79,12 @@ public class CardsController : ControllerBase
         return Ok(result);
     }
 
-    // POST api/<CardsController>
+    /// <summary>
+    /// Создает новую банковскую карту
+    /// POST api/Cards
+    /// </summary>
+    /// <param name="request">создаваемый объект</param>
+    /// <returns>CardResponse</returns>
     [HttpPost]
     public async Task<ActionResult<CardResponse>> Post([FromBody] CardCreateRequest request)
     {
@@ -82,6 +100,12 @@ public class CardsController : ControllerBase
     }
 
     // PUT api/<CardsController>
+    /// <summary>
+    /// Изменяет банковскую карту
+    /// PUT api/Cards
+    /// </summary>
+    /// <param name="request">изменяемый объект</param>
+    /// <returns>CardResponse</returns>
     [HttpPut]
     public async Task<ActionResult<CardResponse>> Put([FromBody] CardUpdateRequest request)
     {
@@ -96,7 +120,12 @@ public class CardsController : ControllerBase
         return Ok(result);
     }
 
-    // DELETE api/<CardsController>/5
+    /// <summary>
+    /// Удаляет банковскую карту
+    /// DELETE api/Cards/5
+    /// </summary>
+    /// <param name="id">ID карты</param>
+    /// <returns>CardResponse</returns>
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

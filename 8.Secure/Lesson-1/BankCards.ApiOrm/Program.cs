@@ -21,6 +21,7 @@ using FluentValidation;
 using BankCards.ApiOrm.DTO.Cards;
 using BankCards.ApiOrm.Validators;
 using BankCards.ApiOrm.Mappings;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,10 +83,15 @@ services.Configure<IdentityOptions>(opt =>
 });
 #endregion
 
-services.AddSwaggerGen(c =>
+services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BankCards", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BankCards",
+        Description = "Учебный проект по курсу Безопасность",
+        Version = "v1"
+    });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
         Name = "Authorization",
@@ -93,7 +99,7 @@ services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -107,7 +113,10 @@ services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
-    // c.IncludeXmlComments();
+
+    // включаем документацию
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 
