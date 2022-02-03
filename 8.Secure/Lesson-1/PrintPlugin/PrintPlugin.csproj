@@ -9,7 +9,7 @@
     <Description>Сборка со строгим именем</Description>
     <Authors>Orlfi</Authors>
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>E:\Projects\GeekBrains\8.Secure\Lesson-1\orlfi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\orlfi\orlfi.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
 </Project>

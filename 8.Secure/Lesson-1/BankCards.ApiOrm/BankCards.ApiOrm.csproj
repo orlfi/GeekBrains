@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e450a907-79f5-406d-90ff-403b550fdcc6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />    
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +24,7 @@
     <ProjectReference Include="..\BankCards.Interfaces\BankCards.Interfaces.csproj" />
     <ProjectReference Include="..\BankCards.Exceptions\BankCards.Exceptions.csproj" />
     <ProjectReference Include="..\BankCards.Services\BankCards.Services.csproj" />
-    <ProjectReference Include="..\Security\BankCards.Security.csproj" />
+    <ProjectReference Include="..\BankCards.Security\BankCards.Security.csproj" />
   </ItemGroup>
 
 </Project>
