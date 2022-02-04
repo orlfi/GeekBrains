@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Security.Claims;
 using BankCards.DAL.Context;
 using BankCards.Domain.Account;
 using BankCards.Domain.Core;
@@ -82,5 +84,36 @@ public class AccountManager : IAccountManager
 
         result = registerResult.Errors.Select(item => new ErrorInformation(item.Description)).ToArray();
         return result;
+    }
+
+    public IEnumerable<object> GetClaimsInfo(IEnumerable<Claim> claims)
+    {
+        var result = new List<object>();
+        foreach (var item in claims)
+        {
+            result.Add(new
+            {
+                Subject = item.Subject?.Name ?? "",
+                Issuer = item.Issuer,
+                Value = item.Value,
+                Type = ClaimTypeName(item.Type)
+            });
+        }
+        return result;
+    }
+
+    private string ClaimTypeName(string claimType)
+    {
+        var fields = typeof(ClaimTypes).GetFields();
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field?.GetValue(null).ToString() == claimType)
+            {
+                return field.Name;
+            }
+        }
+
+        return claimType;
     }
 }

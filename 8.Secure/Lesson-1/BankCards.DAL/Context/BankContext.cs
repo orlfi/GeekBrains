@@ -1,3 +1,4 @@
+using System.Reflection;
 using BankCards.DAL.Configuration;
 using BankCards.Domain;
 using BankCards.Domain.Account;
@@ -17,8 +18,9 @@ public class BankContext : IdentityDbContext<AppUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new CardsConfiguration());
+        // modelBuilder.ApplyConfiguration(new CardsConfiguration());
         //modelBuilder.ApplyConfiguration(new UsersConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
 }
