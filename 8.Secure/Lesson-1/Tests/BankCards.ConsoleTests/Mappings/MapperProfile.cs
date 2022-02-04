@@ -8,7 +8,6 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<Card, CardResponse>();
-        CreateMap<CardResponse, Card>();
+        CreateMap<Card, CardResponse>().ReverseMap();
     }
 }
