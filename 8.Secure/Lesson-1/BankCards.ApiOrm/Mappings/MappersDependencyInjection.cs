@@ -6,9 +6,10 @@ namespace BankCards.ApiOrm.Mappings
     {
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
-            MapperConfiguration mapperConfiguration = new MapperConfiguration(mc => mc.AddProfile(new MapperProfile()));
-            IMapper mapper = mapperConfiguration.CreateMapper();
-            services.AddSingleton(mapper);
+            // MapperConfiguration mapperConfiguration = new MapperConfiguration(mc => mc.AddProfile(new MapperProfile()));
+            // IMapper mapper = mapperConfiguration.CreateMapper();
+            // services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(MapperProfile));
             return services;
         }
     }
