@@ -14,6 +14,8 @@ namespace BankCards.ApiOrm.Mappings
             services.AddFluentValidation();
             services.AddScoped<IValidator<CardCreateRequest>, CardCreateRequestValidator>();
             services.AddScoped<IValidator<CardUpdateRequest>, CardUpdateRequestValidator>();
+            services.AddScoped<IValidator<BookCreateRequest>, BookCreateRequestValidator>();
+            services.AddScoped<IValidator<BookUpdateRequest>, BookUpdateRequestValidator>();
             return services;
         }
     }

@@ -95,7 +95,6 @@ public class CardsController : ControllerBase
         return Ok(result);
     }
 
-    // PUT api/<CardsController>
     /// <summary>
     /// Изменяет банковскую карту
     /// PUT api/Cards
