@@ -1,14 +1,9 @@
 using System.Data.Common;
-using System.Globalization;
-using System.Threading.Channels;
-using BankCards.DAL.Context;
 using BankCards.Domain;
 using BankCards.Interfaces;
 using BankCards.Interfaces.Repositories;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 
 namespace BankCards.DAL.Repositories;
 

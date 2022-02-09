@@ -16,17 +16,17 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using BankCards.ApiOrm.DTO.Cards;
-using BankCards.ApiOrm.Validators;
 using BankCards.ApiOrm.Mappings;
 using System.Reflection;
+using BankCards.DAL.Repositories.MongoDb;
+using BankCards.ApiOrm.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 services.AddDatabase(builder.Configuration);
+services.AddScoped<IBookRepository, BooksRepository>();
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
 services.AddScoped<IDbInitializer, DbInitializer>();
