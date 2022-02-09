@@ -8,13 +8,10 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<Card, CardCreateRequest>();
-        CreateMap<CardCreateRequest, Card>();
+        CreateMap<Card, CardCreateRequest>().ReverseMap();
 
-        CreateMap<Card, CardUpdateRequest>();
-        CreateMap<CardUpdateRequest, Card>();
+        CreateMap<Card, CardUpdateRequest>().ReverseMap();
 
-        CreateMap<Card, CardResponse>();
-        CreateMap<CardResponse, Card>();
+        CreateMap<Card, CardResponse>().ReverseMap();
     }
 }

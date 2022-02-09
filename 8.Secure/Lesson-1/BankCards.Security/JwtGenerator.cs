@@ -28,7 +28,11 @@ public class JwtGenerator : IJwtGenerator
 
     public string CreateToken(AppUser user)
     {
-        var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, user.UserName) };
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id)
+        };
 
         var credidentals = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -46,11 +50,11 @@ public class JwtGenerator : IJwtGenerator
         var result = tokenHandler.WriteToken(token);
 
         _logger.LogDebug("Сформирован ключ {0} для пользователя {1} со временем жизни {2} до {3}",
-            result,
-            user,
-            TokenLifeTime,
-            tokenDescriptor.Expires?.ToString("dd.MM.yyyy hh:mm:ss")
-        );
+                result,
+                user,
+                TokenLifeTime,
+                tokenDescriptor.Expires?.ToString("dd.MM.yyyy hh:mm:ss")
+            );
 
         return result;
     }
