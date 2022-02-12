@@ -31,7 +31,7 @@ services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
 services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddScoped<IJwtGenerator, JwtGenerator>();
-services.AddControllers();
+services.AddControllersWithViews();
 services.AddEndpointsApiExplorer();
 services.AddValidators();
 services.AddMappers();
@@ -130,6 +130,8 @@ await using (var scope = app.Services.CreateAsyncScope())
         builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
 }
 
+app.UseStaticFiles();
+
 // Используем middleware обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 
@@ -149,6 +151,8 @@ if (app.Configuration.GetValue<bool>("UseSwagger"))
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseAuthentication();
@@ -156,9 +160,15 @@ if (!app.Environment.IsDevelopment())
     app.UseAuthorization();
 }
 
+
+
 app.MapControllers();
 
 app.Map("/test", () => "Тестовая страница");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
