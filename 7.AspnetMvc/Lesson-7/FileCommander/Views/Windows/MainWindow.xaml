@@ -1,0 +1,105 @@
+﻿<Window x:Class="FileCommander.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:FileCommander"
+    xmlns:vm="clr-namespace:FileCommander.ViewModels" mc:Ignorable="d" Title="{Binding Title}" Height="768" Width="1024" FocusManager.FocusedElement="{Binding ElementName=leftListView}">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel LastChildFill="true">
+        <Menu x:Name="menu" DockPanel.Dock="Top">
+            <MenuItem Header="Файл" Focusable="False">
+                <MenuItem Header="Выход" Command="{Binding QuitCommand}" Focusable="False"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <Button x:Name="ReportButton" Content="F3 Отчет" Width="Auto" Command="{Binding ReportCommand}" Focusable="False"/>
+            <Button x:Name="CopyButton" Content="F5 Копировать" Width="Auto" Command="{Binding CopyCommand}" Focusable="False"/>
+            <Button x:Name="MoveButton" Content="F6 Переместить" Width="Auto" Command="{Binding MoveCommand}" Focusable="False"/>
+            <Button x:Name="CreateDirectoryButton" Content="F7 Новый каталог" Width="Auto" Command="{Binding CreateDirectoryCommand}" Focusable="False"/>
+            <Button x:Name="DeleteButton" Content="F8 Удалить" Width="Auto" Focusable="False"/>
+            <Button x:Name="QuitButton" Content="Alt+F4 Выйти" Width="Auto" Command="{Binding QuitCommand}" Focusable="False"/>
+        </StatusBar>
+        <TextBox x:Name="commandTextBox" Text="{Binding FileCommand}" DockPanel.Dock="Bottom" Margin="3" Focusable="False"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" DataContext="{Binding LeftFilePanelViewModel}">
+                <!-- <Grid.DataContext>
+                    <vm:FilePanelViewModel/>
+                </Grid.DataContext> -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" x:Name="leftPathTextBox" Text="{Binding Path}" Focusable="False"/>
+                <ListView Grid.Row="1" x:Name="leftListView" ItemsSource="{Binding Files}" IsSynchronizedWithCurrentItem="True" SelectedItem="{Binding SelectedFileItem, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" BorderBrush="{x:Null}">
+                    <ListBox.InputBindings>
+                        <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <KeyBinding Gesture="Enter" Command="{Binding ChangeDirectoryCommand }" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <KeyBinding Gesture="Backspace" Command="{Binding ParentDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <!-- <KeyBinding Gesture="Delete" Command="{Binding DeleteItemCommand }"> -->
+                        <!-- Command="{Binding PlayVideoCommand}" -->
+                        <!-- CommandParameter="{Binding ElementName=SmallVideoPreviews, Path=SelectedItem}"/> -->
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                        <MouseBinding Gesture="Alt+MiddleClick" Command="{Binding ChangeDirectoryCommand}" CommandParameter="{Binding ElementName=leftListView, Path=SelectedItem}"/>
+                    </ListBox.InputBindings>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Имя">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Icon}" />
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Размер" DisplayMemberBinding="{Binding Size}"/>
+                            <GridViewColumn Header="Изменен" DisplayMemberBinding="{Binding Created}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <GridSplitter Grid.Column="1" ShowsPreview="False" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Focusable="False"/>
+            <Grid Grid.Column="2" DataContext="{Binding RightFilePanelViewModel}">
+                <!-- <Grid.DataContext>
+                    <vm:FilePanelViewModel/>
+                </Grid.DataContext> -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" x:Name="rightPathTextBox" Text="TextBox" Focusable="False"/>
+                <ListView Grid.Row="1" x:Name="rightListView" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFileItem}" BorderBrush="{x:Null}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Имя">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Icon}" />
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Размер" DisplayMemberBinding="{Binding Size}"/>
+                            <GridViewColumn Header="Изменен" DisplayMemberBinding="{Binding Created}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
