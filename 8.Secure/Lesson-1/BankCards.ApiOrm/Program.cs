@@ -19,14 +19,15 @@ using Microsoft.AspNetCore.Authorization;
 using BankCards.ApiOrm.Mappings;
 using System.Reflection;
 using BankCards.DAL.Repositories.MongoDb;
-using BankCards.ApiOrm.Configuration;
-using Microsoft.Extensions.Options;
+using BankCards.DAL.Repositories.ElasticSearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 services.AddDatabase(builder.Configuration);
+services.AddElasticSearch(builder.Configuration);
 services.AddScoped<IBookRepository, BooksRepository>();
+services.AddScoped<IElasticRepository, ElasticRepository>();
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
 services.AddScoped<IDbInitializer, DbInitializer>();

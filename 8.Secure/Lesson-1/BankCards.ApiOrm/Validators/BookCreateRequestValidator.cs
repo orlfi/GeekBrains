@@ -8,18 +8,18 @@ public class BookCreateRequestValidator: AbstractValidator<BookCreateRequest>
 {
     public BookCreateRequestValidator()
     {
-        RuleFor(x => x.BookName)
+        RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Укажите имя книги");
 
-        RuleFor(x => x.Category)
-            .NotNull().WithMessage("Укажите категория")
+        RuleFor(x => x.Categories)
+            .NotNull().WithMessage("Укажите категории")
             .Length(1, 255).WithMessage("Длина должна быть от 1 до 255 символов");
 
-        RuleFor(x => x.Author)
-            .NotEmpty().WithMessage("Автора книги")
+        RuleFor(x => x.Authors)
+            .NotEmpty().WithMessage("Авторы книги")
             .Length(1, 255).WithMessage("Длина должна быть от 1 до 255 символов");
 
-        RuleFor(x => x.Price)
+        RuleFor(x => x.PageCount)
             .NotNull();
     }
 }

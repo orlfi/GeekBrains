@@ -1,83 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BankCards.ApiOrm.DTO.Search;
+using BankCards.Domain.Mongo;
+using BankCards.Interfaces.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BankCards.ApiOrm.Controllers
+namespace BankCards.ApiOrm.Controllers;
+
+public class SearchController : Controller
 {
-    public class SearchController : Controller
+    private readonly IElasticRepository _db;
+
+    public SearchController(IElasticRepository db)
     {
-        // GET: SearchController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        _db = db;
+    }
 
-        // GET: SearchController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    //GET: SearchController/SearchText
+   [HttpGet]
+    public ActionResult Index(string text)
+    {
+        var result =  _db.Search(text);
 
-        // GET: SearchController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SearchController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SearchController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: SearchController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SearchController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SearchController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        return View(result);
     }
 }
