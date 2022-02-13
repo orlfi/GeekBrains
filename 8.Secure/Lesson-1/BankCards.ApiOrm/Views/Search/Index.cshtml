@@ -21,7 +21,7 @@
 					<td>@item.Title</td>
 					<td>@item.Isbn</td>
 					<td>@item.ShortDescription</td>
-					<td>@item.LongDescription</td>
+					<td>@Html.Raw(item.LongDescription)</td>
 				</tr>
 			}
 		</tbody>

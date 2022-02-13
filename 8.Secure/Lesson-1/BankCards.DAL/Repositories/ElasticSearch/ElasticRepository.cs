@@ -2,6 +2,7 @@
 using BankCards.Interfaces.Repositories;
 using Microsoft.Extensions.Logging;
 using Nest;
+using System.Text;
 
 namespace BankCards.DAL.Repositories.ElasticSearch;
 
@@ -22,17 +23,27 @@ public class ElasticRepository : IElasticRepository
         var aa = _client.Indices;
         if (!string.IsNullOrWhiteSpace(query))
         {
-
             result = _client.Search<Book>(s => s.Source()
-                .Query(q => q
-                .QueryString(qs => qs
-                   .Query(query)
-                   .Fields(fs => fs
-                       .Fields(f1 => f1.LongDescription,
-                               f2 => f2.ShortDescription
-                               )
-                   )
-                   )));
+               .Query(qry => qry
+                   .QueryString(qs => qs
+                       .Query(query)
+                       .Fields(fs => fs
+                           .Fields(f1 => f1.LongDescription)
+                        )
+                    )
+                )
+                .Size(1000)
+                .Highlight(h => h
+                    .PreTags("<b>")
+                    .PostTags("</b>")
+                    .Fields(
+                    fs => fs
+                        .Field(p => p.LongDescription)
+                        .PreTags("<b>")
+                        .PostTags("</b>")
+                    )
+                )
+            );
         }
         else
         {
@@ -43,6 +54,30 @@ public class ElasticRepository : IElasticRepository
             );
         }
 
-        return result.Documents.ToArray();
+        return ReplaceHighlights(result);
+    }
+
+    private IEnumerable<Book> ReplaceHighlights(ISearchResponse<Book> response)
+    {
+        List<Book> result = new List<Book>();
+        foreach (var hit in response.Hits)
+        {
+            StringBuilder sb = new StringBuilder(hit.Source.LongDescription);
+            foreach (var highlight in hit.Highlight)
+            {
+
+                foreach (var val in highlight.Value)
+                {
+                    sb.Replace(val.Replace("<b>", "").Replace("</b>", ""), val);
+                }
+            }
+            result.Add(new Book()
+            {
+                Title = hit.Source.Title,
+                LongDescription = sb.ToString(),
+                ShortDescription = hit.Source.ShortDescription,
+            });
+        }
+        return result;
     }
 }
