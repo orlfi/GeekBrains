@@ -1,8 +1,11 @@
-﻿using BankCards.Interfaces;
+﻿using System.Reflection;
+using System.Security.Claims;
+using BankCards.Interfaces;
 using BankCards.Interfaces.Data.Account;
 using BankCards.Services.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.ObjectPool;
 
 namespace BankCards.ApiOrm.Controllers;
 
@@ -18,6 +21,21 @@ public class AccountController : ControllerBase
     {
         _accountManager = accountManager;
         _logger = logger;
+    }
+
+    [HttpGet("GetClaims")]
+    public IActionResult GetClaims()
+    {
+        var indentity = User.Identity as ClaimsIdentity;
+        if (indentity is not null)
+        {
+            var result = _accountManager.GetClaimsInfo(indentity.Claims);
+            return Ok(result);
+        }
+        else
+        {
+            return BadRequest("Indentity is null");
+        }
     }
 
     /// <summary>

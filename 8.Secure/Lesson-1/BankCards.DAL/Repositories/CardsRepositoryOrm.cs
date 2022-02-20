@@ -65,7 +65,6 @@ public class CardsRepositoryOrm : ICardRepository
             _logger.LogError(ex, "Ошибка при изменении банковской карты {0}", entity.Id);
             throw new DbException(HttpStatusCode.BadRequest, "Ошибка БД");
         }
-
     }
 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancel = default)

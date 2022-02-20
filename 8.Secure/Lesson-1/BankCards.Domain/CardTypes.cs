@@ -1,9 +1,8 @@
-namespace BankCards.Domain
+namespace BankCards.Domain;
+
+public enum CardTypes
 {
-    public enum CardTypes
-    {
-        Visa,
-        MasterCard,
-        Mir
-    }
+    Visa,
+    MasterCard,
+    Mir
 }

@@ -5,6 +5,11 @@ namespace BankCards.Domain;
 public class Card : Entity
 {
     /// <summary>
+    /// Id
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// Номер карты
     /// </summary>
     /// <value>16 цифр</value>
