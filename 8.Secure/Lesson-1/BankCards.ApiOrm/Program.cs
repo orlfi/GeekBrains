@@ -19,19 +19,20 @@ using Microsoft.AspNetCore.Authorization;
 using BankCards.ApiOrm.Mappings;
 using System.Reflection;
 using BankCards.DAL.Repositories.MongoDb;
-using BankCards.ApiOrm.Configuration;
-using Microsoft.Extensions.Options;
+using BankCards.DAL.Repositories.ElasticSearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 services.AddDatabase(builder.Configuration);
+services.AddElasticSearch(builder.Configuration);
 services.AddScoped<IBookRepository, BooksRepository>();
+services.AddScoped<IElasticRepository, ElasticRepository>();
 services.AddScoped<ICardRepository, CardsRepositoryOrm>();
 services.AddScoped<IAccountManager, AccountManager>();
 services.AddScoped<IDbInitializer, DbInitializer>();
 services.AddScoped<IJwtGenerator, JwtGenerator>();
-services.AddControllers();
+services.AddControllersWithViews();
 services.AddEndpointsApiExplorer();
 services.AddValidators();
 services.AddMappers();
@@ -130,6 +131,8 @@ await using (var scope = app.Services.CreateAsyncScope())
         builder.Configuration.GetValue<bool>("InitializeDatabaseWithTestData"));
 }
 
+app.UseStaticFiles();
+
 // Используем middleware обработчик ошибок для всех запросов
 app.UseErrorHandling(app.Environment.IsDevelopment());
 
@@ -149,6 +152,8 @@ if (app.Configuration.GetValue<bool>("UseSwagger"))
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseAuthentication();
@@ -156,9 +161,15 @@ if (!app.Environment.IsDevelopment())
     app.UseAuthorization();
 }
 
+
+
 app.MapControllers();
 
 app.Map("/test", () => "Тестовая страница");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

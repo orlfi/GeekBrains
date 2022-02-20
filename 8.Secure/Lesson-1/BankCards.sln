@@ -20,6 +20,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankCards.Services", "BankCards.Services\BankCards.Services.csproj", "{237BBDCA-C03E-4E87-AD05-8AF3C5D22560}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{377EA9A2-7E98-4C4E-B82A-289613AC9D11}"
+	ProjectSection(SolutionItems) = preProject
+		data.json = data.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F2EC7125-1DC7-4DEB-A848-6B51DCB3AFE4}"
 EndProject
