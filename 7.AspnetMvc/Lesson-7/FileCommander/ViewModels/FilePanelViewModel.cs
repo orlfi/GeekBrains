@@ -27,9 +27,10 @@ public partial class FilePanelViewModel : ViewModel
         get => _path;
         set
         {
-            Set(ref _path, value);
+            if(!Set(ref _path, value)) return;
             PathChangeEvent?.Invoke(this, new PathChangeEventArgs(value));
             Refresh();
+
         }
     }
     private string _path;
