@@ -13,18 +13,21 @@ public static class FileIcons
 
     public static Icon FolderSmall => _folderSmallIcon ?? (_folderSmallIcon = GetStockIcon(SHSIID_FOLDER, SHGSI_SMALLICON));
 
-    public static Icon GetIcon(string path)
+    public static Icon? GetIcon(string path)
     {
         return ExtractFromPath(path);
     }
 
-    private static Icon ExtractFromPath(string path)
+    private static Icon? ExtractFromPath(string path)
     {
         SHFILEINFO shinfo = new SHFILEINFO();
         SHGetFileInfo(
             path,
             0, ref shinfo, (uint)Marshal.SizeOf(shinfo),
             SHGFI_ICON | SHGFI_SMALLICON);
+
+        if (shinfo.hIcon == IntPtr.Zero)
+            return null;
 
         var icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone(); // Get a copy that doesn't use the original handle
         DestroyIcon(shinfo.hIcon); // Clean up native icon to prevent resource leak

@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
-using FileCommander.Reports;
-using FileCommander.Reports.Interfaces;
+using FileCommander.Interfaces;
+using FileCommander.Interfaces.Reports;
 using FileCommander.Services;
+using FileCommander.Services.Reports;
+using FileCommander.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace FileCommander;
 
@@ -25,13 +22,18 @@ public partial class App : Application
 
     public static IHost Hosting => _host ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
 
+    public static IServiceProvider Services => Hosting.Services;
+
     public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
         .ConfigureServices(ConfigureServices)
-        .UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigureAutofacServices));
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory(ConfigureAutofacServices))
+        .UseSerilog(ConfigureLogger);
 
     public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
     {
-        services.AddSingleton<IReportResolver, ReportResolver>();
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IReportResolver, ReportResolver>();
+        services.AddScoped<MainWindowViewModel>();
     }
 
     private static void ConfigureAutofacServices(ContainerBuilder containerBuilder)
@@ -39,6 +41,26 @@ public partial class App : Application
         // для шаблона Strategy
         containerBuilder.RegisterType<FileInfoReport>().Named<IReport>("file").SingleInstance();
         containerBuilder.RegisterType<DirectoryInfoReport>().Named<IReport>("directory").SingleInstance();
+    }
+
+    static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
+    {
+        config.ReadFrom.Configuration(context.Configuration);
+    }
+
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        var host = Hosting;
+        await host.StartAsync().ConfigureAwait(true);
+
+        base.OnStartup(e);
+    }
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
+
+        using var host = Hosting;
+        await host.StopAsync().ConfigureAwait(true);
     }
 
 }

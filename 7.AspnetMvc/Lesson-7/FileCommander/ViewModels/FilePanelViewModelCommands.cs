@@ -30,6 +30,20 @@ public partial class FilePanelViewModel : ViewModel
     }
     #endregion
 
+
+    #region DoubleClickCommand
+    private Command? _doubleClickCommand;
+
+    public ICommand DoubleClickCommand => _doubleClickCommand ??= Command.Invoke(OnDoubleClickCommand);
+
+    public void OnDoubleClickCommand(object? ev)
+    {
+        if (ev is null)
+            return;
+
+    }
+    #endregion
+
     #region ChangeDirectoryCommand
     private Command? _changeDirectoryCommand;
 
@@ -41,7 +55,8 @@ public partial class FilePanelViewModel : ViewModel
             return;
 
         Path = (selectedItem as IFilePanelItem).FullName;
-        SelectedFileItem = Files[0];
+
+        SelectedFileItem = Files.Count > 0 ? Files[0] : null;
     }
     #endregion
 
@@ -57,6 +72,39 @@ public partial class FilePanelViewModel : ViewModel
         {
             Path = parent.FullName;
         }
+    }
+    #endregion
+
+    #region SelectFileCommand
+    private Command? _selectFileCommand;
+
+    public ICommand SelectFileCommand => _selectFileCommand ??= Command.Invoke(OnSelectFileCommand);
+
+    public void OnSelectFileCommand(object? parameter)
+    {
+        if (parameter is IFilePanelItem item)
+        {
+            item.IsSelected = !item.IsSelected;
+        }
+
+        // var parent = Directory.GetParent(_path);
+        // if (parent is not null)
+        // {
+        //     Path = parent.FullName;
+        // }
+    }
+    #endregion
+
+    #region ReportFileCommand
+    private Command? _reportCommand;
+
+    public ICommand ReportCommand => _reportCommand ??= Command.Invoke(OnReportCommand);
+
+    public void OnReportCommand(object? parameter)
+    {
+        var fileItem = parameter as IFilePanelItem;
+        if (fileItem is not null)
+            CreateReportEvent?.Invoke(this, new ModelEvents.CreateReportEventArgs(fileItem.FullName));
     }
     #endregion
 }

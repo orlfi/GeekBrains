@@ -6,9 +6,11 @@ using System.Windows.Input;
 
 namespace FileCommander.Commands.Base
 {
-    public abstract class Command: ICommand
+    public abstract class Command: ViewModel, ICommand
     {
-        public string Name { get; set; } = "Button";
+        private string _Name = "Button";
+        public string Name { get => _Name; set => Set(ref _Name, value); }
+
 
         public event EventHandler? CanExecuteChanged;
 

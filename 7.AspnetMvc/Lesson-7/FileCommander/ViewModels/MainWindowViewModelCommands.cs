@@ -22,26 +22,6 @@ namespace FileCommander.ViewModels
             if (item is not null)
                 CreateReport(item.FullName);
         }
-
-        private void CreateReport(string fileName)
-        {
-            var dialog = new System.Windows.Forms.SaveFileDialog();
-            dialog.FileName = $"Отчет для ({Path.GetFileName(fileName)}).docx";
-            dialog.DefaultExt = "docx";
-            // dialog.Filter = "Microsoft word files (*.doc)|*.doc|All files (*.*)|*.*";
-            dialog.Filter = "Microsoft word files (*.doc)|*.doc";
-            dialog.InitialDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
-
-            if (_selectedFile is not null && dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-
-                var text = dialog.FileName;
-                System.Windows.MessageBox.Show(text);
-
-                // var fileService = new FileService();
-                // fileService.CreateReport(dialog.FileName);
-            }
-        }
         #endregion
 
         #region QuitCommand
@@ -89,9 +69,9 @@ namespace FileCommander.ViewModels
         #endregion
 
         #region TestCommand
-        private Command? _testCommand;
+        private Command? _DoubleCommand;
 
-        public ICommand TestCommand => _testCommand ??= Command.Invoke(OnTestCommand).WithName("Нажми меня");
+        public ICommand DoubleCommand => _DoubleCommand ??= Command.Invoke(OnTestCommand).WithName("Нажми меня");
 
         public void OnTestCommand(object? parameter)
         {

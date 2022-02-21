@@ -8,8 +8,14 @@ namespace FileCommander.ViewModels.Interfaces;
 public interface IFilePanelItem
 {
     ImageSource? Icon { get; init; }
+
     string Name { get; }
+
     string FullName { get; }
+
     string Created { get; }
+
     string Size { get; }
+
+    bool IsSelected { get; set; }
 }

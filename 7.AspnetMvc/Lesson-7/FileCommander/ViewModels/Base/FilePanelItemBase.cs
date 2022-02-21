@@ -7,8 +7,8 @@ using System.Windows.Media.Imaging;
 using FileCommander.Interop;
 using FileCommander.ViewModels.Interfaces;
 
-namespace FileCommander.ViewModels;
-public abstract class FilePanelItemBase : IFilePanelItem
+namespace FileCommander.ViewModels.Base;
+public abstract class FilePanelItemBase : ViewModel, IFilePanelItem
 {
     protected const string createdTemplate = "dd.MM.yy hh:mm";
 
@@ -20,14 +20,25 @@ public abstract class FilePanelItemBase : IFilePanelItem
 
     public abstract string Created { get; }
 
+    public virtual string Attributes { get; } = "";
+
+    private bool _isSelected;
+
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set => Set(ref _isSelected, value);
+    }
+
     protected long _size;
 
     public string Size => FormatSize(_size);
 
     protected static ImageSource ToImageSource(string path)
     {
-
         var icon = FileIcons.GetIcon(path);
+        if (icon is null)
+            return null;
 
         ImageSource imageSource = Imaging.CreateBitmapSourceFromHIcon(
             icon.Handle,
