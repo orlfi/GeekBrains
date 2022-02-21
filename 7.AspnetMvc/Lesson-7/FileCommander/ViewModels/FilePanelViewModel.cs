@@ -96,8 +96,9 @@ public partial class FilePanelViewModel : ViewModel
     private ICollection<IFilePanelItem> GetFiles(string path)
     {
         var di = new DirectoryInfo(path);
-        var directories = di.GetDirectories().Select(item => new DirectoryPanelItem(item) as IFilePanelItem);
-        var files = di.GetFiles().Select(item => new FilePanelItem(item));
+        var directories = di.EnumerateDirectories().Select(item => (IFilePanelItem)new DirectoryPanelItem(item));
+        var files = di.EnumerateFiles().Select(item => new FilePanelItem(item));
+
         var result = directories.Union(files);
         return result.ToArray();
     }
