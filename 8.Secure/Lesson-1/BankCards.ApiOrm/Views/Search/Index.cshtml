@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BankCards.Domain.Mongo.Book>
+
+<h3>Результаты поиска</h3>
+@if (Model.Any())
+{
+	<h3>Search Results</h3>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Наименование</th>
+				<th>ISBN</th>
+				<th>Краткое описание</th>
+				<th>Полное описание</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.Title</td>
+					<td>@item.Isbn</td>
+					<td>@item.ShortDescription</td>
+					<td>@Html.Raw(item.LongDescription)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
