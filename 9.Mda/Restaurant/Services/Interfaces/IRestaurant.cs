@@ -2,9 +2,9 @@
 
 public interface IRestaurant
 {
-    void BookFreeTable();
-    Task BookFreeTableAsync(CancellationToken cancel = default);
+    void BookFreeTable(int seatsCount);
+    void BookFreeTableAsync(int seatsCount, CancellationToken cancel = default);
     void ClearBook(int number);
-    Task ClearBookAsync(int number, CancellationToken cancel = default);
+    void ClearBookAsync(int number, CancellationToken cancel = default);
     void Dispose();
 }

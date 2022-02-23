@@ -4,7 +4,7 @@ namespace Services.Gateways.Sms;
 
 public class SmsGateway : IGateway
 {
-    public string GatewayName => "СМС сообщение";
+    public string GatewayName => "СМС";
 
     public async Task SendAsync(string message, CancellationToken cancel = default)
     {
