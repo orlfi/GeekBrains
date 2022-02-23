@@ -9,7 +9,7 @@ namespace Services;
 public class Restaurant : IDisposable, IRestaurant
 {
     private const int ClearBookingTimerPeriod = 20000;
-    private const int SearchFreeTableTime = 2000;
+    private const int SearchFreeTableTime = 5000;
     private const int ClearBookingTime = 100;
     private const int ClearAllBookingTime = 1000;
     private const int TablesCount = 5;
@@ -46,6 +46,7 @@ public class Restaurant : IDisposable, IRestaurant
     {
         Console.WriteLine($"Добрый день. Подождите секунду, я подберу столик и подтвержу бронь. Оставайтесь на линии");
         string message = "";
+        semaphoreSlim.Wait();
         try
         {
             var tables = GetFreeTables(seatsCount);
@@ -67,6 +68,10 @@ public class Restaurant : IDisposable, IRestaurant
         {
             _logger.LogError(ex, "Ошибка при бронировании столика на {0}", seatsCount);
             message = $"Сервис временно недоступен. Приносим свои извенения.";
+        }
+        finally
+        {
+            semaphoreSlim.Release(); 
         }
 
         Console.WriteLine(message);
@@ -145,9 +150,17 @@ public class Restaurant : IDisposable, IRestaurant
         Console.WriteLine($"Добрый день. Подождите секунду, я сниму бронь со столика {number}. Оставайтесь на линии");
 
         string message = "";
-        var table = _tables.SingleOrDefault(item => item.Id == number && item.State == State.Booked);
-
-        table?.SetBooking(State.Free);
+        Table? table = null;
+        semaphoreSlim.Wait();
+        try
+        {
+            table = _tables.SingleOrDefault(item => item.Id == number && item.State == State.Booked);
+            table?.SetBooking(State.Free);
+        }
+        finally
+        {
+            semaphoreSlim.Release();
+        }
         message = table is null
             ? "Столик не найден или не забронирован"
             : $"Бронь снята со столика {table.Id}";
