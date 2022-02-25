@@ -8,7 +8,7 @@ namespace Services;
 
 public class Restaurant : IDisposable, IRestaurant
 {
-    private const int ClearBookingTimerPeriod = 20000;
+    private const int ClearBookingTimerPeriod = 60000;
     private const int SearchFreeTableTime = 5000;
     private const int ClearBookingTime = 100;
     private const int ClearAllBookingTime = 1000;
@@ -30,7 +30,7 @@ public class Restaurant : IDisposable, IRestaurant
         InitTables();
 
         _timer = new System.Timers.Timer(ClearBookingTimerPeriod);
-        _timer.Elapsed += async (s, e) => await ClearBooksAsync(); 
+        _timer.Elapsed += async (s, e) => await RemoveBookingsAsync();
         _timer.Start();
     }
 
@@ -51,7 +51,7 @@ public class Restaurant : IDisposable, IRestaurant
         {
             var tables = GetFreeTables(seatsCount);
             Thread.Sleep(SearchFreeTableTime);
-            if (tables is not null)
+            if (tables.Count > 0)
             {
                 foreach (var item in tables)
                 {
@@ -71,7 +71,7 @@ public class Restaurant : IDisposable, IRestaurant
         }
         finally
         {
-            semaphoreSlim.Release(); 
+            semaphoreSlim.Release();
         }
 
         Console.WriteLine(message);
@@ -88,7 +88,7 @@ public class Restaurant : IDisposable, IRestaurant
             {
                 var tables = GetFreeTables(seatsCount);
                 await Task.Delay(SearchFreeTableTime, cancel).ConfigureAwait(false);
-                if (tables is not null)
+                if (tables.Count > 0)
                 {
                     foreach (var item in tables)
                     {
@@ -118,34 +118,34 @@ public class Restaurant : IDisposable, IRestaurant
 
     private List<Table> GetFreeTables(int seats)
     {
-        Table table;
+        Table? table;
         int seatsLeft = seats;
         var result = new List<Table>();
+
         while (seatsLeft > 0)
         {
             var freetables = _tables.Where(item => item.State == State.Free && !result.Contains(item)).ToArray();
 
             if (freetables.Length == 0)
-            {
-                return null;
-            }
+                return new List<Table>();
 
-            var maxSeatsLeft = freetables?.Max(item => item.Seats) ?? 0;
+            var maxSeatsLeft = freetables.Max(item => item.Seats);
             if (seatsLeft >= maxSeatsLeft)
                 table = freetables?.OrderByDescending(item => item.Seats).FirstOrDefault();
             else
                 table = freetables?.OrderBy(item => item.Seats).FirstOrDefault();
 
             if (table == null)
-                return null;
+                return new List<Table>();
 
             result.Add(table);
             seatsLeft -= table.Seats;
         }
+
         return result;
     }
-     
-    public void ClearBook(int number)
+
+    public void RemoveBookingByNumber(int number)
     {
         Console.WriteLine($"Добрый день. Подождите секунду, я сниму бронь со столика {number}. Оставайтесь на линии");
 
@@ -167,7 +167,7 @@ public class Restaurant : IDisposable, IRestaurant
         Console.WriteLine(message);
     }
 
-    public void ClearBookAsync(int number, CancellationToken cancel = default)
+    public void RemoveBookingByNumberAsync(int number, CancellationToken cancel = default)
     {
         Console.WriteLine($"Добрый день. Подождите секунду, я сниму бронь со столика {number}. Вам придет {_asyncNotificationService.GatewayName}");
         Task.Run(async () =>
@@ -192,7 +192,7 @@ public class Restaurant : IDisposable, IRestaurant
         });
     }
 
-    private async Task ClearBooksAsync(CancellationToken cancel = default)
+    private async Task RemoveBookingsAsync(CancellationToken cancel = default)
     {
         _logger.LogInformation("Снятие брони со всех столов...");
         var bookedTablesNumbers = new List<int>();

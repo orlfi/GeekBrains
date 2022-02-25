@@ -28,12 +28,12 @@ public class OrderResultResolver : IOrderResultResolver
     public void Handle(ClearBookingResult result)
     {
         _logger.LogDebug("Синхронное снятие брони столика №{0}", result.TableNumber);
-        _restaurant.ClearBook(result.TableNumber);
+        _restaurant.RemoveBookingByNumber(result.TableNumber);
     }
 
     public void Handle(ClearBookingAsyncResult result)
     {
         _logger.LogDebug("Асинхронное снятие брони столика №{0}", result.TableNumber);
-        _restaurant.ClearBookAsync(result.TableNumber);
+        _restaurant.RemoveBookingByNumberAsync(result.TableNumber);
     }
 }
