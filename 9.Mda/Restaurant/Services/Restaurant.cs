@@ -16,14 +16,14 @@ public class Restaurant : IDisposable, IRestaurant
     private const int MinSeatsTable = 3;
     private const int MaxSeatsTable = 5;
 
-    private readonly IGateway _asyncNotificationService;
+    private readonly INotificationGateway _asyncNotificationService;
     private readonly ILogger<Restaurant> _logger;
     private List<Table> _tables { get; set; } = new(TablesCount);
     private System.Timers.Timer _timer;
     private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
 
 
-    public Restaurant(IGateway asyncNotificationService, ILogger<Restaurant> logger)
+    public Restaurant(INotificationGateway asyncNotificationService, ILogger<Restaurant> logger)
     {
         _asyncNotificationService = asyncNotificationService;
         _logger = logger;

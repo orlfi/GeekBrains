@@ -2,7 +2,7 @@
 
 namespace Services.Gateways.Sms;
 
-public class SmsGateway : IGateway
+public class SmsGateway : INotificationGateway
 {
     public string GatewayName => "СМС";
 

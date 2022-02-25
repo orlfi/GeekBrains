@@ -21,9 +21,10 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 {
     services.AddSingleton<Application>();
     services.AddSingleton<IRestaurant, Restaurant>();
-    services.AddSingleton<IGateway, SmsGateway>();
+    services.AddSingleton<INotificationGateway, SmsGateway>();
     services.AddSingleton<IOrderManager, OrderManager>();
     services.AddSingleton<IOrderResultResolver, OrderResultResolver>();
+    services.AddHostedService<Application>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
@@ -32,7 +33,4 @@ static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration conf
 }
 
 using IHost host = CreateHostBuilder(args).Build();
-await host.Services.GetRequiredService<Application>().RunAsync();
-
-Console.WriteLine("Press any key to exit...");
-Console.ReadKey();
+ host.Run();

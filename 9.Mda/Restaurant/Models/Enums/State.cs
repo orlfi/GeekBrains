@@ -2,6 +2,6 @@
 
 public enum State
 {
-    Free,
-    Booked
+    Free = 0,
+    Booked = 1
 }

@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Services.Interfaces;
 
 namespace RestaurantApp;
 
-public class Application
+public class Application : BackgroundService
 {
     private static string _path = null!;
     public static string Path => _path ??= System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
@@ -17,7 +18,7 @@ public class Application
         _requestManager = requestManager;
     }
 
-    public async Task RunAsync()
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
@@ -31,5 +32,7 @@ public class Application
         {
             _logger.LogError(ex, "Необработанная ошибка {0}", ex.Message);
         }
+
+        return Task.CompletedTask;
     }
 }

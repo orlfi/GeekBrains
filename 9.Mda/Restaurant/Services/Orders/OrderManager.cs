@@ -1,49 +1,34 @@
-﻿using Services.Interfaces;
+﻿using System.Reflection.Metadata.Ecma335;
+using Services.Interfaces;
 
 namespace Services.Request;
 
 public class OrderManager : IOrderManager
 {
-    private readonly IGateway _asyncNotificationService;
+    private readonly INotificationGateway _notificationService;
     private readonly IOrderResultResolver _resultResolver;
 
-    public OrderManager(IGateway asyncNotificationService, IOrderResultResolver resultResolver)
+    public OrderManager(INotificationGateway notificationService, IOrderResultResolver resultResolver)
     {
-        _asyncNotificationService = asyncNotificationService;
+        _notificationService = notificationService;
         _resultResolver = resultResolver;
     }
 
     public void ProcessRequest()
     {
         Console.WriteLine("Добрый день.");
-        Console.WriteLine($"1 - Желаете забронировать столик?");
-        Console.WriteLine($"2 - Желаете отменить бронь?");
-        int bookingChoice;
-        do
-        {
-            var answer = Console.ReadLine();
-            if (int.TryParse(answer, out bookingChoice) && bookingChoice is not (1 or 2))
-            {
-                Console.WriteLine("Введите 1 или 2");
-            }
-        } while (bookingChoice is not (1 or 2));
+        Console.WriteLine("1 - Желаете забронировать столик?");
+        Console.WriteLine("2 - Желаете отменить бронь?");
+        var bookingChoice = GetNumberAnswer((value) => value is (1 or 2), "Введите 1 или 2");
 
         HandleBookingChoice(bookingChoice);
     }
 
     private void HandleBookingChoice(int bookingChoice)
     {
-        int notificationChoice;
-        do
-        {
-            Console.WriteLine($"1 - мы уведомим Вас по {_asyncNotificationService.GatewayName} (асинхронно)");
-            Console.WriteLine($"2 - подождите на линии, мы Вас оповестим (синхронно )");
-            var answer = Console.ReadLine();
-            if (int.TryParse(answer, out notificationChoice) && notificationChoice is not (1 or 2))
-            {
-                Console.WriteLine("Введите 1 или 2");
-            }
-        } while (notificationChoice is not (1 or 2));
+        Console.WriteLine($"1 - мы уведомим Вас по {_notificationService.GatewayName} (асинхронно)");
+        Console.WriteLine($"2 - подождите на линии, мы Вас оповестим (синхронно )");
+        var notificationChoice = GetNumberAnswer((value) => value is (1 or 2), "Введите 1 или 2");
 
         if (bookingChoice == 1)
             HandleSetBookingNotificationChoice(notificationChoice);
@@ -53,17 +38,8 @@ public class OrderManager : IOrderManager
 
     private void HandleSetBookingNotificationChoice(int bookingChoice)
     {
-        int seatsCount;
         Console.Write("Введите количество мест: ");
-        while (true)
-        {
-            var answer = Console.ReadLine();
-            if (int.TryParse(answer, out seatsCount))
-            {
-                break;
-            }
-            Console.Write("Введите число:");
-        }
+        var seatsCount = GetNumberAnswer("Введите номер:");
 
         if (bookingChoice == 1)
             _resultResolver.Handle(new SetBookingAsyncResult(seatsCount));
@@ -73,23 +49,28 @@ public class OrderManager : IOrderManager
 
     private void HandleClearBookingNotificationChoice(int bookingChoice)
     {
-        int tableNumber;
-        {
-            Console.Write("Введите номер столика для отмены брони: ");
-            while (true)
-            {
-                var answer = Console.ReadLine();
-                if (int.TryParse(answer, out tableNumber))
-                {
-                    break;
-                }
-                Console.Write("Введите номер:");
-            }
-        }
+        Console.Write("Введите номер столика для отмены брони: ");
+        var tableNumber = GetNumberAnswer("Введите номер:");
 
         if (bookingChoice == 1)
             _resultResolver.Handle(new ClearBookingAsyncResult(tableNumber));
         else
             _resultResolver.Handle(new ClearBookingResult(tableNumber));
+    }
+
+    private int GetNumberAnswer(string wrongConditionMessage)
+    {
+        return GetNumberAnswer(_ => true, wrongConditionMessage);
+    }
+
+    private int GetNumberAnswer(Func<int, bool> condition, string wrongConditionMessage)
+    {
+        var answer = Console.ReadLine();
+        if (!(int.TryParse(answer, out int value) && condition(value)))
+        {
+            Console.WriteLine(wrongConditionMessage);
+            return GetNumberAnswer(condition, wrongConditionMessage);
+        }
+        return value;
     }
 }
