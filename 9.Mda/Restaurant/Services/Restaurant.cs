@@ -1,7 +1,7 @@
+using Interfaces;
 using Microsoft.Extensions.Logging;
 using Models;
 using Services.Enums;
-using Services.Interfaces;
 using System.Data;
 
 namespace Services;
@@ -16,7 +16,7 @@ public class Restaurant : IDisposable, IRestaurant
     private const int MinSeatsTable = 3;
     private const int MaxSeatsTable = 5;
 
-    private readonly INotificationGateway _asyncNotificationService;
+    private readonly INotificationGateway _notificationService;
     private readonly ILogger<Restaurant> _logger;
     private List<Table> _tables { get; set; } = new(TablesCount);
     private System.Timers.Timer _timer;
@@ -25,7 +25,7 @@ public class Restaurant : IDisposable, IRestaurant
 
     public Restaurant(INotificationGateway asyncNotificationService, ILogger<Restaurant> logger)
     {
-        _asyncNotificationService = asyncNotificationService;
+        _notificationService = asyncNotificationService;
         _logger = logger;
         InitTables();
 
@@ -79,7 +79,7 @@ public class Restaurant : IDisposable, IRestaurant
 
     public void BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)
     {
-        Console.WriteLine($"Добрый день. Подождите секунду, я подберу столик и подтвержу бронь. Вам придет {_asyncNotificationService.GatewayName}");
+        Console.WriteLine($"Добрый день. Подождите секунду, я подберу столик и подтвержу бронь. Вам придет {_notificationService.GatewayName}");
         Task.Run(async () =>
         {
             await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
@@ -104,7 +104,7 @@ public class Restaurant : IDisposable, IRestaurant
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при бронировании столика на {0}", seatsCount);
-                message = $"Сервис временно недоступен. Приносим свои извенения. Вас уведомим {_asyncNotificationService.GatewayName} о решении проблемы";
+                message = $"Сервис временно недоступен. Приносим свои извенения. Вас уведомим {_notificationService.GatewayName} о решении проблемы";
             }
             finally
             {
@@ -112,7 +112,7 @@ public class Restaurant : IDisposable, IRestaurant
                 semaphoreSlim.Release();
             }
 
-            await _asyncNotificationService.SendAsync(message);
+            await _notificationService.SendAsync(message);
         });
     }
 
@@ -169,7 +169,7 @@ public class Restaurant : IDisposable, IRestaurant
 
     public void RemoveBookingByNumberAsync(int number, CancellationToken cancel = default)
     {
-        Console.WriteLine($"Добрый день. Подождите секунду, я сниму бронь со столика {number}. Вам придет {_asyncNotificationService.GatewayName}");
+        Console.WriteLine($"Добрый день. Подождите секунду, я сниму бронь со столика {number}. Вам придет {_notificationService.GatewayName}");
         Task.Run(async () =>
         {
             await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
@@ -188,7 +188,7 @@ public class Restaurant : IDisposable, IRestaurant
             {
                 semaphoreSlim.Release();
             }
-            await _asyncNotificationService.SendAsync(message);
+            await _notificationService.SendAsync(message);
         });
     }
 

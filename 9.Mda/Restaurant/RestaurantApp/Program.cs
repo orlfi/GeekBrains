@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using RestaurantApp;
 using Services;
-using Services.Interfaces;
+using Interfaces;
 using Services.Gateways.Sms;
 using Services.Request;
 
@@ -22,8 +22,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<Application>();
     services.AddSingleton<IRestaurant, Restaurant>();
     services.AddSingleton<INotificationGateway, SmsGateway>();
-    services.AddSingleton<IOrderManager, OrderManager>();
-    services.AddSingleton<IOrderResultResolver, OrderResultResolver>();
+    services.AddSingleton<IOrderManager, InteractiveOrderManager>();
     services.AddHostedService<Application>();
 }
 

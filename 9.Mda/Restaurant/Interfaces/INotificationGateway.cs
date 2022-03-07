@@ -1,4 +1,4 @@
-﻿namespace Services.Interfaces;
+﻿namespace Interfaces;
 
 public interface INotificationGateway
 {

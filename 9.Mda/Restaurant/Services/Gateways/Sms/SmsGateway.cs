@@ -1,4 +1,4 @@
-﻿using Services.Interfaces;
+﻿using Interfaces;
 
 namespace Services.Gateways.Sms;
 

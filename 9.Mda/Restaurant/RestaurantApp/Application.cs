@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Services.Interfaces;
+using Interfaces;
 
 namespace RestaurantApp;
 
