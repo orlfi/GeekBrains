@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Interfaces;
 
-namespace RestaurantApp;
+namespace Restaurant.Booking;
 
 public class Application : BackgroundService
 {
@@ -28,7 +28,7 @@ public class Application : BackgroundService
                 _requestManager.ProcessRequest();
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Необработанная ошибка {0}", ex.Message);
         }

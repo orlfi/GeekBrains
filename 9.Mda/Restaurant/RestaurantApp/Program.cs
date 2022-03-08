@@ -2,11 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using RestaurantApp;
-using Services;
 using Interfaces;
-using Services.Gateways.Sms;
-using Services.Request;
+using Restaurant.Booking;
+using Restaurant.Booking.Services;
+using Restaurant.Notifications.Sms;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -20,8 +19,8 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<Application>();
-    services.AddSingleton<IRestaurant, Restaurant>();
-    services.AddSingleton<INotificationGateway, SmsGateway>();
+    services.AddSingleton<IRestaurant, Restaurant.Booking.Services.Restaurant>();
+    services.AddSingleton<IProducer, SmsGateway>();
     services.AddSingleton<IOrderManager, InteractiveOrderManager>();
     services.AddHostedService<Application>();
 }

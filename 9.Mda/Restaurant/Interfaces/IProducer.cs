@@ -1,7 +1,7 @@
 ﻿namespace Interfaces;
 
-public interface INotificationGateway
+public interface IProducer
 {
-    string GatewayName { get;  }
+    string Name { get;  }
     Task SendAsync(string message, CancellationToken cancel = default);
 }

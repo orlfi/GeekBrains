@@ -1,10 +1,10 @@
 ﻿using Interfaces;
 
-namespace Services.Gateways.Sms;
+namespace Restaurant.Notifications.Sms;
 
-public class SmsGateway : INotificationGateway
+public class SmsGateway : IProducer
 {
-    public string GatewayName => "СМС";
+    public string Name => "СМС";
 
     public async Task SendAsync(string message, CancellationToken cancel = default)
     {
