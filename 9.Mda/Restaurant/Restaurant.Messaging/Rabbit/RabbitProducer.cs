@@ -11,6 +11,8 @@ public class RabbitProducer : IProducer, IDisposable
     private bool _disposed;
     private IConnection _connection;
     private string _queueName = "booking";
+    private string _exchangeName;
+    private string _exchangeType;
     private readonly ILogger<RabbitProducer> _logger;
 
     public string Name => "MQ";
@@ -18,6 +20,8 @@ public class RabbitProducer : IProducer, IDisposable
     public RabbitProducer(RabbitSettings settings, ILogger<RabbitProducer> logger)
     {
         ConnectionFactory connectionFactory = new ConnectionFactory() { HostName = settings.Host, Port = settings.Port};
+        _exchangeName = settings.ExchangeName;
+        _exchangeType = settings.ExchangeType;  
         _connection = connectionFactory.CreateConnection();
         _logger = logger;
     }
@@ -35,10 +39,10 @@ public class RabbitProducer : IProducer, IDisposable
         }
 
         using var channel = _connection.CreateModel();
-        channel.ExchangeDeclare("direct_exchange", "direct", false, false, null);
+        channel.ExchangeDeclare(_exchangeName, _exchangeType, false, false, null);
 
         var data = Encoding.UTF8.GetBytes(message);
-        channel.BasicPublish("direct_exchange", _queueName, null, data);
+        channel.BasicPublish(_exchangeName, _queueName, null, data);
         _logger.LogInformation("Отправлено сообщение {0}", message);
 
         return Task.CompletedTask;
