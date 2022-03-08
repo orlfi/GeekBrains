@@ -1,6 +1,6 @@
 ﻿namespace Interfaces;
 
-public interface IRestaurant
+public interface IRestaurantBooking
 {
     void BookFreeTable(int seatsCount);
     void BookFreeTableAsync(int seatsCount, CancellationToken cancel = default);

@@ -48,11 +48,6 @@ public class RabbitConsumer : IConsumer, IDisposable
         _channel.BasicConsume(queueName, _settings.Autoack, consumer);
     }
 
-    private void Consumer_Received(object? sender, BasicDeliverEventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Dispose()
     {
         if (_disposed)

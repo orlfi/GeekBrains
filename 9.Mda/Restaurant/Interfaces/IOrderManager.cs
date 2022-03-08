@@ -2,6 +2,6 @@
 
 public interface IOrderManager
 {
-    IRestaurant Restaurant { get; }
+    IRestaurantBooking Restaurant { get; }
     void ProcessRequest();
 }

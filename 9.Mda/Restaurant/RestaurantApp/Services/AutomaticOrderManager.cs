@@ -5,11 +5,11 @@ namespace Restaurant.Booking.Services;
 
 public class AutomaticOrderManager : IOrderManager
 {
-    private readonly IRestaurant _restaurant;
+    private readonly IRestaurantBooking _restaurant;
 
-    public IRestaurant Restaurant => _restaurant;
+    public IRestaurantBooking Restaurant => _restaurant;
 
-    public AutomaticOrderManager(IRestaurant restaurant)
+    public AutomaticOrderManager(IRestaurantBooking restaurant)
     {
         _restaurant = restaurant;
     }

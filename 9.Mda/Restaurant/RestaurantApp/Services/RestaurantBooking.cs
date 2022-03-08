@@ -7,7 +7,7 @@ using System.Data;
 
 namespace Restaurant.Booking.Services;
 
-public class Restaurant : IDisposable, IRestaurant
+public class RestaurantBooking : IDisposable, IRestaurantBooking
 {
     private const int ClearBookingTimerPeriod = 15000;
     private const int SearchFreeTableTime = 1000;
@@ -18,13 +18,13 @@ public class Restaurant : IDisposable, IRestaurant
     private const int MaxSeatsTable = 5;
 
     private readonly IProducer _notificationService;
-    private readonly ILogger<Restaurant> _logger;
+    private readonly ILogger<RestaurantBooking> _logger;
     private List<Table> _tables { get; set; } = new(TablesCount);
     private System.Timers.Timer _timer;
     private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
 
 
-    public Restaurant(IProducer notificationService, ILogger<Restaurant> logger)
+    public RestaurantBooking(IProducer notificationService, ILogger<RestaurantBooking> logger)
     {
         _notificationService = notificationService;
         _logger = logger;
