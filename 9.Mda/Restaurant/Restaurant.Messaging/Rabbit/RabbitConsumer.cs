@@ -45,7 +45,7 @@ public class RabbitConsumer : IConsumer, IDisposable
         
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += recieveCallback;
-        _channel.BasicConsume(queueName, true, consumer);
+        _channel.BasicConsume(queueName, _settings.Autoack, consumer);
     }
 
     private void Consumer_Received(object? sender, BasicDeliverEventArgs e)

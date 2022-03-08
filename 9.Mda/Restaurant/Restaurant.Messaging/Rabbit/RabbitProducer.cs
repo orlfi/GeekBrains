@@ -37,10 +37,10 @@ public class RabbitProducer : IProducer, IDisposable
             return;
         }
 
-        _channel.ExchangeDeclare(_settings.ExchangeName, _settings.ExchangeType, false, false, null);
+        _channel.ExchangeDeclare(exchange:_settings.ExchangeName, type:_settings.ExchangeType, durable: _settings.Durable, false, null);
 
         var data = Encoding.UTF8.GetBytes(message);
-        _channel.BasicPublish(_settings.ExchangeName, _settings.RoutingKey, null, data);
+        _channel.BasicPublish(exchange:_settings.ExchangeName, routingKey:_settings.RoutingKey, null, data);
         _logger.LogInformation("Отправлено сообщение {0}", message);
     }
 
