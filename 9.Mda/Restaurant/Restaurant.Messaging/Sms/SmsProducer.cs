@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Messaging.Sms;
 
@@ -7,9 +7,8 @@ public class SmsProducer : IProducer, IDisposable
     bool _disposed;
     public string Name => "СМС";
 
-    public async Task SendAsync(string message, CancellationToken cancel = default)
+    public void Send(string message)
     {
-        await Task.Delay(1000);
         Console.WriteLine(message);
     }
 

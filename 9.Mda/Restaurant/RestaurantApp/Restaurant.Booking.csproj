@@ -30,7 +30,6 @@
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Restaurant.Messaging\Restaurant.Messaging.csproj" />
-    <ProjectReference Include="..\Restaurant.Notifications\Restaurant.Notifications.csproj" />
   </ItemGroup>
   
 </Project>

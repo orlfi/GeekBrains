@@ -2,9 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Interfaces;
-using Restaurant.Booking;
-using Restaurant.Booking.Services;
+using Restaurant.Notifications;
 using Restaurant.Messaging.Configuration;
 using Microsoft.Extensions.Options;
 using Restaurant.Messaging.Mq;
@@ -23,11 +21,9 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 {
     services.Configure<RabbitSettings>(context.Configuration.GetSection("RabbitSettings"));
     services.AddSingleton(p => p.GetRequiredService<IOptions<RabbitSettings>>().Value);
-    services.AddSingleton<Application>();
-    services.AddSingleton<IRestaurant, Restaurant.Booking.Services.Restaurant>();
-    services.AddSingleton<IProducer, RabbitProducer>();
-    services.AddSingleton<IOrderManager, AutomaticOrderManager>();
-    services.AddHostedService<Application>();
+    services.AddSingleton<Background>();
+    services.AddSingleton<IConsumer, RabbitConsumer>();
+    services.AddHostedService<Background>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

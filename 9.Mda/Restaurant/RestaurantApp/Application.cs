@@ -6,9 +6,6 @@ namespace Restaurant.Booking;
 
 public class Application : BackgroundService
 {
-    private static string _path = null!;
-    public static string Path => _path ??= System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
-
     private readonly ILogger _logger;
     private readonly IOrderManager _requestManager;
 

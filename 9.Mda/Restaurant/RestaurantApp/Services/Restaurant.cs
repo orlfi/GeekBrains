@@ -1,6 +1,7 @@
 using Interfaces;
 using Microsoft.Extensions.Logging;
 using Models;
+using Restaurant.Messaging.Interfaces;
 using Services.Enums;
 using System.Data;
 
@@ -8,10 +9,10 @@ namespace Restaurant.Booking.Services;
 
 public class Restaurant : IDisposable, IRestaurant
 {
-    private const int ClearBookingTimerPeriod = 60000;
-    private const int SearchFreeTableTime = 5000;
-    private const int ClearBookingTime = 100;
-    private const int ClearAllBookingTime = 1000;
+    private const int ClearBookingTimerPeriod = 15000;
+    private const int SearchFreeTableTime = 1000;
+    private const int ClearBookingTime = 1000;
+    private const int ClearAllBookingTime = 300;
     private const int TablesCount = 5;
     private const int MinSeatsTable = 3;
     private const int MaxSeatsTable = 5;
@@ -23,9 +24,9 @@ public class Restaurant : IDisposable, IRestaurant
     private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
 
 
-    public Restaurant(IProducer asyncNotificationService, ILogger<Restaurant> logger)
+    public Restaurant(IProducer notificationService, ILogger<Restaurant> logger)
     {
-        _notificationService = asyncNotificationService;
+        _notificationService = notificationService;
         _logger = logger;
         InitTables();
 
@@ -112,7 +113,7 @@ public class Restaurant : IDisposable, IRestaurant
                 semaphoreSlim.Release();
             }
 
-            await _notificationService.SendAsync(message);
+            _notificationService.Send(message);
         });
     }
 
@@ -188,7 +189,7 @@ public class Restaurant : IDisposable, IRestaurant
             {
                 semaphoreSlim.Release();
             }
-            await _notificationService.SendAsync(message);
+            _notificationService.Send(message);
         });
     }
 

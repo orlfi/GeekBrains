@@ -1,12 +1,12 @@
-﻿using System.Text;
-using Restaurant.Messaging.Interfaces;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using Restaurant.Messaging.Configuration;
+using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Messaging.Mq;
 
-public class RabbitProducer : IProducer, IDisposable
+public class RabbitConsumer : IConsumer, IDisposable
 {
     private bool _disposed;
     private RabbitSettings _settings;
@@ -16,14 +16,14 @@ public class RabbitProducer : IProducer, IDisposable
     
     public string Name => "MQ";
 
-    public RabbitProducer(RabbitSettings settings, ILogger<RabbitProducer> logger)
+    public RabbitConsumer(RabbitSettings settings, ILogger<RabbitProducer> logger)
     {
         _settings = settings;
         _logger = logger;
         InitilizeConnection();
     }
 
-    public void Send(string message)
+    public void Recieve(EventHandler<BasicDeliverEventArgs> recieveCallback)
     {
         if (_connection is null)
             throw new NullReferenceException("Отсутствует соединение");
@@ -31,17 +31,19 @@ public class RabbitProducer : IProducer, IDisposable
         if (_channel is null)
             throw new NullReferenceException("Отсутствует канал");
 
-        if (string.IsNullOrEmpty(message))
-        {
-            _logger.LogWarning("Пустое сообщение отправлено не будет");
-            return;
-        }
 
-        _channel.ExchangeDeclare(_settings.ExchangeName, _settings.ExchangeType, false, false, null);
+        _channel.ExchangeDeclare(_settings.ExchangeName, _settings.ExchangeType);
+        _channel.QueueDeclare(_settings.QueueName, false, false, false, null);
+        _channel.QueueBind(_settings.QueueName, _settings.ExchangeName, _settings.RoutingKey);
+        
+        var consumer = new EventingBasicConsumer(_channel);
+        consumer.Received += recieveCallback;
+        _channel.BasicConsume(_settings.QueueName, true, consumer);
+    }
 
-        var data = Encoding.UTF8.GetBytes(message);
-        _channel.BasicPublish(_settings.ExchangeName, _settings.RoutingKey, null, data);
-        _logger.LogInformation("Отправлено сообщение {0}", message);
+    private void Consumer_Received(object? sender, BasicDeliverEventArgs e)
+    {
+        throw new NotImplementedException();
     }
 
     public void Dispose()
