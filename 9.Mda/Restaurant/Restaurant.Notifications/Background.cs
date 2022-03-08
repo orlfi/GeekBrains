@@ -25,7 +25,8 @@ public class Background : BackgroundService
             {
                 var body = args.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Получено: {0}", message);
+                Console.WriteLine(" [x] Получено: {0} in {1}", message, Thread.CurrentThread.ManagedThreadId);
+                //Thread.Sleep(5000);
             });
         }
         catch (Exception ex)

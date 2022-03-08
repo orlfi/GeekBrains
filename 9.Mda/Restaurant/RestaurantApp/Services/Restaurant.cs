@@ -95,11 +95,11 @@ public class Restaurant : IDisposable, IRestaurant
                     {
                         item.SetBooking(State.Booked);
                     }
-                    message = $"УВЕДОМЛЕНИЕ. Ваш столик №{string.Join(",", tables.OrderBy(item => item.Id).Select(item => item.Id))}";
+                    message = $"[{DateTime.Now.ToString("hh:mm:ss")}] УВЕДОМЛЕНИЕ. Ваш столик №{string.Join(",", tables.OrderBy(item => item.Id).Select(item => item.Id))}";
                 }
                 else
                 {
-                    message = "Столиков нет";
+                    message = $"[{DateTime.Now.ToString("hh:mm:ss")}] Столиков нет";
                 }
             }
             catch (Exception ex)

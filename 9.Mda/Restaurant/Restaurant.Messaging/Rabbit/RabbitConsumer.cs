@@ -33,12 +33,19 @@ public class RabbitConsumer : IConsumer, IDisposable
 
 
         _channel.ExchangeDeclare(_settings.ExchangeName, _settings.ExchangeType);
-        _channel.QueueDeclare(_settings.QueueName, false, false, false, null);
-        _channel.QueueBind(_settings.QueueName, _settings.ExchangeName, _settings.RoutingKey);
+
+        string queueName = _settings.QueueName;
+        if (string.IsNullOrEmpty(queueName))
+            queueName = _channel.QueueDeclare().QueueName;
+        else
+            _channel.QueueDeclare(_settings.QueueName, false, false, false, null);
+
+        
+        _channel.QueueBind(queueName, _settings.ExchangeName, _settings.RoutingKey);
         
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += recieveCallback;
-        _channel.BasicConsume(_settings.QueueName, true, consumer);
+        _channel.BasicConsume(queueName, true, consumer);
     }
 
     private void Consumer_Received(object? sender, BasicDeliverEventArgs e)
