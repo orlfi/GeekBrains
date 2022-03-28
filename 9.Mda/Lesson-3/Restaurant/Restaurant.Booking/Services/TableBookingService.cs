@@ -45,7 +45,6 @@ internal class TableBookingService : IDisposable, ITableBookingService
         _logger.LogInformation("Добрый день. Подождите секунду, я подберу столик и подтвержу бронь. ");
 
         await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
-        string message = "";
         try
         {
             var tables = GetFreeTables(seatsCount);

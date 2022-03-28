@@ -7,6 +7,6 @@ public class TableBooked : ITableBooked
 {
     public Guid OrderId { get; init; }
     public Guid ClientId { get; init; }
-    public Dish Dish { get; init; }
+    public Dish? Dish { get; init; }
     public bool Success { get; init; }
 }

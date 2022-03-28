@@ -18,12 +18,14 @@ internal class BookingConsumer : IConsumer<ITableBooked>
 
     public async Task Consume(ConsumeContext<ITableBooked> context)
     {
+        _logger.LogInformation("Recieved message: OrderId = {OrderId}", context.Message.OrderId);
         var success = context.Message.Success;
 
         if (success)
         {
+            Thread.Sleep(2000);
             await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
-            _logger.LogInformation("Recieved message: OrderId = {OrderId}", context.Message.OrderId);
+            await Task.Delay(4000);
         }
     }
 }

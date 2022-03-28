@@ -8,7 +8,7 @@ public interface ITableBooked
 
     Guid ClientId { get; }
 
-    Dish Dish { get; }
+    Dish? Dish { get; }
 
     bool Success { get; }
 }

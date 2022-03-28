@@ -6,9 +6,9 @@ using Restaurant.Messaging.Data;
 
 namespace Restaurant.Kitchen.Services;
 
-internal class KitchenService: IKitchenService
+internal class KitchenService : IKitchenService
 {
-    private const int checkTime = 20000;
+    private const int checkTime = 5000;
 
     private readonly ILogger<KitchenService> _logger;
     private readonly IBus _bus;
@@ -23,5 +23,6 @@ internal class KitchenService: IKitchenService
     {
         await Task.Delay(checkTime);
         await _bus.Publish(new KitchenReady() { OrderId = orderId, Success = true });
+        _logger.LogInformation("Publish KitchenReady: OrderId = {OrderId}", orderId);
     }
 }

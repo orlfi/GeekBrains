@@ -28,6 +28,12 @@ public static class MassTransitExtensions
                 cfg.ConfigureEndpoints(context);
             });
         });
+
+        services.AddOptions<MassTransitHostOptions>().Configure(options =>
+        {
+            options.WaitUntilStarted = true;
+        });
+
         services.AddMassTransitHostedService(true);
 
         return services;

@@ -10,11 +10,11 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Restaurant.Booking/bin/Debug/net6.0/Restaurant.Booking.dll",
+            "program": "${workspaceFolder}/bin/Debug/net6.0/Restaurant.Kitchen.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Restaurant.Booking",
+            "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "externalTerminal",
             "stopAtEntry": false
         },
         {
