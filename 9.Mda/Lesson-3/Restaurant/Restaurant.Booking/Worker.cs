@@ -50,8 +50,8 @@ internal class Worker : BackgroundService
                         await _bus.Publish(new TableBooked() { OrderId = orderId, ClientId = clientId, Dish = dish, Success = result.Success });
                     }
                 );
-                Console.ReadLine();
-                //Thread.Sleep(10000);
+                //Console.ReadLine();
+                Thread.Sleep(5000);
             }
         }
         catch (Exception ex)

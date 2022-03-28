@@ -6,12 +6,12 @@ using Restaurant.Notifications.Interfaces;
 
 namespace Restaurant.Notifications.Consumers;
 
-public class BookingConsumer : IConsumer<ITableBooked>
+public class NotificationBookingConsumer : IConsumer<ITableBooked>
 {
-    private readonly ILogger<BookingConsumer> _logger;
+    private readonly ILogger<NotificationBookingConsumer> _logger;
     private readonly INotifier _notifier;
 
-    public BookingConsumer(ILogger<BookingConsumer> logger, INotifier notifier)
+    public NotificationBookingConsumer(ILogger<NotificationBookingConsumer> logger, INotifier notifier)
     {
         _logger = logger;
         _notifier = notifier;
@@ -19,7 +19,7 @@ public class BookingConsumer : IConsumer<ITableBooked>
 
     public Task Consume(ConsumeContext<ITableBooked> context)
     {
-        _logger.LogInformation("Получение сособщения TableBooked от сервиса бронирования для заказа {OrderId}", context.Message.OrderId);
+        _logger.LogInformation("Получение сособщения TableBooked [{Success}] от сервиса бронирования для заказа {OrderId}", context.Message.Success, context.Message.OrderId);
 
         ITableBooked tableBooked = context.Message;
         _notifier.Accept(tableBooked.OrderId, tableBooked.Success ? Accepted.Booking : Accepted.Rejected, tableBooked.ClientId);

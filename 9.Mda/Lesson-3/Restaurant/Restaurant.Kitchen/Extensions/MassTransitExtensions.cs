@@ -14,7 +14,7 @@ public static class MassTransitExtensions
 
         services.AddMassTransit(massTransitConfig =>
         {
-            massTransitConfig.AddConsumer<BookingConsumer>();
+            massTransitConfig.AddConsumer<KitchenBookingConsumer>();
             massTransitConfig.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rabbitSettings.Host, rabbitSettings.Port, "/", h =>

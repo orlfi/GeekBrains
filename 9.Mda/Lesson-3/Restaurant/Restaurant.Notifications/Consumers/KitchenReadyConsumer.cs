@@ -6,12 +6,12 @@ using Restaurant.Notifications.Interfaces;
 
 namespace Restaurant.Notifications.Consumers;
 
-public class KitchenConsumer : IConsumer<IKitchenReady>
+public class KitchenReadyConsumer : IConsumer<IKitchenReady>
 {
-    private readonly ILogger<KitchenConsumer> _logger;
+    private readonly ILogger<KitchenReadyConsumer> _logger;
     private readonly INotifier _notifier;
 
-    public KitchenConsumer(ILogger<KitchenConsumer> logger, INotifier notifier)
+    public KitchenReadyConsumer(ILogger<KitchenReadyConsumer> logger, INotifier notifier)
     {
         _logger = logger;
         _notifier = notifier;
@@ -19,7 +19,7 @@ public class KitchenConsumer : IConsumer<IKitchenReady>
 
     public Task Consume(ConsumeContext<IKitchenReady> context)
     {
-        _logger.LogInformation("Получение сообщения KitchenReady от кухни для заказа: OrderId = {OrderId}", context.Message.OrderId);
+        _logger.LogInformation("Получение сообщения KitchenReady [{Success}] от кухни для заказа: OrderId = {OrderId}", context.Message.Success, context.Message.OrderId);
 
         IKitchenReady kitchenReady = context.Message;
         _notifier.Accept(kitchenReady.OrderId, kitchenReady.Success ? Accepted.Kitchen : Accepted.Rejected);

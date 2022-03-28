@@ -26,7 +26,10 @@ internal class KitchenService : IKitchenService
         await Task.Delay(checkTime);
         if (_stopList.Contains(dish.Id))
         {
-            await _bus.Publish(new KitchenReject() { OrderId = orderId });
+            var kitchenRejectTask = _bus.Publish(new KitchenReject() { OrderId = orderId });
+            var kitchenReadyTask = _bus.Publish(new KitchenReady() { OrderId = orderId, Success = false });
+            await kitchenRejectTask;
+            await kitchenReadyTask;
             _logger.LogInformation("Отмена кухни. Блюдо в стоп листе: OrderId = {OrderId}", orderId);
         }
         else

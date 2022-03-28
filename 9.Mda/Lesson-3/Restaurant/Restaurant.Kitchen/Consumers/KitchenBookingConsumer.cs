@@ -5,12 +5,12 @@ using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Notifications.Consumers;
 
-internal class BookingConsumer : IConsumer<ITableBooked>
+internal class KitchenBookingConsumer : IConsumer<ITableBooked>
 {
-    private readonly ILogger<BookingConsumer> _logger;
+    private readonly ILogger<KitchenBookingConsumer> _logger;
     private readonly IKitchenService _kitchen;
 
-    public BookingConsumer(ILogger<BookingConsumer> logger, IKitchenService kitchen)
+    public KitchenBookingConsumer(ILogger<KitchenBookingConsumer> logger, IKitchenService kitchen)
     {
         _logger = logger;
         _kitchen = kitchen;

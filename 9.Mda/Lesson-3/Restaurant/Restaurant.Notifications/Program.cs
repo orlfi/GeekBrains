@@ -17,7 +17,7 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
-    services.AddScoped<INotifier, Notifier>();
+    services.AddSingleton<INotifier, Notifier>();
     services.AddMessageBus(context.Configuration);
 }
 
