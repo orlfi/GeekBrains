@@ -19,7 +19,7 @@ public class KitchenConsumer : IConsumer<IKitchenReady>
 
     public Task Consume(ConsumeContext<IKitchenReady> context)
     {
-        _logger.LogInformation("KitchenReady recieved message: OrderId = {OrderId}", context.Message.OrderId);
+        _logger.LogInformation("Получение сообщения KitchenReady от кухни для заказа: OrderId = {OrderId}", context.Message.OrderId);
 
         IKitchenReady kitchenReady = context.Message;
         _notifier.Accept(kitchenReady.OrderId, kitchenReady.Success ? Accepted.Kitchen : Accepted.Rejected);

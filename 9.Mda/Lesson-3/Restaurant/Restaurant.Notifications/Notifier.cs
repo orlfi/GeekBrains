@@ -12,6 +12,8 @@ public class Notifier : INotifier
     {
         _state.AddOrUpdate(orderId, new Tuple<Guid?, Accepted>(clientId, accepted),
             (id, oldValue) => new Tuple<Guid?, Accepted>(oldValue.Item1 ?? clientId, oldValue.Item2 | accepted));
+
+        Notify(orderId);
     }
 
     private void Notify(Guid orderId)
@@ -27,6 +29,9 @@ public class Notifier : INotifier
             case Accepted.Rejected:
                 Console.WriteLine("Гость {0}, к сожалению все столики заняты", booking.Item1);
                 _state.Remove(orderId, out _);
+                break;
+            case Accepted.Booking:
+            case Accepted.Kitchen:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(booking.Item2));

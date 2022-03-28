@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Messaging.Configuration;
+using Restaurant.Notifications.Consumers;
 
 namespace Restaurant.Booking.Extensions;
 
@@ -11,9 +12,11 @@ public static class MassTransitExtensions
     {
         var rabbitSettings = configuration.GetSection("RabbitSettings").Get<RabbitSettings>();
 
-        services.AddMassTransit(busConfigurator =>
+        services.AddMassTransit(massTransitConfig =>
         {
-            busConfigurator.UsingRabbitMq((context, cfg) =>
+            massTransitConfig.AddConsumer<KitchenRejectConsumer>();
+
+            massTransitConfig.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rabbitSettings.Host, rabbitSettings.Port, "/", h =>
                 {

@@ -7,6 +7,8 @@ public static class MenuRepository
         new Dish(1, "Рыба"),
         new Dish(2, "Мясо"),
         new Dish(3, "Суп"),
+        new Dish(4, "Пицца"),
+        new Dish(5, "Картофель"),
     };
 
     public static int Count => _menu.Count;

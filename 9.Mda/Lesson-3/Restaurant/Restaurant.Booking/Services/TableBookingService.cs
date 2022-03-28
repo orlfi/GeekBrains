@@ -2,16 +2,20 @@ using Microsoft.Extensions.Logging;
 using Restaurant.Booking.Enums;
 using Restaurant.Booking.Interfaces;
 using Restaurant.Booking.Models;
+using Restaurant.Messaging.Data;
+using System.Collections.Concurrent;
 using System.Data;
 
 namespace Restaurant.Booking.Services;
 
 internal class TableBookingService : IDisposable, ITableBookingService
 {
-    private const int ClearBookingTimerPeriod = 20000;
-    private const int SearchFreeTableTime = 3000;
+    private const int ClearBookingTimerPeriod = 30000;
+    private const int SearchFreeTableTime = 300;
     private const int ClearBookingTime = 1000;
     private const int ClearAllBookingTime = 300;
+    private const int AddOrderTime = 300;
+    private const int ClearOrderTime = 300;
     private const int TablesCount = 5;
     private const int MinSeatsTable = 3;
     private const int MaxSeatsTable = 5;
@@ -20,7 +24,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
     private List<Table> _tables { get; set; } = new(TablesCount);
     private System.Timers.Timer _timer;
     private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-
+    private ConcurrentDictionary<Guid, Order> _orders { get; set; } = new();
 
     public TableBookingService(ILogger<TableBookingService> logger)
     {
@@ -38,6 +42,18 @@ internal class TableBookingService : IDisposable, ITableBookingService
         {
             _tables.Add(new Table(Random.Shared.Next(MinSeatsTable, MaxSeatsTable + 1)));
         }
+    }
+
+    public async Task AddOrder(Guid orderId, IEnumerable<int> tableNumbers, Dish? dish, CancellationToken cancel = default)
+    {
+        await Task.Delay(AddOrderTime, cancel);
+        _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish});
+    }
+
+    public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)
+    {
+        await Task.Delay(ClearOrderTime, cancel);
+        _orders.TryRemove(orderId, out _);
     }
 
     public async Task<BookinResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)

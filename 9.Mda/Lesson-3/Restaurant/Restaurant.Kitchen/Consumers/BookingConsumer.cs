@@ -18,7 +18,7 @@ internal class BookingConsumer : IConsumer<ITableBooked>
 
     public async Task Consume(ConsumeContext<ITableBooked> context)
     {
-        _logger.LogInformation("Recieved message: OrderId = {OrderId}", context.Message.OrderId);
+        _logger.LogInformation("Получение сообщения TableBooked от сервиса бронирования: OrderId = {OrderId}", context.Message.OrderId);
         var success = context.Message.Success;
 
         if (success)

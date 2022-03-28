@@ -24,13 +24,12 @@ internal class Worker : BackgroundService
     {
         try
         {
-            _logger.LogInformation("Application started");
             while (true)
             {
-                var seats = Random.Shared.Next(1, 10);
-                _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
                 Task.Run(async () =>
                     {
+                        var seats = Random.Shared.Next(1, 10);
+                        _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
                         var orderId = Guid.NewGuid();
                         var clientId = Guid.NewGuid();
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
@@ -38,16 +37,21 @@ internal class Worker : BackgroundService
                         var result = await _restaurant.BookFreeTableAsync(seats);
 
                         if (result.Success)
+                        {
                             _logger.LogInformation("Забронированы столики {0} для клиента {1}", string.Join(",", result.TableNumbers), clientId.ToString());
+                            await _restaurant.AddOrder(orderId, result.TableNumbers, dish);
+                        }
                         else
-                            _logger.LogError("Ошибка клиента {0}: {1}", clientId.ToString(), result.Error);
-                        _logger.LogInformation("Send message: OrderId = {OrderId}, Success = {Success} ", orderId, result.Success);
-
+                        {
+                            _logger.LogWarning("Ошибка бронирования столиков для клиента {0}: {1}", clientId.ToString(), result.Error);
+                        }
+                        
+                        _logger.LogInformation("Отправка сообщения TableBooked: OrderId = {OrderId}, ClientId = {ClientId} Success = {Success} ", orderId, clientId, result.Success);
                         await _bus.Publish(new TableBooked() { OrderId = orderId, ClientId = clientId, Dish = dish, Success = result.Success });
                     }
                 );
-
-                Thread.Sleep(6000);
+                Console.ReadLine();
+                //Thread.Sleep(10000);
             }
         }
         catch (Exception ex)

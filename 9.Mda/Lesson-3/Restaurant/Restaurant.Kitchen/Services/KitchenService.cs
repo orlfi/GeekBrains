@@ -8,7 +8,8 @@ namespace Restaurant.Kitchen.Services;
 
 internal class KitchenService : IKitchenService
 {
-    private const int checkTime = 5000;
+    private List<int> _stopList;
+    private const int checkTime = 300;
 
     private readonly ILogger<KitchenService> _logger;
     private readonly IBus _bus;
@@ -17,12 +18,21 @@ internal class KitchenService : IKitchenService
     {
         _logger = logger;
         _bus = bus;
+        _stopList = new List<int> { 2 };
     }
 
     public async Task CheckKitchenReadyAsync(Guid orderId, Dish dish)
     {
         await Task.Delay(checkTime);
-        await _bus.Publish(new KitchenReady() { OrderId = orderId, Success = true });
-        _logger.LogInformation("Publish KitchenReady: OrderId = {OrderId}", orderId);
+        if (_stopList.Contains(dish.Id))
+        {
+            await _bus.Publish(new KitchenReject() { OrderId = orderId });
+            _logger.LogInformation("Отмена кухни. Блюдо в стоп листе: OrderId = {OrderId}", orderId);
+        }
+        else
+        {
+            await _bus.Publish(new KitchenReady() { OrderId = orderId, Success = true });
+            _logger.LogInformation("Подтверждение кухни: OrderId = {OrderId}", orderId);
+        }
     }
 }
