@@ -5,7 +5,7 @@ namespace Restaurant.Booking.Interfaces;
 
 internal interface ITableBookingService
 {
-    Task<BookinResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default);
+    Task<BookingResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default);
     bool RemoveBookingByNumberAsync(int number, CancellationToken cancel = default);
     void Dispose();
     Task AddOrder(Guid orderId, IEnumerable<int> tableNumbers, Dish? dish, CancellationToken cancel = default);

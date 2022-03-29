@@ -11,7 +11,7 @@ public class Notifier : INotifier
     public void Accept(Guid orderId, Accepted accepted, Guid? clientId = null)
     {
         _state.AddOrUpdate(orderId, new Tuple<Guid?, Accepted>(clientId, accepted),
-            (id, oldValue) => new Tuple<Guid?, Accepted>(oldValue.Item1 ?? clientId, accepted == Accepted.Rejected? accepted : oldValue.Item2 | accepted));
+            (id, oldValue) => new Tuple<Guid?, Accepted>(oldValue.Item1 ?? clientId, accepted == Accepted.Rejected ? accepted : oldValue.Item2 | accepted));
 
         Notify(orderId);
     }

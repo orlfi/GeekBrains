@@ -38,25 +38,26 @@ internal class Worker : BackgroundService
 
                         if (result.Success)
                         {
-                            _logger.LogInformation("Забронированы столики {0} для клиента {1}", string.Join(",", result.TableNumbers), clientId.ToString());
+                            _logger.LogInformation("Забронированы столики {TableNumbers} для клиента {ClientId}", string.Join(",", result.TableNumbers), clientId.ToString());
                             await _restaurant.AddOrder(orderId, result.TableNumbers, dish);
                         }
                         else
                         {
-                            _logger.LogWarning("Ошибка бронирования столиков для клиента {0}: {1}", clientId.ToString(), result.Error);
+                            _logger.LogWarning("Ошибка бронирования столиков для клиента {ClientId}: {Error}", clientId.ToString(), result.Error);
                         }
-                        
+
                         _logger.LogInformation("Отправка сообщения TableBooked: OrderId = {OrderId}, ClientId = {ClientId} Success = {Success} ", orderId, clientId, result.Success);
                         await _bus.Publish(new TableBooked() { OrderId = orderId, ClientId = clientId, Dish = dish, Success = result.Success });
-                    }
+                    },
+                    stoppingToken
                 );
-                //Console.ReadLine();
-                Thread.Sleep(5000);
+                Console.ReadLine();
+                // Thread.Sleep(5000);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Необработанная ошибка {0}", ex.Message);
+            _logger.LogError(ex, "Необработанная ошибка {Message}", ex.Message);
         }
 
         return Task.CompletedTask;

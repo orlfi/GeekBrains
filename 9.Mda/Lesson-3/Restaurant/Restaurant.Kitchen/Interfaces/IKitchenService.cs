@@ -4,5 +4,5 @@ namespace Restaurant.Kitchen.Interfaces;
 
 internal interface IKitchenService
 {
-    Task CheckKitchenReadyAsync(Guid oerderId, Dish dish);
+    Task<bool> CheckKitchenReadyAsync(Guid orderId, Dish dish);
 }

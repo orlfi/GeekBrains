@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
+using Restaurant.Booking.DTO;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Messaging.Interfaces;
 
@@ -20,12 +21,24 @@ internal class KitchenBookingConsumer : IConsumer<ITableBooked>
     {
         _logger.LogInformation("Получение сообщения TableBooked от сервиса бронирования: OrderId = {OrderId}", context.Message.OrderId);
         var success = context.Message.Success;
+        var orderId = context.Message.OrderId;
 
-        if (success)
+        if (success && context.Message.Dish is not null)
         {
-            Thread.Sleep(2000);
-            await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
-            await Task.Delay(4000);
+            var kitchenIsReady = await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
+            if (!kitchenIsReady)
+            {
+                // var kitchenRejectTask = context.Publish(new KitchenReject() { OrderId = orderId });
+                // var kitchenReadyTask = context.Publish(new KitchenReady() { OrderId = orderId, Success = false });
+                // await Task.WhenAll(kitchenRejectTask, kitchenReadyTask);
+                await context.Publish(new KitchenReady() { OrderId = orderId, Success = false });
+                _logger.LogInformation("Отмена кухни, блюдо в стоп листе: OrderId = {OrderId}", orderId);
+            }
+            else
+            {
+                await context.Publish(new KitchenReady() { OrderId = orderId, Success = true });
+                _logger.LogInformation("Подтверждение кухни: OrderId = {OrderId}", orderId);
+            }
         }
     }
 }

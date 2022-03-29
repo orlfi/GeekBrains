@@ -34,8 +34,6 @@ public static class MassTransitExtensions
             options.WaitUntilStarted = true;
         });
 
-        services.AddMassTransitHostedService(true);
-
         return services;
     }
 }

@@ -21,10 +21,10 @@ internal class TableBookingService : IDisposable, ITableBookingService
     private const int MaxSeatsTable = 5;
 
     private readonly ILogger<TableBookingService> _logger;
-    private List<Table> _tables { get; set; } = new(TablesCount);
-    private System.Timers.Timer _timer;
-    private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-    private ConcurrentDictionary<Guid, Order> _orders { get; set; } = new();
+    private readonly List<Table> _tables = new(TablesCount);
+    private readonly System.Timers.Timer _timer;
+    private readonly SemaphoreSlim semaphoreSlim = new(1, 1);
+    private readonly ConcurrentDictionary<Guid, Order> _orders = new();
 
     public TableBookingService(ILogger<TableBookingService> logger)
     {
@@ -47,7 +47,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
     public async Task AddOrder(Guid orderId, IEnumerable<int> tableNumbers, Dish? dish, CancellationToken cancel = default)
     {
         await Task.Delay(AddOrderTime, cancel);
-        _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish});
+        _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish });
     }
 
     public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)
@@ -56,7 +56,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
         _orders.TryRemove(orderId, out _);
     }
 
-    public async Task<BookinResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)
+    public async Task<BookingResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)
     {
         _logger.LogInformation("Добрый день. Подождите секунду, я подберу столик и подтвержу бронь. ");
 
@@ -77,14 +77,14 @@ internal class TableBookingService : IDisposable, ITableBookingService
             }
             else
             {
-                return $"[{DateTime.Now.ToString("hh:mm:ss")}] Столиков нет";
+                return $"[{DateTime.Now:hh:mm:ss}] Столиков нет";
 
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ошибка при бронировании столика на {0}", seatsCount);
-            return $"Сервис временно недоступен. Приносим свои извенения. Вас уведомим  о решении проблемы";
+            _logger.LogError(ex, "Ошибка при бронировании столика на {SeatsCount}", seatsCount);
+            return $"Сервис временно недоступен. Приносим свои извинения. Вас уведомим  о решении проблемы";
         }
         finally
         {
@@ -124,7 +124,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
 
     public bool RemoveBookingByNumberAsync(int number, CancellationToken cancel = default)
     {
-        _logger.LogInformation("Добрый день. Подождите секунду, я сниму бронь со столика {Nnumber}.", number);
+        _logger.LogInformation("Добрый день. Подождите секунду, я сниму бронь со столика {Number}.", number);
         Task.Run(async () =>
         {
             await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
@@ -144,7 +144,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
                 semaphoreSlim.Release();
             }
             //_notificationService.Send(message);
-        });
+        }, cancel);
         return true;
     }
 
@@ -166,7 +166,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
         {
             semaphoreSlim.Release();
         }
-        _logger.LogInformation("Бронь снята со столов {0}...", string.Join(",", bookedTablesNumbers));
+        _logger.LogInformation("Бронь снята со столов {BookedTablesNumbers}...", string.Join(",", bookedTablesNumbers));
     }
 
     public void Dispose()

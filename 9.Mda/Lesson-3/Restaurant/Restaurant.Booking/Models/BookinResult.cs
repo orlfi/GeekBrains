@@ -1,25 +1,25 @@
 ﻿
 namespace Restaurant.Booking.Models;
 
-internal struct BookinResult
+internal struct BookingResult
 {
     public bool Success => string.IsNullOrEmpty(Error) && TableNumbers.Count > 0;
 
     public string Error { get; init; } = string.Empty;
 
-    public ICollection<int> TableNumbers { get; init; }  = new List<int>();
+    public ICollection<int> TableNumbers { get; init; } = new List<int>();
 
-    public BookinResult(List<int> tableNumbers) => TableNumbers = tableNumbers;
+    public BookingResult(List<int> tableNumbers) => TableNumbers = tableNumbers;
 
-    public BookinResult(string error) => Error = error;
+    public BookingResult(string error) => Error = error;
 
-    public static implicit operator BookinResult(List<int> tableNumbers) => new BookinResult(tableNumbers);
-    
-    public static implicit operator BookinResult(Exception ex) => new BookinResult(ex.Message);
+    public static implicit operator BookingResult(List<int> tableNumbers) => new (tableNumbers);
 
-    public static implicit operator BookinResult(String error) => new BookinResult(error);
+    public static implicit operator BookingResult(Exception ex) => new (ex.Message);
 
-    public static implicit operator List<int>(BookinResult bookinResult) => (List<int>)bookinResult.TableNumbers;
+    public static implicit operator BookingResult(String error) => new (error);
 
-    public static implicit operator string(BookinResult bookinResult) => bookinResult.Error;
+    public static implicit operator List<int>(BookingResult bookinResult) => (List<int>)bookinResult.TableNumbers;
+
+    public static implicit operator string(BookingResult bookinResult) => bookinResult.Error;
 }

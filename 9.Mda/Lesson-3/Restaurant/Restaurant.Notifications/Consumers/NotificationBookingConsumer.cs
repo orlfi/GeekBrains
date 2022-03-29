@@ -19,7 +19,7 @@ public class NotificationBookingConsumer : IConsumer<ITableBooked>
 
     public Task Consume(ConsumeContext<ITableBooked> context)
     {
-        _logger.LogInformation("Получение сособщения TableBooked [{Success}] от сервиса бронирования для заказа {OrderId}", context.Message.Success, context.Message.OrderId);
+        _logger.LogInformation("Получение сообщения TableBooked [{Success}] от сервиса бронирования для заказа {OrderId}", context.Message.Success, context.Message.OrderId);
 
         ITableBooked tableBooked = context.Message;
         _notifier.Accept(tableBooked.OrderId, tableBooked.Success ? Accepted.Booking : Accepted.Rejected, tableBooked.ClientId);

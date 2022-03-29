@@ -2,7 +2,7 @@
 
 public static class MenuRepository
 {
-    private static List<Dish> _menu = new()
+    private static readonly List<Dish> _menu = new()
     {
         new Dish(1, "Рыба"),
         new Dish(2, "Мясо"),
