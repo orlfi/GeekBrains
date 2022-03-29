@@ -30,7 +30,7 @@ internal class Worker : BackgroundService
                     {
                         var seats = Random.Shared.Next(1, 10);
                         _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
-                        var orderId = Guid.NewGuid();
+                        var orderId = NewId.NextGuid();
                         var clientId = Guid.NewGuid();
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
 

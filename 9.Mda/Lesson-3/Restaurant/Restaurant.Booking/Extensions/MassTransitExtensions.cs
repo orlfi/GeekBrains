@@ -15,6 +15,8 @@ public static class MassTransitExtensions
         services.AddMassTransit(massTransitConfig =>
         {
             massTransitConfig.AddConsumer<BookingKitchenReadyConsumer>();
+            massTransitConfig.AddSagaStateMachine<RestaurantSaga, RestaurantState>().
+                InMemoryRepository();
 
             massTransitConfig.UsingRabbitMq((context, cfg) =>
             {
