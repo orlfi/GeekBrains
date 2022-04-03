@@ -34,20 +34,7 @@ internal class Worker : BackgroundService
                         var clientId = Guid.NewGuid();
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
 
-                        var result = await _restaurant.BookFreeTableAsync(seats);
-
-                        if (result.Success)
-                        {
-                            _logger.LogInformation("Забронированы столики {TableNumbers} для клиента {ClientId}", string.Join(",", result.TableNumbers), clientId.ToString());
-                            await _restaurant.AddOrder(orderId, result.TableNumbers, dish);
-                        }
-                        else
-                        {
-                            _logger.LogWarning("Ошибка бронирования столиков для клиента {ClientId}: {Error}", clientId.ToString(), result.Error);
-                        }
-
-                        _logger.LogInformation("Отправка сообщения TableBooked: OrderId = {OrderId}, ClientId = {ClientId} Success = {Success} ", orderId, clientId, result.Success);
-                        await _bus.Publish(new TableBooked() { OrderId = orderId, ClientId = clientId, Dish = dish, Success = result.Success });
+                        await _bus.Publish(new BookingRequested() { OrderId = orderId, ClientId = clientId, Dish = dish, Seats = seats});
                     },
                     stoppingToken
                 );

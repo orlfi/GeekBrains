@@ -2,9 +2,9 @@
 
 namespace Restaurant.Messaging.Interfaces;
 
-public interface ITableBooked
+public interface INotify
 {
     Guid OrderId { get; }
     Guid ClientId { get; }
-    Dish? Dish { get; }
+    string Message { get; }
 }

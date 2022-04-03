@@ -2,9 +2,7 @@
 
 namespace Restaurant.Messaging.Interfaces;
 
-public interface ITableBooked
+public interface IBookingExpired
 {
     Guid OrderId { get; }
-    Guid ClientId { get; }
-    Dish? Dish { get; }
 }

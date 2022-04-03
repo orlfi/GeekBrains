@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Restaurant.Notifications;
 using Restaurant.Notifications.Interfaces;
 using Restaurant.Notifications.Extensions;
+using Restaurant.Notifications.Services;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)

@@ -9,8 +9,7 @@ namespace Restaurant.Kitchen.Services;
 internal class KitchenService : IKitchenService
 {
     private readonly List<int> _stopList;
-    private const int checkTime = 300;
-
+    
     private readonly ILogger<KitchenService> _logger;
 
     public KitchenService(ILogger<KitchenService> logger)
@@ -21,8 +20,9 @@ internal class KitchenService : IKitchenService
 
     public async Task<bool> CheckKitchenReadyAsync(Guid orderId, Dish dish)
     {
-        _logger.LogDebug("Проверка блюда {DishName} в стоп-листе", dish.Name);
+        var checkTime = Random.Shared.Next(1, 5) * 1000;
+        _logger.LogInformation("Проверка блюда {DishId} {DishName} в стоп-листе за {CheckTime} сек", dish.Id, dish.Name, checkTime);
         await Task.Delay(checkTime);
-        return _stopList.Contains(dish.Id);
+        return !_stopList.Contains(dish.Id);
     }
 }
