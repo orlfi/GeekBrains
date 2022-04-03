@@ -75,6 +75,16 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     })
                 .Finalize(),
 
+            When(KitchenRejectEvent)
+                .Unschedule(BookingExpiredSchedule)
+                .Then(content => _logger.LogInformation("[Saga] Отмена кухни для заказа {OrderId}", content.Message.OrderId))
+                .Publish(context =>
+                    new BookingCancel()
+                    {
+                        OrderId = context.Saga.OrderId
+                    })
+                .Finalize(),
+
             When(BookingExpiredSchedule.Received)
                 .Then(context => _logger.LogInformation("[Saga] Отмена заказа {OrderId} по времени BookingExpiredSchedule", context.Message.OrderId))
                 .Finalize()

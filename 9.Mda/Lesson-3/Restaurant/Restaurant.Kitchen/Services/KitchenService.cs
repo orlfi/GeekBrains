@@ -21,6 +21,8 @@ internal class KitchenService : IKitchenService
     public async Task<bool> CheckKitchenReadyAsync(Guid orderId, Dish dish)
     {
         var checkTime = Random.Shared.Next(1, 5) * 1000;
+        return false;
+
         _logger.LogInformation("Проверка блюда {DishId} {DishName} в стоп-листе за {CheckTime} сек", dish.Id, dish.Name, checkTime);
         await Task.Delay(checkTime);
         return !_stopList.Contains(dish.Id);
