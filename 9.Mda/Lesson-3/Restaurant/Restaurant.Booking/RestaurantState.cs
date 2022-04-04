@@ -9,5 +9,9 @@ public class RestaurantState : SagaStateMachineInstance
     public Guid OrderId { get; set; }
     public Guid ClientId { get; set; }
     public int ReadyEventStatus { get; set; }
-    public Guid? ExpirationId { get; set; }
+    public Guid? BookingExpirationId { get; set; }
+    public Guid? GuestAwaitingId { get; set; }
+    public Guid? GuestArrivalId { get; set; }
+    // Время прибытия гостя
+    public int ArrivalTime { get; set; }
 }

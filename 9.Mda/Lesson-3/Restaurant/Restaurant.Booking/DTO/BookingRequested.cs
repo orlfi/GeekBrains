@@ -9,4 +9,5 @@ public class BookingRequested : IBookingRequested
     public Guid ClientId { get; init; }
     public Dish? Dish { get; init; }
     public int Seats { get; init; }
+    public int ArrivalTime { get; init; }
 }

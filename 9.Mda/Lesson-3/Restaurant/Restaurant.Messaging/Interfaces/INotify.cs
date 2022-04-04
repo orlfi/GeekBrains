@@ -1,6 +1,4 @@
-﻿using Restaurant.Messaging.Data;
-
-namespace Restaurant.Messaging.Interfaces;
+﻿namespace Restaurant.Messaging.Interfaces;
 
 public interface INotify
 {

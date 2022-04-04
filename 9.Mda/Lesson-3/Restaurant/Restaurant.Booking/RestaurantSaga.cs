@@ -11,13 +11,21 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
     private readonly ILogger<RestaurantSaga> _logger;
 
     public State AwaitingBookingApproved { get; private set; }
-    public Event<IBookingRequested> BookingRequestedEvent{ get; private set; }
+    public State AwaitingGuestArrival { get; private set; }
+
+    public Event<IBookingRequested> BookingRequestedEvent { get; private set; }
     public Event<ITableBooked> TableBookedEvent { get; private set; }
     public Event<IKitchenReady> KitchenReadyEvent { get; private set; }
     public Event<IKitchenReject> KitchenRejectEvent { get; private set; }
     public Event BookingApprovedEvent { get; private set; }
 
     public Schedule<RestaurantState, IBookingExpired> BookingExpiredSchedule { get; private set; }
+
+    // Ожидание гостя
+    public Schedule<RestaurantState, IGuestArrived> AwaitingGuestSchedule { get; private set; }
+
+    //прибытие гостя
+    public Schedule<RestaurantState, IGuestArrived> GuestArrivalSchedule { get; private set; }
 
     public RestaurantSaga(ILogger<RestaurantSaga> logger)
     {
@@ -42,10 +50,30 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
             x => x.ReadyEventStatus, TableBookedEvent, KitchenReadyEvent);
 
         Schedule(() => BookingExpiredSchedule,
-            state => state.ExpirationId,
+            state => state.BookingExpirationId,
             config =>
             {
                 config.Delay = TimeSpan.FromSeconds(3);
+                config.Received = e => e.CorrelateById(context => context.Message.OrderId);
+            }
+        );
+
+        // Schedule(() => AwaitingGuestSchedule,
+        //     state => state.GuestAwaitingId,
+        //     config =>
+        //     {
+        //         Random rnd = new Random();
+        //         config.Delay = TimeSpan.FromSeconds(rnd.Next(7, 16));
+        //         config.Received = e => e.CorrelateById(context => context.Message.OrderId);
+        //     }
+        // );
+
+        Schedule(() => GuestArrivalSchedule,
+            state => state.GuestArrivalId,
+            config =>
+            {
+                Random rnd = new Random();
+                config.Delay = TimeSpan.FromSeconds(rnd.Next(7, 16));
                 config.Received = e => e.CorrelateById(context => context.Message.OrderId);
             }
         );
@@ -57,9 +85,10 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     context.Saga.CorrelationId = context.Message.OrderId;
                     context.Saga.OrderId = context.Message.OrderId;
                     context.Saga.ClientId = context.Message.ClientId;
+                    context.Saga.ArrivalTime = context.Message.ArrivalTime;
                     _logger.LogInformation("[Saga] Запрос на бронирование столика для клиента {ClientId} на {Seats} мест", context.Message.ClientId, context.Message.Seats);
                 })
-                .Schedule(BookingExpiredSchedule, context => new BookingExpire(context.Saga))
+                .Schedule(BookingExpiredSchedule, context => new BookingExpired(context.Saga))
                 .TransitionTo(AwaitingBookingApproved)
          );
 
@@ -73,7 +102,14 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                         ClientId = context.Saga.ClientId,
                         Message = "Стол успешно забронирован"
                     })
-                .Finalize(),
+                .Schedule(GuestArrivalSchedule, context =>
+                {
+                    _logger.LogInformation("[Saga] Ожидание гостя...");
+                    return new GuestArrived(context.Saga);
+                })
+                // .Schedule(AwaitingGuestSchedule, context => context.Init<IGuestWaitingExpired>(new { OrderId = context.Instance.CorrelationId }),
+                //     context => TimeSpan.FromSeconds(5))
+                .TransitionTo(AwaitingGuestArrival),
 
             When(KitchenRejectEvent)
                 .Unschedule(BookingExpiredSchedule)
@@ -87,6 +123,15 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
             When(BookingExpiredSchedule.Received)
                 .Then(context => _logger.LogInformation("[Saga] Отмена заказа {OrderId} по времени BookingExpiredSchedule", context.Message.OrderId))
+                .Finalize()
+        );
+
+        During(AwaitingGuestArrival,
+            When(GuestArrivalSchedule.Received)
+                .Then(context =>
+                {
+                    _logger.LogInformation("[Saga] Гость прибыл!");
+                })
                 .Finalize()
         );
 

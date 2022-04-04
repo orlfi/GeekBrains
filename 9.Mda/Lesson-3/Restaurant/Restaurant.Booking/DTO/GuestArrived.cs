@@ -3,13 +3,13 @@ using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Booking.DTO;
 
-public class BookingExpire : IBookingExpired
+public class GuestArrived : IGuestArrived
 {
     private readonly RestaurantState _state;
 
     public Guid OrderId => _state.OrderId;
 
-    public BookingExpire(RestaurantState state)
+    public GuestArrived(RestaurantState state)
     {
         _state = state;
     }

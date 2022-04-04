@@ -28,13 +28,15 @@ internal class Worker : BackgroundService
             {
                 Task.Run(async () =>
                     {
-                        var seats = Random.Shared.Next(1, 10);
+                        var rnd = new Random();
+                        var seats = rnd.Next(1, 10);
                         _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
+                        var arrivalTime = rnd.Next(7, 16);
                         var orderId = NewId.NextGuid();
                         var clientId = Guid.NewGuid();
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
 
-                        await _bus.Publish(new BookingRequested() { OrderId = orderId, ClientId = clientId, Dish = dish, Seats = seats});
+                        await _bus.Publish(new BookingRequested() { OrderId = orderId, ClientId = clientId, Dish = dish, Seats = seats, ArrivalTime = arrivalTime });
                     },
                     stoppingToken
                 );
