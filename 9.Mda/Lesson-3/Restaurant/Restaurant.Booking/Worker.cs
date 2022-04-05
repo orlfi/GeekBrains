@@ -30,13 +30,29 @@ internal class Worker : BackgroundService
                     {
                         var rnd = new Random();
                         var seats = rnd.Next(1, 10);
-                        _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
-                        var arrivalTime = rnd.Next(7, 16);
-                        var orderId = NewId.NextGuid();
-                        var clientId = Guid.NewGuid();
+                        var bookingArrivalTime = rnd.Next(7, 16); // время прибытия указанное гостем при бронировании
+                        var actualArrivalTime = rnd.Next(7, 16); // фактическое время прибытия гостя
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
 
-                        await _bus.Publish(new BookingRequested() { OrderId = orderId, ClientId = clientId, Dish = dish, Seats = seats, ArrivalTime = arrivalTime });
+                        _logger.LogInformation("Резервирование столика на {Seats} мест., блюдо {Dish}, забронированное время {BookingArrivalTime}, фактическое время {ActualArrivalTime}",
+                            seats,
+                            dish?.Name ?? "",
+                            bookingArrivalTime,
+                            actualArrivalTime
+                        );
+
+                        var orderId = NewId.NextGuid();
+                        var clientId = Guid.NewGuid();
+
+                        await _bus.Publish(new BookingRequested()
+                        {
+                            OrderId = orderId,
+                            ClientId = clientId,
+                            Dish = dish,
+                            Seats = seats,
+                            BookingArrivalTime = bookingArrivalTime,
+                            ActualArrivalTime = actualArrivalTime
+                        });
                     },
                     stoppingToken
                 );

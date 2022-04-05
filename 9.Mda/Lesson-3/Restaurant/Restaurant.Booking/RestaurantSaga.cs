@@ -21,11 +21,11 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
     public Schedule<RestaurantState, IBookingExpired> BookingExpiredSchedule { get; private set; }
 
-    // Ожидание гостя
-    public Schedule<RestaurantState, IGuestArrived> AwaitingGuestSchedule { get; private set; }
+    // Отслеживает время прибытия указанное гостем при бронировании
+    public Schedule<RestaurantState, IGuestWaitingExpired> BookingAwaitingGuestSchedule { get; private set; }
 
-    //прибытие гостя
-    public Schedule<RestaurantState, IGuestArrived> GuestArrivalSchedule { get; private set; }
+    // Отслеживает фактическое время прибытия гостя
+    public Schedule<RestaurantState, IGuestArrived> ActualGuestArrivalSchedule { get; private set; }
 
     public RestaurantSaga(ILogger<RestaurantSaga> logger)
     {
@@ -34,8 +34,9 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         InstanceState(x => x.CurrentState);
 
         Event(() => BookingRequestedEvent, x =>
+
             x.CorrelateById(context => context.Message.OrderId)
-            .SelectId(context => context.Message.OrderId));
+                .SelectId(context => context.Message.OrderId));
 
         Event(() => TableBookedEvent, x =>
             x.CorrelateById(context => context.Message.OrderId));
@@ -52,28 +53,25 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         Schedule(() => BookingExpiredSchedule,
             state => state.BookingExpirationId,
             config =>
+                {
+                    config.Delay = TimeSpan.FromSeconds(3);
+                    config.Received = e => e.CorrelateById(context => context.Message.OrderId);
+                }
+            );
+
+        Schedule(() => ActualGuestArrivalSchedule,
+            state => state.GuestArrivalId,
+            config =>
             {
-                config.Delay = TimeSpan.FromSeconds(3);
                 config.Received = e => e.CorrelateById(context => context.Message.OrderId);
             }
         );
 
-        // Schedule(() => AwaitingGuestSchedule,
-        //     state => state.GuestAwaitingId,
-        //     config =>
-        //     {
-        //         Random rnd = new Random();
-        //         config.Delay = TimeSpan.FromSeconds(rnd.Next(7, 16));
-        //         config.Received = e => e.CorrelateById(context => context.Message.OrderId);
-        //     }
-        // );
-
-        Schedule(() => GuestArrivalSchedule,
-            state => state.GuestArrivalId,
+        Schedule(() => BookingAwaitingGuestSchedule,
+            state => state.GuestAwaitingId,
             config =>
             {
-                Random rnd = new Random();
-                config.Delay = TimeSpan.FromSeconds(rnd.Next(7, 16));
+
                 config.Received = e => e.CorrelateById(context => context.Message.OrderId);
             }
         );
@@ -85,7 +83,8 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     context.Saga.CorrelationId = context.Message.OrderId;
                     context.Saga.OrderId = context.Message.OrderId;
                     context.Saga.ClientId = context.Message.ClientId;
-                    context.Saga.ArrivalTime = context.Message.ArrivalTime;
+                    context.Saga.BookingArrivalTime = context.Message.BookingArrivalTime;
+                    context.Saga.ActualArrivalTime = context.Message.ActualArrivalTime;
                     _logger.LogInformation("[Saga] Запрос на бронирование столика для клиента {ClientId} на {Seats} мест", context.Message.ClientId, context.Message.Seats);
                 })
                 .Schedule(BookingExpiredSchedule, context => new BookingExpired(context.Saga))
@@ -102,13 +101,20 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                         ClientId = context.Saga.ClientId,
                         Message = "Стол успешно забронирован"
                     })
-                .Schedule(GuestArrivalSchedule, context =>
-                {
-                    _logger.LogInformation("[Saga] Ожидание гостя...");
-                    return new GuestArrived(context.Saga);
-                })
-                // .Schedule(AwaitingGuestSchedule, context => context.Init<IGuestWaitingExpired>(new { OrderId = context.Instance.CorrelationId }),
-                //     context => TimeSpan.FromSeconds(5))
+                .Schedule(ActualGuestArrivalSchedule, context =>
+                    {
+                        _logger.LogInformation("[Saga] Фактическое ожидание прибытия гостя...");
+                        return new GuestArrived(context.Saga);
+                    },
+                    context => TimeSpan.FromSeconds(context.Saga.ActualArrivalTime)
+                )
+                .Schedule(BookingAwaitingGuestSchedule, context =>
+                    {
+                        _logger.LogInformation("[Saga] Ожидание гостя ко времени бронирования...");
+                        return new GuestWaitingExpired(context.Saga);
+                    },
+                    context => TimeSpan.FromSeconds(context.Saga.BookingArrivalTime)
+                )
                 .TransitionTo(AwaitingGuestArrival),
 
             When(KitchenRejectEvent)
@@ -121,17 +127,45 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     })
                 .Finalize(),
 
-            When(BookingExpiredSchedule.Received)
+            When(BookingExpiredSchedule?.Received)
                 .Then(context => _logger.LogInformation("[Saga] Отмена заказа {OrderId} по времени BookingExpiredSchedule", context.Message.OrderId))
                 .Finalize()
         );
 
         During(AwaitingGuestArrival,
-            When(GuestArrivalSchedule.Received)
+            When(ActualGuestArrivalSchedule?.Received)
+                .Unschedule(BookingAwaitingGuestSchedule)
                 .Then(context =>
                 {
-                    _logger.LogInformation("[Saga] Гость прибыл!");
+                    _logger.LogInformation("[Saga] Гость прибыл в течении времени бронирования!");
                 })
+                .Publish(context =>
+                    new Notify()
+                    {
+                        OrderId = context.Saga.OrderId,
+                        ClientId = context.Saga.ClientId,
+                        Message = "Просим пройти за столик."
+                    })
+                .Finalize(),
+
+            When(BookingAwaitingGuestSchedule?.Received)
+                .Unschedule(ActualGuestArrivalSchedule)
+                .Then(context =>
+                {
+                    _logger.LogInformation("[Saga] Время бронирования вышло, гость не прибыл!");
+                })
+                .Publish(context =>
+                    new BookingCancel()
+                    {
+                        OrderId = context.Saga.OrderId
+                    })
+                .Publish(context =>
+                    new Notify()
+                    {
+                        OrderId = context.Saga.OrderId,
+                        ClientId = context.Saga.ClientId,
+                        Message = "Вы не пришли в указанное время, бронь снята."
+                    })
                 .Finalize()
         );
 

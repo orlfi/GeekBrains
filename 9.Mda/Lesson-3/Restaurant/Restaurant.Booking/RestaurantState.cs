@@ -12,6 +12,10 @@ public class RestaurantState : SagaStateMachineInstance
     public Guid? BookingExpirationId { get; set; }
     public Guid? GuestAwaitingId { get; set; }
     public Guid? GuestArrivalId { get; set; }
-    // Время прибытия гостя
-    public int ArrivalTime { get; set; }
+
+    // Время прибытия указанное гостем при бронировании
+    public int BookingArrivalTime { get; set; }
+
+    // Фактическое время прибытия гостя
+    public int ActualArrivalTime { get; set; }
 }

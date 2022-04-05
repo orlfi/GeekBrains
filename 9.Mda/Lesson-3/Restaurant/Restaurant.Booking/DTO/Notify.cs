@@ -7,5 +7,5 @@ public class Notify : INotify
 {
     public Guid OrderId { get; init; }
     public Guid ClientId { get; init; }
-    public string Message { get; init; }
+    public string Message { get; init; } = string.Empty;
 }

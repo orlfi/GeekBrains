@@ -57,7 +57,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
         await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
         try
         {
-            foreach (var table in tableNumbers)
+            foreach (var table in tableNumbers!)
             {
                 RemoveBookingByNumberAsync(table);
             }
@@ -142,7 +142,6 @@ internal class TableBookingService : IDisposable, ITableBookingService
         Task.Run(async () =>
         {
             await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
-            string message = "";
             try
             {
                 await Task.Delay(ClearBookingTime, cancel).ConfigureAwait(false);
