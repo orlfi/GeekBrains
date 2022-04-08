@@ -22,6 +22,6 @@ public class NotifyConsumer : IConsumer<INotify>
 
         _notifier.Notify(context.Message.OrderId, context.Message.ClientId, context.Message.Message);
 
-        return Task.CompletedTask;
+        return context.ConsumeCompleted;
     }
 }

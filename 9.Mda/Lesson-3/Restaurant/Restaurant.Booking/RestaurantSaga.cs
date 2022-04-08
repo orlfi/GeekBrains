@@ -63,6 +63,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
             state => state.GuestArrivalId,
             config =>
             {
+                config.Delay = TimeSpan.FromSeconds(1);
                 config.Received = e => e.CorrelateById(context => context.Message.OrderId);
             }
         );
@@ -71,7 +72,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
             state => state.GuestAwaitingId,
             config =>
             {
-
+                config.Delay = TimeSpan.FromSeconds(1);
                 config.Received = e => e.CorrelateById(context => context.Message.OrderId);
             }
         );
@@ -94,7 +95,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         During(AwaitingBookingApproved,
             When(BookingApprovedEvent)
                 .Unschedule(BookingExpiredSchedule)
-                .Publish(context =>
+                .Publish(context => (INotify)
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
@@ -139,7 +140,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 {
                     _logger.LogInformation("[Saga] Гость прибыл в течении времени бронирования!");
                 })
-                .Publish(context =>
+                .Publish(context => (INotify)
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
@@ -159,7 +160,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     {
                         OrderId = context.Saga.OrderId
                     })
-                .Publish(context =>
+                .Publish(context => (INotify)
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
