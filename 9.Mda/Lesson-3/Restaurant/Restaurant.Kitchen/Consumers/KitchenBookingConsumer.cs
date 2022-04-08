@@ -20,24 +20,20 @@ internal class KitchenBookingConsumer : IConsumer<ITableBooked>
     public async Task Consume(ConsumeContext<ITableBooked> context)
     {
         _logger.LogInformation("Получение сообщения TableBooked от сервиса бронирования: OrderId = {OrderId}", context.Message.OrderId);
-        var success = context.Message.Success;
         var orderId = context.Message.OrderId;
 
-        if (success && context.Message.Dish is not null)
+        if (context.Message.Dish is not null)
         {
             var kitchenIsReady = await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
-            if (!kitchenIsReady)
+            if (kitchenIsReady)
             {
-                // var kitchenRejectTask = context.Publish(new KitchenReject() { OrderId = orderId });
-                // var kitchenReadyTask = context.Publish(new KitchenReady() { OrderId = orderId, Success = false });
-                // await Task.WhenAll(kitchenRejectTask, kitchenReadyTask);
-                await context.Publish(new KitchenReady() { OrderId = orderId, Success = false });
-                _logger.LogInformation("Отмена кухни, блюдо в стоп листе: OrderId = {OrderId}", orderId);
+                await context.Publish(new KitchenReady() { OrderId = orderId});
+                _logger.LogInformation("Подтверждение кухни: OrderId = {OrderId}", orderId);
             }
             else
             {
-                await context.Publish(new KitchenReady() { OrderId = orderId, Success = true });
-                _logger.LogInformation("Подтверждение кухни: OrderId = {OrderId}", orderId);
+                await context.Publish(new KitchenReject() { OrderId = orderId});
+                _logger.LogInformation("Отмена кухни, блюдо в стоп листе: OrderId = {OrderId}", orderId);
             }
         }
     }

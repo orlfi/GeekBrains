@@ -53,6 +53,20 @@ internal class TableBookingService : IDisposable, ITableBookingService
     public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)
     {
         await Task.Delay(ClearOrderTime, cancel);
+        var tableNumbers = _orders[orderId].TableNumbers;
+        await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
+        try
+        {
+            foreach (var table in tableNumbers!)
+            {
+                RemoveBookingByNumberAsync(table);
+            }
+        }
+        finally
+        {
+
+            semaphoreSlim.Release();
+        }
         _orders.TryRemove(orderId, out _);
     }
 
@@ -124,26 +138,25 @@ internal class TableBookingService : IDisposable, ITableBookingService
 
     public bool RemoveBookingByNumberAsync(int number, CancellationToken cancel = default)
     {
-        _logger.LogInformation("Добрый день. Подождите секунду, я сниму бронь со столика {Number}.", number);
+        _logger.LogInformation("Снятие брони со столика {Number}...", number);
         Task.Run(async () =>
         {
             await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
-            string message = "";
             try
             {
                 await Task.Delay(ClearBookingTime, cancel).ConfigureAwait(false);
                 var table = _tables.SingleOrDefault(item => item.Id == number && item.State == State.Booked);
 
                 table?.SetBooking(State.Free);
-                message = table is null
-                    ? "Столик не найден или не забронирован"
-                    : $"Бронь снята со столика {table.Id}";
+                if (table is null)
+                    _logger.LogInformation("Столик не найден или не забронирован");
+                else
+                    _logger.LogInformation("Бронь снята со столика {Table}", table.Id);
             }
             finally
             {
                 semaphoreSlim.Release();
             }
-            //_notificationService.Send(message);
         }, cancel);
         return true;
     }

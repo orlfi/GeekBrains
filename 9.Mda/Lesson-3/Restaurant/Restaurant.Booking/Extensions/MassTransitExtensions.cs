@@ -14,8 +14,12 @@ public static class MassTransitExtensions
 
         services.AddMassTransit(massTransitConfig =>
         {
-            massTransitConfig.AddConsumer<BookingKitchenReadyConsumer>();
+            massTransitConfig.AddConsumer<BookingRequestedConsumer>();
+            massTransitConfig.AddConsumer<BookingCancelRequested>();
+            massTransitConfig.AddSagaStateMachine<RestaurantSaga, RestaurantState>().
+                InMemoryRepository();
 
+            massTransitConfig.AddDelayedMessageScheduler();
             massTransitConfig.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rabbitSettings.Host, rabbitSettings.Port, "/", h =>
@@ -23,7 +27,7 @@ public static class MassTransitExtensions
                     h.Username(rabbitSettings.UserName);
                     h.Password(rabbitSettings.Password);
                 });
-
+                cfg.UseDelayedMessageScheduler();
                 cfg.ConfigureEndpoints(context);
             });
         });

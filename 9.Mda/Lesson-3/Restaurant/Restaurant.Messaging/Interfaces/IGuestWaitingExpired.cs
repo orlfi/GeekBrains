@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Messaging.Interfaces;
 
-public interface IKitchenReady
+public interface IGuestWaitingExpired
 {
     Guid OrderId { get; }
 }

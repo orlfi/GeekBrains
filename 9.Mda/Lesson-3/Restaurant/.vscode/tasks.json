@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "Build Booking",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -13,6 +13,30 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "Build Kitchen",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Restaurant.Kitchen/Restaurant.Kitchen.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },        
+        {
+            "label": "Build Notifications",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Restaurant.Notifications/Restaurant.Notifications.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },          
         {
             "label": "publish",
             "command": "dotnet",

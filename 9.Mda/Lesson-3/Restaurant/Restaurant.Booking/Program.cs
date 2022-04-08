@@ -24,6 +24,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<Worker>();
     services.AddSingleton<ITableBookingService, TableBookingService>();
     services.AddMessageBus(context.Configuration);
+
     services.AddHostedService<Worker>();
 }
 

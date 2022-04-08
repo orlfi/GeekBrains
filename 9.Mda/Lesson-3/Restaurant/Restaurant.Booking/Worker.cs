@@ -28,26 +28,31 @@ internal class Worker : BackgroundService
             {
                 Task.Run(async () =>
                     {
-                        var seats = Random.Shared.Next(1, 10);
-                        _logger.LogInformation("Автоматическое асинхронное резервирование столика на {Seats} мест.", seats);
-                        var orderId = Guid.NewGuid();
-                        var clientId = Guid.NewGuid();
+                        var rnd = new Random();
+                        var seats = rnd.Next(1, 10);
+                        var bookingArrivalTime = rnd.Next(7, 16); // время прибытия указанное гостем при бронировании
+                        var actualArrivalTime = rnd.Next(7, 16); // фактическое время прибытия гостя
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
 
-                        var result = await _restaurant.BookFreeTableAsync(seats);
+                        _logger.LogInformation("Резервирование столика на {Seats} мест., блюдо {Dish}, забронированное время {BookingArrivalTime}, фактическое время {ActualArrivalTime}",
+                            seats,
+                            dish?.Name ?? "",
+                            bookingArrivalTime,
+                            actualArrivalTime
+                        );
 
-                        if (result.Success)
-                        {
-                            _logger.LogInformation("Забронированы столики {TableNumbers} для клиента {ClientId}", string.Join(",", result.TableNumbers), clientId.ToString());
-                            await _restaurant.AddOrder(orderId, result.TableNumbers, dish);
-                        }
-                        else
-                        {
-                            _logger.LogWarning("Ошибка бронирования столиков для клиента {ClientId}: {Error}", clientId.ToString(), result.Error);
-                        }
+                        var orderId = NewId.NextGuid();
+                        var clientId = Guid.NewGuid();
 
-                        _logger.LogInformation("Отправка сообщения TableBooked: OrderId = {OrderId}, ClientId = {ClientId} Success = {Success} ", orderId, clientId, result.Success);
-                        await _bus.Publish(new TableBooked() { OrderId = orderId, ClientId = clientId, Dish = dish, Success = result.Success });
+                        await _bus.Publish(new BookingRequested()
+                        {
+                            OrderId = orderId,
+                            ClientId = clientId,
+                            Dish = dish,
+                            Seats = seats,
+                            BookingArrivalTime = bookingArrivalTime,
+                            ActualArrivalTime = actualArrivalTime
+                        });
                     },
                     stoppingToken
                 );
