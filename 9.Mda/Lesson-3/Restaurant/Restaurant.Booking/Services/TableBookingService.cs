@@ -52,22 +52,24 @@ internal class TableBookingService : IDisposable, ITableBookingService
 
     public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)
     {
-        await Task.Delay(ClearOrderTime, cancel);
-        var tableNumbers = _orders[orderId].TableNumbers;
-        await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
-        try
+        if (_orders.TryGetValue(orderId, out var order))
         {
-            foreach (var table in tableNumbers!)
+            var tableNumbers = order.TableNumbers;
+            await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
+            try
             {
-                RemoveBookingByNumberAsync(table);
+                foreach (var table in tableNumbers!)
+                {
+                    RemoveBookingByNumberAsync(table);
+                }
             }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+            _orders.TryRemove(orderId, out _);
         }
-        finally
-        {
-
-            semaphoreSlim.Release();
-        }
-        _orders.TryRemove(orderId, out _);
+        await Task.Delay(ClearOrderTime, cancel);
     }
 
     public async Task<BookingResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)
