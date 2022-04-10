@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Messaging.Data;
+using Restaurant.Messaging.Exceptions;
 
 namespace Restaurant.Kitchen.Services;
 
@@ -19,8 +20,21 @@ internal class KitchenService : IKitchenService
     public async Task<bool> CheckKitchenReadyAsync(Guid orderId, Dish dish)
     {
         var checkTime = Random.Shared.Next(1, 5) * 1000;
+
+        if (MenuRepository.GetDishById(dish.Id) is null)
+            throw new KitchenException("Блюдо не существует в меню");
+
+        if (dish.Id == 6)
+            throw new KitchenException("Не принимаем предзаказ с лазаньей");
+
         _logger.LogInformation("Проверка блюда {DishId} {DishName} в стоп-листе за {CheckTime} сек", dish.Id, dish.Name, checkTime);
         await Task.Delay(checkTime);
         return !_stopList.Contains(dish.Id);
+    }
+
+    public async Task CancelKitchenAsync(Guid orderId)
+    {
+        _logger.LogInformation("Отмена заказа {Order} кухней", orderId);
+        await Task.Delay(100);
     }
 }

@@ -17,6 +17,10 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
     public Event<ITableBooked> TableBookedEvent { get; private set; }
     public Event<IKitchenReady> KitchenReadyEvent { get; private set; }
     public Event<IKitchenReject> KitchenRejectEvent { get; private set; }
+
+    public Event<Fault<IBookingRequested>> BookingRequestedFaulted { get; private set; }
+    public Event<Fault<ITableBooked>> TableBookedFaulted { get; private set; }
+
     public Event BookingApprovedEvent { get; private set; }
 
     public Schedule<RestaurantState, IBookingExpired> BookingExpiredSchedule { get; private set; }
@@ -34,7 +38,6 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         InstanceState(x => x.CurrentState);
 
         Event(() => BookingRequestedEvent, x =>
-
             x.CorrelateById(context => context.Message.OrderId)
                 .SelectId(context => context.Message.OrderId));
 
@@ -47,6 +50,12 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         Event(() => KitchenReadyEvent, x =>
             x.CorrelateById(context => context.Message.OrderId));
 
+        Event(() => BookingRequestedFaulted, x =>
+            x.CorrelateById(context => context.Message.Message.OrderId));
+
+        Event(() => TableBookedFaulted, x =>
+            x.CorrelateById(context => context.Message.Message.OrderId));
+        
         CompositeEvent(() => BookingApprovedEvent,
             x => x.ReadyEventStatus, TableBookedEvent, KitchenReadyEvent);
 
@@ -95,13 +104,13 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         During(AwaitingBookingApproved,
             When(BookingApprovedEvent)
                 .Unschedule(BookingExpiredSchedule)
-                .Publish(context => (INotify)
+                .Publish(context => 
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
                         ClientId = context.Saga.ClientId,
                         Message = "Стол успешно забронирован"
-                    })
+                    } as INotify)
                 .Schedule(ActualGuestArrivalSchedule, context =>
                     {
                         _logger.LogInformation("[Saga] Фактическое ожидание прибытия гостя...");
@@ -118,14 +127,54 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 )
                 .TransitionTo(AwaitingGuestArrival),
 
-            When(KitchenRejectEvent)
+            When(BookingRequestedFaulted)
                 .Unschedule(BookingExpiredSchedule)
-                .Then(content => _logger.LogInformation("[Saga] Отмена кухни для заказа {OrderId}", content.Message.OrderId))
+                .Then(context =>
+                {
+                    _logger.LogInformation("[Saga fault] Ошибка бронирования для заказа {OrderId}: {Error}", context.Message.Message.OrderId, context.Message.Exceptions[0].Message);
+                })
                 .Publish(context =>
                     new BookingCancel()
                     {
                         OrderId = context.Saga.OrderId
-                    })
+                    } as IBookingCancelRequested)
+                .Publish(context =>
+                    new Notify()
+                    {
+                        OrderId = context.Saga.OrderId,
+                        ClientId = context.Saga.ClientId,
+                        Message = $"Отмена бронирования. {context.Message.Exceptions[0].Message}"
+                    } as INotify)
+                .Finalize(),
+
+            When(TableBookedFaulted)
+                .Unschedule(BookingExpiredSchedule)
+                .Then(context =>
+                {
+                    _logger.LogInformation("[Saga fault] Ошибка кухни для заказа {OrderId}: {Error}", context.Message.Message.OrderId, context.Message.Exceptions[0].Message);
+                })
+                .Publish(context =>
+                    new BookingCancel()
+                    {
+                        OrderId = context.Saga.OrderId
+                    } as IBookingCancelRequested)
+                .Publish(context =>
+                    new Notify()
+                    {
+                        OrderId = context.Saga.OrderId,
+                        ClientId = context.Saga.ClientId,
+                        Message = $"Отмена кухни. {context.Message.Exceptions[0].Message}"
+                    } as INotify)
+                .Finalize(),
+
+            When(KitchenRejectEvent)
+                .Unschedule(BookingExpiredSchedule)
+                .Then(content => _logger.LogInformation("[Saga] Отмена кухни для заказа {OrderId}", content.Message.OrderId))
+                .Publish(context => 
+                    new BookingCancel()
+                    {
+                        OrderId = context.Saga.OrderId
+                    } as IBookingCancelRequested)
                 .Finalize(),
 
             When(BookingExpiredSchedule?.Received)
@@ -140,13 +189,13 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 {
                     _logger.LogInformation("[Saga] Гость прибыл в течении времени бронирования!");
                 })
-                .Publish(context => (INotify)
+                .Publish(context => 
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
                         ClientId = context.Saga.ClientId,
                         Message = "Просим пройти за столик."
-                    })
+                    } as INotify)
                 .Finalize(),
 
             When(BookingAwaitingGuestSchedule?.Received)
@@ -159,14 +208,19 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     new BookingCancel()
                     {
                         OrderId = context.Saga.OrderId
-                    })
-                .Publish(context => (INotify)
+                    } as IBookingCancelRequested)
+                .Publish(context =>
+                    new KitchenCancel()
+                    {
+                        OrderId = context.Saga.OrderId
+                    } as IKitchenCancelRequested)
+                .Publish(context => 
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
                         ClientId = context.Saga.ClientId,
                         Message = "Вы не пришли в указанное время, бронь снята."
-                    })
+                    } as INotify)
                 .Finalize()
         );
 
