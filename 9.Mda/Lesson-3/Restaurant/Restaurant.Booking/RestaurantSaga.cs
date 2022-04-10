@@ -185,6 +185,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         During(AwaitingGuestArrival,
             When(ActualGuestArrivalSchedule?.Received)
                 .Unschedule(BookingAwaitingGuestSchedule)
+                .Unschedule(ActualGuestArrivalSchedule)
                 .Then(context =>
                 {
                     _logger.LogInformation("[Saga] Гость прибыл в течении времени бронирования!");
@@ -200,6 +201,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
             When(BookingAwaitingGuestSchedule?.Received)
                 .Unschedule(ActualGuestArrivalSchedule)
+                .Unschedule(BookingAwaitingGuestSchedule)
                 .Then(context =>
                 {
                     _logger.LogInformation("[Saga] Время бронирования вышло, гость не прибыл!");

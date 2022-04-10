@@ -25,7 +25,7 @@ internal class Worker : BackgroundService
     {
         try
         {
-            int count = 1;
+            int count = 0;
             while (true)
             {
                 Task.Run(async () =>
@@ -35,10 +35,10 @@ internal class Worker : BackgroundService
                         var bookingArrivalTime = rnd.Next(7, 16); // время прибытия указанное гостем при бронировании
                         var actualArrivalTime = rnd.Next(7, 16); // фактическое время прибытия гостя
                         var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count));
-                        
-                        //if (count % 2 == 0)
-                        //    dish = MenuRepository.GetDishById(6);
-    
+
+                        if (count % 4 == 0)
+                            dish = MenuRepository.GetDishById(6);
+
                         _logger.LogInformation("Резервирование столика на {Seats} мест., блюдо {Dish}, забронированное время {BookingArrivalTime}, фактическое время {ActualArrivalTime}",
                             seats,
                             dish?.Name ?? "",
@@ -61,8 +61,8 @@ internal class Worker : BackgroundService
                     },
                     stoppingToken
                 );
-                Console.ReadLine();
-                // Thread.Sleep(5000);
+                //Console.ReadLine();
+                Thread.Sleep(5000);
                 count++;
             }
         }
