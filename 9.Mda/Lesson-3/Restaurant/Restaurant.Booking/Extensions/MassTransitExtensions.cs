@@ -15,7 +15,7 @@ public static class MassTransitExtensions
         services.AddMassTransit(massTransitConfig =>
         {
             massTransitConfig.AddConsumer<BookingRequestedConsumer>();
-             massTransitConfig.AddConsumer<BookingCancelRequested>();
+            massTransitConfig.AddConsumer<BookingCancelRequested>();
             massTransitConfig.AddSagaStateMachine<RestaurantSaga, RestaurantState>().
                 InMemoryRepository();
 
@@ -28,6 +28,7 @@ public static class MassTransitExtensions
                     h.Password(rabbitSettings.Password);
                 });
                 cfg.UseDelayedMessageScheduler();
+                cfg.UseInMemoryOutbox();
                 cfg.ConfigureEndpoints(context);
             });
         });
