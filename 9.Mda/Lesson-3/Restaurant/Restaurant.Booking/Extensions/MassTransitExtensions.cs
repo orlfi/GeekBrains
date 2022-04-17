@@ -28,6 +28,7 @@ public static class MassTransitExtensions
                     h.Password(rabbitSettings.Password);
                 });
                 cfg.UseDelayedMessageScheduler();
+                cfg.UseInMemoryOutbox();
                 cfg.ConfigureEndpoints(context);
             });
         });

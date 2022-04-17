@@ -23,7 +23,7 @@ public static class MassTransitExtensions
                     h.Username(rabbitSettings.UserName);
                     h.Password(rabbitSettings.Password);
                 });
-
+                cfg.UseInMemoryOutbox();
                 cfg.ConfigureEndpoints(context);
             });
         });

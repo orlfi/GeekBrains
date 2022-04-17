@@ -29,6 +29,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
     public TableBookingService(ILogger<TableBookingService> logger)
     {
         _logger = logger;
+
         InitTables();
 
         _timer = new System.Timers.Timer(ClearBookingTimerPeriod);
@@ -47,27 +48,29 @@ internal class TableBookingService : IDisposable, ITableBookingService
     public async Task AddOrder(Guid orderId, IEnumerable<int> tableNumbers, Dish? dish, CancellationToken cancel = default)
     {
         await Task.Delay(AddOrderTime, cancel);
-        _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish });
+            _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish });
     }
 
     public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)
     {
-        await Task.Delay(ClearOrderTime, cancel);
-        var tableNumbers = _orders[orderId].TableNumbers;
-        await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
-        try
+        if (_orders.TryGetValue(orderId, out var order))
         {
-            foreach (var table in tableNumbers!)
+            var tableNumbers = order.TableNumbers;
+            await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
+            try
             {
-                RemoveBookingByNumberAsync(table);
+                foreach (var table in tableNumbers!)
+                {
+                    RemoveBookingByNumberAsync(table);
+                }
             }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+            _orders.TryRemove(orderId, out _);
         }
-        finally
-        {
-
-            semaphoreSlim.Release();
-        }
-        _orders.TryRemove(orderId, out _);
+        await Task.Delay(ClearOrderTime, cancel);
     }
 
     public async Task<BookingResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default)
@@ -77,8 +80,10 @@ internal class TableBookingService : IDisposable, ITableBookingService
         await semaphoreSlim.WaitAsync(cancel).ConfigureAwait(false);
         try
         {
+
             var tables = GetFreeTables(seatsCount);
             await Task.Delay(SearchFreeTableTime, cancel).ConfigureAwait(false);
+
             if (tables.Count > 0)
             {
                 foreach (var item in tables)
@@ -98,7 +103,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при бронировании столика на {SeatsCount}", seatsCount);
-            return $"Сервис временно недоступен. Приносим свои извинения. Вас уведомим  о решении проблемы";
+            return "Сервис временно недоступен. Приносим свои извинения. Вас уведомим  о решении проблемы";
         }
         finally
         {

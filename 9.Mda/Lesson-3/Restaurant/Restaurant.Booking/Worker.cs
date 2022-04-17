@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Restaurant.Booking.DTO;
 using Restaurant.Booking.Interfaces;
 using Restaurant.Messaging.Data;
+using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Booking;
 
@@ -24,6 +25,7 @@ internal class Worker : BackgroundService
     {
         try
         {
+            int count = 0;
             while (true)
             {
                 Task.Run(async () =>
@@ -32,7 +34,10 @@ internal class Worker : BackgroundService
                         var seats = rnd.Next(1, 10);
                         var bookingArrivalTime = rnd.Next(7, 16); // время прибытия указанное гостем при бронировании
                         var actualArrivalTime = rnd.Next(7, 16); // фактическое время прибытия гостя
-                        var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count + 1));
+                        var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count));
+
+                        if (count % 4 == 0)
+                            dish = MenuRepository.GetDishById(6);
 
                         _logger.LogInformation("Резервирование столика на {Seats} мест., блюдо {Dish}, забронированное время {BookingArrivalTime}, фактическое время {ActualArrivalTime}",
                             seats,
@@ -52,12 +57,13 @@ internal class Worker : BackgroundService
                             Seats = seats,
                             BookingArrivalTime = bookingArrivalTime,
                             ActualArrivalTime = actualArrivalTime
-                        });
+                        } as IBookingRequested);
                     },
                     stoppingToken
                 );
-                Console.ReadLine();
-                // Thread.Sleep(5000);
+                // Console.ReadLine();
+                Thread.Sleep(5000);
+                count++;
             }
         }
         catch (Exception ex)

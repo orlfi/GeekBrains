@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Restaurant.Booking.DTO;
 using Restaurant.Booking.Interfaces;
+using Restaurant.Messaging.Exceptions;
 using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Notifications.Consumers;
@@ -24,16 +25,15 @@ internal class BookingRequestedConsumer : IConsumer<IBookingRequested>
         _logger.LogInformation("Получено сообщение на бронирование столиков на {Seats} мест] для заказа OrderId = {OrderId}", request.Seats, request.OrderId);
 
         var result = await _tableBookingService.BookFreeTableAsync(request.Seats);
-        if (result.Success)
+
+        if (!result.Success)
         {
-            _logger.LogInformation("Забронированы столики {TableNumbers} для клиента {ClientId}", string.Join(",", result.TableNumbers), request.ClientId.ToString());
-            await _tableBookingService.AddOrder(request.OrderId, result.TableNumbers, request.Dish);
-            await context.Publish(new TableBooked() { OrderId = request.OrderId, ClientId = request.ClientId, Dish = request.Dish});
+            _logger.LogWarning("Ошибка бронирования столиков заказ {OrderId} для клиента {ClientId}: {Error}", request.OrderId, request.ClientId.ToString(), result.Error);
+            throw new BookingException($"Ошибка сервиса бронирования для заказа {request.OrderId}");
         }
-        else
-        {
-            _logger.LogWarning("Ошибка бронирования столиков для клиента {ClientId}: {Error}", request.ClientId.ToString(), result.Error);
-            await context.Publish(new BookingCancel() { OrderId = request.OrderId});
-        }
+
+        _logger.LogInformation("Забронированы столики {TableNumbers} для клиента {ClientId} заказ №{OrderId}", string.Join(",", result.TableNumbers), request.ClientId.ToString(), request.OrderId);
+        await _tableBookingService.AddOrder(request.OrderId, result.TableNumbers, request.Dish);
+        await context.Publish(new TableBooked() { OrderId = request.OrderId, ClientId = request.ClientId, Dish = request.Dish } as ITableBooked);
     }
 }
