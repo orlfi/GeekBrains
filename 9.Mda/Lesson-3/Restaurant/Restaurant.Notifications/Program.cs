@@ -26,4 +26,4 @@ static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration conf
     config.ReadFrom.Configuration(context.Configuration);
 }
 
-CreateHostBuilder(args).Build().Run();
+await CreateHostBuilder(args).Build().RunAsync();

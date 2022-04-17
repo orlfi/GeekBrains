@@ -8,6 +8,9 @@ using Restaurant.Booking.Services;
 using Restaurant.Messaging.Configuration;
 using Restaurant.Booking.Extensions;
 using Restaurant.Booking.Interfaces;
+using Restaurant.Booking.Models;
+using Restaurant.Messaging.Interfaces;
+using Restaurant.Messaging.Repositories;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -22,6 +25,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 {
     services.AddSingleton(p => p.GetRequiredService<IOptions<RabbitSettings>>().Value);
     services.AddSingleton<Worker>();
+    services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
     services.AddSingleton<ITableBookingService, TableBookingService>();
     services.AddMessageBus(context.Configuration);
 
@@ -33,4 +37,4 @@ static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration conf
     config.ReadFrom.Configuration(context.Configuration);
 }
 
-CreateHostBuilder(args).Build().Run();
+await CreateHostBuilder(args).Build().RunAsync();
