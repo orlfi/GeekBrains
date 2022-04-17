@@ -18,7 +18,7 @@ internal class KitchenCancelRequested : IConsumer<IKitchenCancelRequested>
 
     public async Task Consume(ConsumeContext<IKitchenCancelRequested> context)
     {
-            _logger.LogInformation("Получено сообщение об отмене кухни: OrderId = {OrderId}", context.Message.OrderId);
-            await _kitchen.CancelKitchenAsync(context.Message.OrderId);
+        _logger.LogInformation("Получено сообщение об отмене кухни: OrderId = {OrderId}", context.Message.OrderId);
+        await _kitchen.CancelKitchenAsync(context.Message.OrderId);
     }
 }

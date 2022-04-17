@@ -24,8 +24,8 @@ internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
 
         if (context.Message.Dish is null)
         {
-            _logger.LogInformation("Блюдо не должно быть null: OrderId = {OrderId}", orderId);
-            throw new NullReferenceException("Блюдо не должно быть null");
+            _logger.LogInformation("Поле <Блюдо> должно быть заполнено: OrderId = {OrderId}", orderId);
+            throw new NullReferenceException("Поле <Блюдо> должно быть заполнено");
         }
 
         var kitchenIsReady = await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
