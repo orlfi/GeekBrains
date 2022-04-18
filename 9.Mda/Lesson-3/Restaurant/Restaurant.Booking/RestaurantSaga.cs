@@ -55,7 +55,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
         Event(() => TableBookedFaulted, x =>
             x.CorrelateById(context => context.Message.Message.OrderId));
-        
+
         CompositeEvent(() => BookingApprovedEvent,
             x => x.ReadyEventStatus, TableBookedEvent, KitchenReadyEvent);
 
@@ -104,7 +104,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
         During(AwaitingBookingApproved,
             When(BookingApprovedEvent)
                 .Unschedule(BookingExpiredSchedule)
-                .Publish(context => 
+                .Publish(context =>
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
@@ -129,6 +129,8 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
             When(BookingRequestedFaulted)
                 .Unschedule(BookingExpiredSchedule)
+                .Unschedule(BookingAwaitingGuestSchedule)
+                .Unschedule(ActualGuestArrivalSchedule)
                 .Then(context =>
                 {
                     _logger.LogInformation("[Saga fault] Ошибка бронирования для заказа {OrderId}: {Error}", context.Message.Message.OrderId, context.Message.Exceptions[0].Message);
@@ -148,6 +150,8 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 .Finalize(),
 
             When(TableBookedFaulted)
+                .Unschedule(BookingAwaitingGuestSchedule)
+                .Unschedule(ActualGuestArrivalSchedule)
                 .Unschedule(BookingExpiredSchedule)
                 .Then(context =>
                 {
@@ -169,8 +173,10 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
 
             When(KitchenRejectEvent)
                 .Unschedule(BookingExpiredSchedule)
+                .Unschedule(BookingAwaitingGuestSchedule)
+                .Unschedule(ActualGuestArrivalSchedule)
                 .Then(content => _logger.LogInformation("[Saga] Отмена кухни для заказа {OrderId}", content.Message.OrderId))
-                .Publish(context => 
+                .Publish(context =>
                     new BookingCancel()
                     {
                         OrderId = context.Saga.OrderId
@@ -178,19 +184,23 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 .Finalize(),
 
             When(BookingExpiredSchedule?.Received)
+                .Unschedule(BookingExpiredSchedule)
+                .Unschedule(BookingAwaitingGuestSchedule)
+                .Unschedule(ActualGuestArrivalSchedule)
                 .Then(context => _logger.LogInformation("[Saga] Отмена заказа {OrderId} по времени BookingExpiredSchedule", context.Message.OrderId))
                 .Finalize()
         );
 
         During(AwaitingGuestArrival,
             When(ActualGuestArrivalSchedule?.Received)
+                .Unschedule(BookingExpiredSchedule)
                 .Unschedule(BookingAwaitingGuestSchedule)
                 .Unschedule(ActualGuestArrivalSchedule)
                 .Then(context =>
                 {
                     _logger.LogInformation("[Saga] Гость прибыл в течении времени бронирования!");
                 })
-                .Publish(context => 
+                .Publish(context =>
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,
@@ -200,6 +210,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                 .Finalize(),
 
             When(BookingAwaitingGuestSchedule?.Received)
+                .Unschedule(BookingExpiredSchedule)
                 .Unschedule(ActualGuestArrivalSchedule)
                 .Unschedule(BookingAwaitingGuestSchedule)
                 .Then(context =>
@@ -216,7 +227,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     {
                         OrderId = context.Saga.OrderId
                     } as IKitchenCancelRequested)
-                .Publish(context => 
+                .Publish(context =>
                     new Notify()
                     {
                         OrderId = context.Saga.OrderId,

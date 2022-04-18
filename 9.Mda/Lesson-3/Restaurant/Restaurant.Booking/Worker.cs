@@ -61,8 +61,8 @@ internal class Worker : BackgroundService
                     },
                     stoppingToken
                 );
-                // Console.ReadLine();
-                Thread.Sleep(5000);
+                Console.ReadLine();
+                // Thread.Sleep(5000);
                 count++;
             }
         }

@@ -24,18 +24,18 @@ internal class BookingRequestedConsumer : IConsumer<IBookingRequested>
     public async Task Consume(ConsumeContext<IBookingRequested> context)
     {
         _logger.LogInformation("Получено сообщение на бронирование столиков на {Seats} мест] для заказа OrderId = {OrderId}", context.Message.Seats, context.Message.OrderId);
-        
+
         BookingRequestModel? bookingRequestModel = _db.Get().SingleOrDefault(x => x.OrderId == context.Message.OrderId);
-        
+
         if (bookingRequestModel is not null && bookingRequestModel.Contains(context.MessageId.ToString()!))
         {
-            _logger.LogError("Cообщение MessageId={MessageId} было уже обработано (OrderId = {OrderId} для клиента {ClientId})", context.Message.OrderId, context.Message.OrderId, context.Message.ClientId);
+            _logger.LogError("Cообщение MessageId={MessageId} было уже обработано (OrderId = {OrderId} для клиента {ClientId})", context.MessageId, context.Message.OrderId, context.Message.ClientId);
             return;
         }
 
         _logger.LogInformation("Новое сообщение MessageId={MessageId} (OrderId = {OrderId} для клиента {ClientId})", context.Message.OrderId, context.Message.OrderId, context.Message.ClientId);
 
-        bookingRequestModel = bookingRequestModel?.Update(context.Message, context.MessageId.ToString()!) 
+        bookingRequestModel = bookingRequestModel?.Update(context.Message, context.MessageId.ToString()!)
             ?? new BookingRequestModel(context.Message, context.MessageId.ToString()!);
 
         var result = await _tableBookingService.BookFreeTableAsync(bookingRequestModel.Seats);

@@ -5,6 +5,9 @@ using Serilog;
 using Restaurant.Kitchen.Services;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Kitchen.Extensions;
+using Restaurant.Messaging.Interfaces;
+using Restaurant.Booking.Models;
+using Restaurant.Messaging.Repositories;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -19,6 +22,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
 {
     services.AddSingleton<IKitchenService, KitchenService>();
     services.AddMessageBus(context.Configuration);
+    services.AddSingleton<IInMemoryKeyRepository<KitchenRequestModel>, InMemoryKeyRepository<KitchenRequestModel>>();
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
