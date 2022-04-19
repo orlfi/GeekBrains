@@ -26,7 +26,7 @@ internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
 
         var model = new KitchenRequestModel(context.Message);
         var key = $"{context.MessageId.ToString()}_{model.OrderId.ToString()}";
-        if (!_db.Contains(key))
+        if (_db.Contains(key))
         {
             _logger.LogError("Cообщение MessageId={MessageId} было уже обработано (OrderId = {OrderId} для клиента {ClientId})", context.MessageId, model.OrderId, model.ClientId);
             return;
@@ -49,7 +49,7 @@ internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
             await context.Publish(new KitchenReject() { OrderId = model.OrderId });
             _logger.LogInformation("Отмена кухни, блюдо в стоп листе: OrderId = {OrderId}", model.OrderId);
         }
-        
+
         _db.Add(model, key);
     }
 }
