@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MassTransit.Audit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Messaging.Configuration;
@@ -40,6 +41,11 @@ public static class MassTransitExtensions
                 cfg.UseDelayedMessageScheduler();
                 cfg.UseInMemoryOutbox();
                 cfg.ConfigureEndpoints(context);
+
+                var provider = services.BuildServiceProvider();
+                var auditStore = provider.GetService<IMessageAuditStore>();
+                cfg.ConnectSendAuditObservers(auditStore);
+                cfg.ConnectConsumeAuditObserver(auditStore);
             });
         });
 

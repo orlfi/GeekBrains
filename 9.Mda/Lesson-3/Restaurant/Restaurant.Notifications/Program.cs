@@ -5,6 +5,8 @@ using Serilog;
 using Restaurant.Notifications.Interfaces;
 using Restaurant.Notifications.Extensions;
 using Restaurant.Notifications.Services;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -18,6 +20,7 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<INotifier, Notifier>();
+    services.AddSingleton<IMessageAuditStore, AuditStore>();
     services.AddMessageBus(context.Configuration);
 }
 

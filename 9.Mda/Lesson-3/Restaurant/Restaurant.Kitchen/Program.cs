@@ -8,6 +8,8 @@ using Restaurant.Kitchen.Extensions;
 using Restaurant.Messaging.Interfaces;
 using Restaurant.Booking.Models;
 using Restaurant.Messaging.Repositories;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -21,8 +23,9 @@ static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder build
 static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
 {
     services.AddSingleton<IKitchenService, KitchenService>();
-    services.AddMessageBus(context.Configuration);
     services.AddSingleton<IInMemoryKeyRepository<KitchenRequestModel>, InMemoryKeyRepository<KitchenRequestModel>>();
+    services.AddSingleton<IMessageAuditStore, AuditStore>();
+    services.AddMessageBus(context.Configuration);
 }
 
 static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)

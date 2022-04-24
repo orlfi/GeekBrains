@@ -11,6 +11,8 @@ using Restaurant.Booking.Interfaces;
 using Restaurant.Booking.Models;
 using Restaurant.Messaging.Interfaces;
 using Restaurant.Messaging.Repositories;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
 
 static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(ConfigureApp)
@@ -27,6 +29,7 @@ static void ConfigureServices(HostBuilderContext context, IServiceCollection ser
     services.AddSingleton<Worker>();
     services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
     services.AddSingleton<ITableBookingService, TableBookingService>();
+    services.AddSingleton<IMessageAuditStore, AuditStore>();
     services.AddMessageBus(context.Configuration);
 
     services.AddHostedService<Worker>();
