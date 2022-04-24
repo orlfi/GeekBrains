@@ -1,36 +1,30 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
+using Prometheus;
+using Restaurant.Booking.Models;
+using Restaurant.Messaging.Interfaces;
+using Restaurant.Messaging.Repositories;
 using Restaurant.Kitchen.Services;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Kitchen.Extensions;
-using Restaurant.Messaging.Interfaces;
-using Restaurant.Booking.Models;
-using Restaurant.Messaging.Repositories;
-using MassTransit.Audit;
-using Restaurant.Messaging.Logging;
 
-static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration(ConfigureApp)
-    .ConfigureServices(ConfigureServices)
-    .UseSerilog(ConfigureLogger);
+var builder = WebApplication.CreateBuilder(args);
 
-static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder builder)
-{
-}
+builder.Host.UseSerilog((context, config) =>config.ReadFrom.Configuration(context.Configuration));
 
-static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-{
-    services.AddSingleton<IKitchenService, KitchenService>();
-    services.AddSingleton<IInMemoryKeyRepository<KitchenRequestModel>, InMemoryKeyRepository<KitchenRequestModel>>();
-    services.AddSingleton<IMessageAuditStore, AuditStore>();
-    services.AddMessageBus(context.Configuration);
-}
+builder.Services.AddControllers();
 
-static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
-{
-    config.ReadFrom.Configuration(context.Configuration);
-}
+builder.Services.AddSingleton<IKitchenService, KitchenService>();
+builder.Services.AddSingleton<IInMemoryKeyRepository<KitchenRequestModel>, InMemoryKeyRepository<KitchenRequestModel>>();
+builder.Services.AddSingleton<IMessageAuditStore, AuditStore>();
+builder.Services.AddMessageBus(builder.Configuration);
 
-await CreateHostBuilder(args).Build().RunAsync();
+var app = builder.Build();
+
+app.MapMetrics();
+app.MapControllers();
+
+await app.RunAsync();

@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Hosting;
 using Serilog;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
+using Prometheus;
 using Restaurant.Booking;
 using Restaurant.Booking.Services;
 using Restaurant.Messaging.Configuration;
@@ -11,33 +13,25 @@ using Restaurant.Booking.Interfaces;
 using Restaurant.Booking.Models;
 using Restaurant.Messaging.Interfaces;
 using Restaurant.Messaging.Repositories;
-using MassTransit.Audit;
-using Restaurant.Messaging.Logging;
 
-static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration(ConfigureApp)
-    .ConfigureServices(ConfigureServices)
-    .UseSerilog(ConfigureLogger);
+var builder = WebApplication.CreateBuilder(args);
 
-static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder builder)
-{
-}
+builder.Host.UseSerilog((context, config) =>config.ReadFrom.Configuration(context.Configuration));
 
-static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-{
-    services.AddSingleton(p => p.GetRequiredService<IOptions<RabbitSettings>>().Value);
-    services.AddSingleton<Worker>();
-    services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
-    services.AddSingleton<ITableBookingService, TableBookingService>();
-    services.AddSingleton<IMessageAuditStore, AuditStore>();
-    services.AddMessageBus(context.Configuration);
+builder.Services.AddControllers();
 
-    services.AddHostedService<Worker>();
-}
+builder.Services.AddSingleton(p => p.GetRequiredService<IOptions<RabbitSettings>>().Value);
+builder.Services.AddSingleton<Worker>();
+builder.Services.AddSingleton<IInMemoryRepository<BookingRequestModel>, InMemoryRepository<BookingRequestModel>>();
+builder.Services.AddSingleton<ITableBookingService, TableBookingService>();
+builder.Services.AddSingleton<IMessageAuditStore, AuditStore>();
+builder.Services.AddMessageBus(builder.Configuration);
 
-static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
-{
-    config.ReadFrom.Configuration(context.Configuration);
-}
+builder.Services.AddHostedService<Worker>();
 
-await CreateHostBuilder(args).Build().RunAsync();
+var app = builder.Build();
+
+app.MapMetrics();
+app.MapControllers();
+
+await app.RunAsync();

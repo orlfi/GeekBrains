@@ -15,7 +15,7 @@ public class AuditStore : IMessageAuditStore
 
     public Task StoreMessage<T>(T message, MessageAuditMetadata metadata) where T : class
     {
-        _logger.LogInformation(JsonSerializer.Serialize(metadata) + "\n" + JsonSerializer.Serialize(message));
+        _logger.LogDebug(JsonSerializer.Serialize(metadata) + "\n" + JsonSerializer.Serialize(message));
         return Task.CompletedTask;
     }
 }
