@@ -63,7 +63,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
             state => state.BookingExpirationId,
             config =>
                 {
-                    config.Delay = TimeSpan.FromSeconds(3);
+                    config.Delay = TimeSpan.FromSeconds(4);
                     config.Received = e => e.CorrelateById(context => context.Message.OrderId);
                 }
             );

@@ -26,7 +26,7 @@ internal class Worker : BackgroundService
         try
         {
             await Task.Run(async () =>
-            { 
+            {
                 int count = 0;
                 while (true)
                 {
@@ -53,8 +53,8 @@ internal class Worker : BackgroundService
         {
             var rnd = new Random();
             var seats = rnd.Next(1, 10);
-            var bookingArrivalTime = rnd.Next(7, 16); // время прибытия указанное гостем при бронировании
-            var actualArrivalTime = rnd.Next(7, 16); // фактическое время прибытия гостя
+            var bookingArrivalTime = rnd.Next(13, 16); // время прибытия указанное гостем при бронировании
+            var actualArrivalTime = rnd.Next(5, 16); // фактическое время прибытия гостя
             var dish = MenuRepository.GetDishById(Random.Shared.Next(1, MenuRepository.Count));
 
             if (count % 4 == 0)
