@@ -2,9 +2,9 @@
 using MassTransit.Audit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Kitchen.Consumers;
 using Restaurant.Messaging.Configuration;
 using Restaurant.Messaging.Exceptions;
-using Restaurant.Notifications.Consumers;
 
 namespace Restaurant.Kitchen.Extensions;
 

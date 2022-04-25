@@ -3,7 +3,7 @@ using Restaurant.Messaging.Data;
 
 namespace Restaurant.Booking.Interfaces;
 
-internal interface ITableBookingService
+public interface ITableBookingService
 {
     Task<BookingResult> BookFreeTableAsync(int seatsCount, CancellationToken cancel = default);
     bool RemoveBookingByNumberAsync(int number, CancellationToken cancel = default);

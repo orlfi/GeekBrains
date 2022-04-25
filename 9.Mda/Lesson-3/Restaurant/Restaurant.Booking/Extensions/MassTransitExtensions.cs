@@ -2,8 +2,8 @@
 using MassTransit.Audit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Booking.Consumers;
 using Restaurant.Messaging.Configuration;
-using Restaurant.Notifications.Consumers;
 
 namespace Restaurant.Booking.Extensions;
 

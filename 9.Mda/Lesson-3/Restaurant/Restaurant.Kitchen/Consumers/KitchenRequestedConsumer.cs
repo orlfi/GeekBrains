@@ -5,7 +5,7 @@ using Restaurant.Booking.Models;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Messaging.Interfaces;
 
-namespace Restaurant.Notifications.Consumers;
+namespace Restaurant.Kitchen.Consumers;
 
 internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
 {

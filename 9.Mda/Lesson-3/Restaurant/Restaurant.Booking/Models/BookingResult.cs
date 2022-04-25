@@ -1,7 +1,7 @@
 ﻿
 namespace Restaurant.Booking.Models;
 
-internal struct BookingResult
+public struct BookingResult
 {
     public bool Success => string.IsNullOrEmpty(Error) && TableNumbers.Count > 0;
 

@@ -3,7 +3,7 @@ using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Booking.Models;
 
-internal class BookingRequestModel
+public class BookingRequestModel
 {
     private readonly ICollection<string> _messageIds = new List<string>();
 
@@ -12,7 +12,7 @@ internal class BookingRequestModel
     public Dish? Dish { get; private set; }
     public int Seats { get; private set; }
 
-    public BookingRequestModel(IBookingRequested bookingRequested, string id) 
+    public BookingRequestModel(IBookingRequested bookingRequested, string id)
         : this(bookingRequested.OrderId, bookingRequested.ClientId, bookingRequested.Dish, bookingRequested.Seats, id) { }
 
     public BookingRequestModel(Guid orderId, Guid clientId, Dish? dish, int seats, string id)

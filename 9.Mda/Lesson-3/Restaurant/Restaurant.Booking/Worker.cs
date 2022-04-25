@@ -8,7 +8,7 @@ using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Booking;
 
-internal class Worker : BackgroundService
+public class Worker : BackgroundService
 {
     private readonly ILogger _logger;
     private readonly ITableBookingService _restaurant;
