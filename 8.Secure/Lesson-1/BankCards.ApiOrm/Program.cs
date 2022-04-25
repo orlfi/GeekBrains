@@ -36,6 +36,7 @@ services.AddControllersWithViews();
 services.AddEndpointsApiExplorer();
 services.AddValidators();
 services.AddMappers();
+services.AddConsul(builder.Configuration);
 
 #region Добавляем аутентификацию и авторизацию
 services.TryAddSingleton<ISystemClock, SystemClock>();
@@ -150,7 +151,7 @@ if (app.Configuration.GetValue<bool>("UseSwagger"))
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 
@@ -161,8 +162,6 @@ if (!app.Environment.IsDevelopment())
     app.UseAuthorization();
 }
 
-
-
 app.MapControllers();
 
 app.Map("/test", () => "Тестовая страница");
@@ -170,6 +169,8 @@ app.Map("/test", () => "Тестовая страница");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseHealthChecks("/"+app.Configuration.GetValue<string>("ConsulSettings:HealthPath"));
 
 app.Run();
 

@@ -1,12 +1,9 @@
 using BankCards.ApiOrm.Configuration;
 using BankCards.DAL.Context;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Npgsql;
-using System.Data.Common;
 
 
 namespace BankCards.ApiOrm.Extensions;
