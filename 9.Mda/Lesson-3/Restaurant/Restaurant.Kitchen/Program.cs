@@ -4,12 +4,12 @@ using Serilog;
 using MassTransit.Audit;
 using Restaurant.Messaging.Logging;
 using Prometheus;
-using Restaurant.Booking.Models;
 using Restaurant.Messaging.Interfaces;
 using Restaurant.Messaging.Repositories;
 using Restaurant.Kitchen.Services;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Kitchen.Extensions;
+using Restaurant.Kitchen.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

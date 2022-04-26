@@ -1,13 +1,13 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
-using Restaurant.Booking.DTO;
-using Restaurant.Booking.Models;
+using Restaurant.Kitchen.DTO;
 using Restaurant.Kitchen.Interfaces;
+using Restaurant.Kitchen.Models;
 using Restaurant.Messaging.Interfaces;
 
 namespace Restaurant.Kitchen.Consumers;
 
-internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
+public class KitchenRequestedConsumer : IConsumer<ITableBooked>
 {
     private readonly ILogger<KitchenRequestedConsumer> _logger;
     private readonly IKitchenService _kitchen;
@@ -41,12 +41,12 @@ internal class KitchenRequestedConsumer : IConsumer<ITableBooked>
         var kitchenIsReady = await _kitchen.CheckKitchenReadyAsync(context.Message.OrderId, context.Message.Dish);
         if (kitchenIsReady)
         {
-            await context.Publish(new KitchenReady() { OrderId = model.OrderId });
+            await context.Publish(new KitchenReady() { OrderId = model.OrderId } as IKitchenReady);
             _logger.LogInformation("Подтверждение кухни: OrderId = {OrderId}", model.OrderId);
         }
         else
         {
-            await context.Publish(new KitchenReject() { OrderId = model.OrderId });
+            await context.Publish(new KitchenReject() { OrderId = model.OrderId } as IKitchenReject);
             _logger.LogInformation("Отмена кухни, блюдо в стоп листе: OrderId = {OrderId}", model.OrderId);
         }
 
