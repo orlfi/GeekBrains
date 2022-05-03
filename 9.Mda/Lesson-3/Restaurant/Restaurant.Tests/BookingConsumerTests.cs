@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Testing;
@@ -43,6 +42,7 @@ public class BookingConsumerTests
     [OneTimeTearDown]
     public async Task TearDown()
     {
+        await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
         await _provider.DisposeAsync();
     }
 
@@ -60,8 +60,6 @@ public class BookingConsumerTests
         } as IBookingRequested);
 
         Assert.That(await _harness.Consumed.Any<IBookingRequested>());
-
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
 
     [Test]
@@ -81,7 +79,6 @@ public class BookingConsumerTests
 
         Assert.That(await _harness.Consumed.Any<IBookingRequested>(item => item.Context.Message.OrderId == orderId), Is.True);
         Assert.That(await _harness.Published.Any<ITableBooked>(item => item.Context.Message.OrderId == orderId), Is.True);
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
 
     [Test]
@@ -95,26 +92,5 @@ public class BookingConsumerTests
         });
 
         Assert.That(await _harness.Consumed.Any<IBookingCancelRequested>(item => item.Context.Message.OrderId == orderId), Is.True);
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
-
-
-    // [Test]
-    // public async Task Booking_Consume_BookingRequestedMessage_ThrowsException_OnTableBookingError()
-    // {
-    //     var orderId = Guid.NewGuid();
-
-    //     await _harness.Bus.Publish<IBookingRequested>(new BookingRequested()
-    //     {
-    //         OrderId = orderId,
-    //         ClientId = Guid.NewGuid(),
-    //         Dish = MenuRepository.GetDishById(1),
-    //         Seats = 5,
-    //         BookingArrivalTime = 7,
-    //         ActualArrivalTime = 2
-    //     });
-    //     // Assert.That(await _harness.Published.Any<ITableBooked>(item => item.Context.Message.OrderId == orderId), Is.True);
-    //     Assert.IsTrue(await _harness.Consumed.Any<Fault>());
-    //     await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
-    // }
 }

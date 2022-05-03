@@ -36,9 +36,7 @@ public class SagaTests
             .AddMassTransitTestHarness(cfg =>
             {
                 cfg.AddConsumer<BookingRequestedConsumer>();
-                // cfg.AddConsumer<BookingCancelRequested>();
                 cfg.AddConsumer<KitchenRequestedConsumer>();
-                // cfg.AddConsumer<KitchenCancelRequested>();
                 cfg.AddConsumer<NotifyConsumer>();
                 cfg.AddSagaStateMachine<RestaurantSaga, RestaurantState>();
             })
@@ -58,7 +56,7 @@ public class SagaTests
     [OneTimeTearDown]
     public async Task TearDown()
     {
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
+        await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
         await _provider.DisposeAsync();
     }
 

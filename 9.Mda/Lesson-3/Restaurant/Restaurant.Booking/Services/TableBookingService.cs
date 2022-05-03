@@ -90,7 +90,6 @@ public class TableBookingService : IDisposable, ITableBookingService
                 {
                     item.SetBooking(State.Booked);
                 }
-                //message = $"[{DateTime.Now.ToString("hh:mm:ss")}] УВЕДОМЛЕНИЕ. Ваш столик №{string.Join(",", tables.OrderBy(item => item.Id).Select(item => item.Id))}";
                 var result = tables.OrderBy(item => item.Id).Select(item => item.Id).ToList();
                 return result;
             }
