@@ -1,12 +1,10 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Restaurant.Booking.DTO;
-using Restaurant.Messaging.Data;
 using Restaurant.Messaging.Interfaces;
 using Restaurant.Notifications.Consumers;
 using Restaurant.Notifications.Interfaces;
@@ -39,6 +37,7 @@ public class NotificationsConsumerTests
     [OneTimeTearDown]
     public async Task TearDown()
     {
+        await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
         await _provider.DisposeAsync();
     }
 
@@ -68,6 +67,5 @@ public class NotificationsConsumerTests
         });
 
         Assert.That(await _harness.Consumed.Any<INotify>(item => item.Context.Message.OrderId == orderId), Is.True);
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
 }

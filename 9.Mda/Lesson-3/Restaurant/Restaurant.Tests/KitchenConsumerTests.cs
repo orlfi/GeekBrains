@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Testing;
@@ -43,6 +42,7 @@ public class KitchenConsumerTests
     [OneTimeTearDown]
     public async Task TearDown()
     {
+        await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
         await _provider.DisposeAsync();
     }
 
@@ -73,7 +73,6 @@ public class KitchenConsumerTests
 
         Assert.That(await _harness.Consumed.Any<ITableBooked>(item => item.Context.Message.OrderId == orderId), Is.True);
         Assert.That(await _harness.Published.Any<IKitchenReady>(item => item.Context.Message.OrderId == orderId), Is.True);
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
 
     [Test]
@@ -87,6 +86,5 @@ public class KitchenConsumerTests
         });
 
         Assert.That(await _harness.Consumed.Any<IKitchenCancelRequested>(item => item.Context.Message.OrderId == orderId), Is.True);
-        // await _harness.OutputTimeline(TestContext.Out, opt => opt.Now().IncludeAddress());
     }
 }

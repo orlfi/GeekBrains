@@ -19,8 +19,7 @@ public class KitchenService : IKitchenService
 
     public async Task<bool> CheckKitchenReadyAsync(Guid orderId, Dish dish)
     {
-        // var checkTime = Random.Shared.Next(1, 5) * 1000;
-        var checkTime = 300;
+        var checkTime = Random.Shared.Next(1, 5) * 300;
 
         if (MenuRepository.GetDishById(dish.Id) is null)
             throw new KitchenException("Блюдо не существует в меню");

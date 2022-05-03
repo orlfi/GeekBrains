@@ -79,8 +79,7 @@ public class Worker : BackgroundService
                 BookingArrivalTime = bookingArrivalTime,
                 ActualArrivalTime = actualArrivalTime
             } as IBookingRequested);
-        },
-        stoppingToken
-        );
+        }, 
+        stoppingToken);
     }
 }
