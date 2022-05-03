@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Restaurant.Booking.Interfaces;
 using Restaurant.Messaging.Interfaces;
 
-namespace Restaurant.Notifications.Consumers;
+namespace Restaurant.Booking.Consumers;
 
-internal class BookingCancelRequested : IConsumer<IBookingCancelRequested>
+public class BookingCancelRequested : IConsumer<IBookingCancelRequested>
 {
     private readonly ILogger<BookingCancelRequested> _logger;
     private readonly ITableBookingService _tableBookingService;
@@ -18,7 +18,7 @@ internal class BookingCancelRequested : IConsumer<IBookingCancelRequested>
 
     public async Task Consume(ConsumeContext<IBookingCancelRequested> context)
     {
-            _logger.LogInformation("Получено сообщение об отмене кухни: OrderId = {OrderId}", context.Message.OrderId);
-            await _tableBookingService.ClearOrder(context.Message.OrderId);
+        _logger.LogInformation("Получено сообщение об отмене кухни: OrderId = {OrderId}", context.Message.OrderId);
+        await _tableBookingService.ClearOrder(context.Message.OrderId);
     }
 }

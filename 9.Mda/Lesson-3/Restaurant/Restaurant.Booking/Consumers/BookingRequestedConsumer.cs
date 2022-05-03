@@ -6,9 +6,9 @@ using Restaurant.Booking.Models;
 using Restaurant.Messaging.Exceptions;
 using Restaurant.Messaging.Interfaces;
 
-namespace Restaurant.Notifications.Consumers;
+namespace Restaurant.Booking.Consumers;
 
-internal class BookingRequestedConsumer : IConsumer<IBookingRequested>
+public class BookingRequestedConsumer : IConsumer<IBookingRequested>
 {
     private readonly ILogger<BookingRequestedConsumer> _logger;
     private readonly ITableBookingService _tableBookingService;

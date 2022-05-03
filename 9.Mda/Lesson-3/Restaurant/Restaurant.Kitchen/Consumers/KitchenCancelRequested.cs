@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using Restaurant.Kitchen.Interfaces;
 using Restaurant.Messaging.Interfaces;
 
-namespace Restaurant.Notifications.Consumers;
+namespace Restaurant.Kitchen.Consumers;
 
-internal class KitchenCancelRequested : IConsumer<IKitchenCancelRequested>
+public class KitchenCancelRequested : IConsumer<IKitchenCancelRequested>
 {
     private readonly ILogger<KitchenCancelRequested> _logger;
     private readonly IKitchenService _kitchen;

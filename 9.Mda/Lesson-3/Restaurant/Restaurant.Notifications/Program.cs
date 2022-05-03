@@ -1,29 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 using Restaurant.Notifications.Interfaces;
 using Restaurant.Notifications.Extensions;
 using Restaurant.Notifications.Services;
+using MassTransit.Audit;
+using Restaurant.Messaging.Logging;
+using Prometheus;
 
-static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration(ConfigureApp)
-    .ConfigureServices(ConfigureServices)
-    .UseSerilog(ConfigureLogger);
+var builder = WebApplication.CreateBuilder(args);
 
-static void ConfigureApp(HostBuilderContext context, IConfigurationBuilder builder)
-{
-}
+builder.Host.UseSerilog((context, config) =>config.ReadFrom.Configuration(context.Configuration));
 
-static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-{
-    services.AddSingleton<INotifier, Notifier>();
-    services.AddMessageBus(context.Configuration);
-}
+builder.Services.AddControllers();
 
-static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration config)
-{
-    config.ReadFrom.Configuration(context.Configuration);
-}
+builder.Services.AddSingleton<INotifier, Notifier>();
+builder.Services.AddSingleton<IMessageAuditStore, AuditStore>();
+builder.Services.AddMessageBus(builder.Configuration);
 
-await CreateHostBuilder(args).Build().RunAsync();
+var app = builder.Build();
+
+app.MapMetrics();
+app.MapControllers();
+
+await app.RunAsync();

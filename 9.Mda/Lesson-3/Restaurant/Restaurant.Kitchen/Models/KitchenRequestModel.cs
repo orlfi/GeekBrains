@@ -1,9 +1,9 @@
 ﻿using Restaurant.Messaging.Data;
 using Restaurant.Messaging.Interfaces;
 
-namespace Restaurant.Booking.Models;
+namespace Restaurant.Kitchen.Models;
 
-internal class KitchenRequestModel
+public class KitchenRequestModel
 {
     public Guid OrderId { get; private set; }
     public Guid ClientId { get; private set; }
@@ -18,18 +18,4 @@ internal class KitchenRequestModel
         ClientId = clientId;
         Dish = dish;
     }
-
-    // public KitchenRequestModel Update(ITableBooked tableBooked, string id)
-    // {
-    //     OrderId = tableBooked.OrderId;
-    //     ClientId = tableBooked.ClientId;
-    //     Dish = tableBooked.Dish;
-
-    //     return this;
-    // }
-
-    // public bool Contains(string messageId)
-    // {
-    //     return _messageIds.Contains(messageId);
-    // }
 }

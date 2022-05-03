@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Restaurant.Booking.Services;
 
-internal class TableBookingService : IDisposable, ITableBookingService
+public class TableBookingService : IDisposable, ITableBookingService
 {
     private const int ClearBookingTimerPeriod = 30000;
     private const int SearchFreeTableTime = 300;
@@ -48,7 +48,7 @@ internal class TableBookingService : IDisposable, ITableBookingService
     public async Task AddOrder(Guid orderId, IEnumerable<int> tableNumbers, Dish? dish, CancellationToken cancel = default)
     {
         await Task.Delay(AddOrderTime, cancel);
-            _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish });
+        _orders.TryAdd(orderId, new Order() { OrderId = orderId, TableNumbers = tableNumbers, Dish = dish });
     }
 
     public async Task ClearOrder(Guid orderId, CancellationToken cancel = default)

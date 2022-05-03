@@ -1,8 +1,9 @@
 ﻿using MassTransit;
+using MassTransit.Audit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Booking.Consumers;
 using Restaurant.Messaging.Configuration;
-using Restaurant.Notifications.Consumers;
 
 namespace Restaurant.Booking.Extensions;
 
@@ -30,6 +31,11 @@ public static class MassTransitExtensions
                 cfg.UseDelayedMessageScheduler();
                 cfg.UseInMemoryOutbox();
                 cfg.ConfigureEndpoints(context);
+
+                var provider = services.BuildServiceProvider();
+                var auditStore = provider.GetService<IMessageAuditStore>();
+                cfg.ConnectSendAuditObservers(auditStore);
+                cfg.ConnectConsumeAuditObserver(auditStore);
             });
         });
 

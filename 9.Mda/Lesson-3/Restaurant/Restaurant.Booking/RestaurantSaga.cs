@@ -1,5 +1,4 @@
-﻿
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Restaurant.Booking.DTO;
 using Restaurant.Messaging.Interfaces;
@@ -63,7 +62,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
             state => state.BookingExpirationId,
             config =>
                 {
-                    config.Delay = TimeSpan.FromSeconds(3);
+                    config.Delay = TimeSpan.FromSeconds(4);
                     config.Received = e => e.CorrelateById(context => context.Message.OrderId);
                 }
             );
@@ -97,7 +96,7 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                     context.Saga.ActualArrivalTime = context.Message.ActualArrivalTime;
                     _logger.LogInformation("[Saga] Запрос на бронирование столика для клиента {ClientId} на {Seats} мест", context.Message.ClientId, context.Message.Seats);
                 })
-                .Schedule(BookingExpiredSchedule, context => new BookingExpired(context.Saga))
+                // .Schedule(BookingExpiredSchedule, context => new BookingExpired(context.Saga))
                 .TransitionTo(AwaitingBookingApproved)
          );
 
@@ -111,21 +110,22 @@ public class RestaurantSaga : MassTransitStateMachine<RestaurantState>
                         ClientId = context.Saga.ClientId,
                         Message = "Стол успешно забронирован"
                     } as INotify)
-                .Schedule(ActualGuestArrivalSchedule, context =>
-                    {
-                        _logger.LogInformation("[Saga] Фактическое ожидание прибытия гостя...");
-                        return new GuestArrived(context.Saga);
-                    },
-                    context => TimeSpan.FromSeconds(context.Saga.ActualArrivalTime)
-                )
-                .Schedule(BookingAwaitingGuestSchedule, context =>
-                    {
-                        _logger.LogInformation("[Saga] Ожидание гостя ко времени бронирования...");
-                        return new GuestWaitingExpired(context.Saga);
-                    },
-                    context => TimeSpan.FromSeconds(context.Saga.BookingArrivalTime)
-                )
-                .TransitionTo(AwaitingGuestArrival),
+            // .Schedule(ActualGuestArrivalSchedule, context =>
+            //     {
+            //         _logger.LogInformation("[Saga] Фактическое ожидание прибытия гостя...");
+            //         return new GuestArrived(context.Saga);
+            //     },
+            //     context => TimeSpan.FromSeconds(context.Saga.ActualArrivalTime)
+            // )
+            // .Schedule(BookingAwaitingGuestSchedule, context =>
+            //     {
+            //         _logger.LogInformation("[Saga] Ожидание гостя ко времени бронирования...");
+            //         return new GuestWaitingExpired(context.Saga);
+            //     },
+            //     context => TimeSpan.FromSeconds(context.Saga.BookingArrivalTime)
+            // )
+            .Finalize(),
+            // .TransitionTo(AwaitingGuestArrival),
 
             When(BookingRequestedFaulted)
                 .Unschedule(BookingExpiredSchedule)
