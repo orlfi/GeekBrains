@@ -1,5 +1,6 @@
 using LibraryService.Web.Models;
 using LibraryService.Web.ViewModels;
+using LibraryServiceReference;
 
 namespace LibraryService.Web.Mappings;
 
@@ -24,7 +25,7 @@ public static class BookMappings
         => books.Select(item => item.ToView());
 
     public static Book ToModel(this BookViewModel bookView)
-        => new Book()
+        => new()
         {
             Id = bookView.Id,
             AgeLimit = bookView.AgeLimit,

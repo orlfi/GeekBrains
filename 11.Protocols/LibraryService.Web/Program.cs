@@ -1,12 +1,8 @@
-using LibraryService.Web.DAL;
-using LibraryService.Web.DAL.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ILibraryContext, LibraryContext>();
-builder.Services.AddSingleton<ILibraryRepository, LibraryRepository>();
 
 var app = builder.Build();
 

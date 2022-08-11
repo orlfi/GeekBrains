@@ -1,24 +1,25 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LibraryService.Web.Models;
-using LibraryService.Web.DAL.Interfaces;
 using LibraryService.Web.ViewModels;
 using LibraryService.Web.Mappings;
 using System.Runtime.CompilerServices;
+using LibraryServiceReference;
 
 namespace LibraryService.Web.Controllers;
 
 public class LibraryController : Controller
 {
     private readonly ILogger<LibraryController> _logger;
-    private readonly ILibraryRepository _repository;
+    private readonly LibraryWebServiceSoapClient _client;
 
     private void LogError(Exception ex, [CallerMemberName] string methodName = null!) => _logger.LogError(ex, "Ошибка выполнения {0}", methodName);
 
-    public LibraryController(ILogger<LibraryController> logger, ILibraryRepository repository)
+    public LibraryController(ILogger<LibraryController> logger)
     {
         _logger = logger;
-        _repository = repository;
+        _client = new LibraryWebServiceSoapClient(LibraryWebServiceSoapClient.EndpointConfiguration.LibraryWebServiceSoap12);
+
     }
 
     public IActionResult Index(SearchType searchType, string searchString)
@@ -33,21 +34,22 @@ public class LibraryController : Controller
             switch (searchType)
             {
                 case SearchType.Title:
-                    viewModel.Books = _repository.GetByTitle(searchString).ToView();
+                    viewModel.Books = _client.GetByTitle(searchString).ToView();
                     break;
                 case SearchType.Author:
-                    viewModel.Books = _repository.GetByAuthor(searchString).ToView();
+                    viewModel.Books = _client.GetByAuthor(searchString).ToView();
                     break;
                 case SearchType.Category:
-                    viewModel.Books = _repository.GetByCategory(searchString).ToView();
+                    viewModel.Books = _client.GetByCategory(searchString).ToView();
                     break;
             }
         }
         else
         {
-            viewModel.Books = _repository.GetAll().ToView();
+            viewModel.Books = _client.GetAll().ToView();
 
         }
+        
         return View(viewModel);
     }
 
@@ -57,7 +59,7 @@ public class LibraryController : Controller
     {
         try
         {
-            var book = _repository.GetById(id);
+            var book = _client.GetById(id);
 
             if (book is null)
                 return NotFound();
@@ -85,9 +87,9 @@ public class LibraryController : Controller
             var book = model.ToModel()!;
 
             if (string.IsNullOrEmpty(book.Id))
-                _repository.Add(book);
+                _client.Add(book);
             else
-                _repository.Update(book);
+                _client.Update(book);
 
             return RedirectToAction(nameof(Index));
         }
@@ -103,7 +105,7 @@ public class LibraryController : Controller
     {
         try
         {
-            var book = _repository.GetById(id);
+            var book = _client.GetById(id);
 
             if (book is null)
                 return NotFound();
@@ -127,12 +129,12 @@ public class LibraryController : Controller
     {
         try
         {
-            var book = _repository.GetById(id);
+            var book = _client.GetById(id);
 
             if (book is null)
                 return NotFound();
 
-            _repository.Delete(book);
+            _client.Delete(book);
 
             return RedirectToAction(nameof(Index));
         }

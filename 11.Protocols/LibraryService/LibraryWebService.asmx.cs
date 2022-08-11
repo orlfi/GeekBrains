@@ -4,7 +4,6 @@ using LibraryService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Services;
 
 namespace LibraryService
@@ -19,17 +18,18 @@ namespace LibraryService
     // [System.Web.Script.Services.ScriptService]
     public class LibraryWebService : System.Web.Services.WebService
     {
-        private readonly IBooksRepository _repository;
+        private static readonly IBooksRepository _repository = new BooksRepository(new LibraryContext());
 
-        public LibraryWebService()
-        {
-            _repository = new BooksRepository(new LibraryContext());
-        }
-
-        [WebMethod]
+         [WebMethod]
         public List<Book> GetAll()
         {
             return _repository.GetAll().ToList();
+        }
+
+        [WebMethod]
+        public Book GetById(string id)
+        {
+            return _repository.GetById(id);
         }
 
         [WebMethod]
