@@ -33,6 +33,7 @@ namespace PumpService.Services
         {
             try
             {
+                _logger.Info("Старт компиляции скрипта...");
                 CompilerParameters compilerParameters = new CompilerParameters();
                 compilerParameters.GenerateInMemory = true;
                 compilerParameters.ReferencedAssemblies.Add("System.dll");
@@ -55,8 +56,10 @@ namespace PumpService.Services
             catch (Exception ex)
             {
                 _logger.Error(ex, "Ошибка при компиляци скрипта");
+                return false;
             }
 
+            _logger.Info("Окончание компиляции скрипта...");
             return true;
         }
 
@@ -73,11 +76,12 @@ namespace PumpService.Services
             MethodInfo entryPointMethod = type.GetMethod("EntryPoint");
             if (entryPointMethod == null)
                 return;
-
             Task.Run(() =>
             {
                 try
                 {
+                    _logger.Info("Старт выполнения скрипта...");
+
                     for (int i = 0; i < 10; i++)
                     {
                         if ((bool)entryPointMethod.Invoke(Activator.CreateInstance(type), new object[] { }))
@@ -89,7 +93,7 @@ namespace PumpService.Services
                         _callback.UpdateStatistics((Data.StatisticsData)_statisticsData);
                         Thread.Sleep(1000);
                     }
-
+                    _logger.Info("Окончание выполнения скрипта.");
                 }
                 catch (Exception ex)
                 {
