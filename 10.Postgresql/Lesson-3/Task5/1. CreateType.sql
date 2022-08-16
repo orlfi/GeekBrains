@@ -1,0 +1,1 @@
+CREATE TYPE contacts_type AS (phone VARCHAR(15), email VARCHAR(120));
