@@ -1,0 +1,53 @@
+﻿@model BookCategoryViewModel
+@{
+    ViewData["Title"] = "Книги";
+}
+<form asp-controller="Library" asp-action="Index">
+    <p>
+        <select asp-for="SearchType" asp-items="Html.GetEnumSelectList<SearchType>()">
+        </select>
+
+        <input type="text" name="SearchString" />
+
+        <input type="submit" value="Поиск" />
+    </p>
+</form>
+<p>
+    <a asp-action="Create">Создать</a>
+</p>
+
+<table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.First().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.First().Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.First().Authors)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.Books)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(_ => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(_ => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(_ => item.Authors)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> | <a asp-action="Delete"
+                asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+
+</table>
