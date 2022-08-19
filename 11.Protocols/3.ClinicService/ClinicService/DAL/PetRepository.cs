@@ -1,43 +1,77 @@
 ﻿using ClinicService.DAL.Interfaces;
 using ClinicService.Data;
+using Microsoft.EntityFrameworkCore;
+using static Grpc.Core.Metadata;
 
 namespace ClinicService.DAL;
 
 public class PetRepository : IPetRepository
 {
-    private readonly ClinicServiceDbContext _dbContext;
+    private readonly ClinicServiceDbContext _db;
     private readonly ILogger<PetRepository> _logger;
 
-    public PetRepository(ClinicServiceDbContext dbContext, ILogger<PetRepository> logger)
-        => (_dbContext, _logger) = (dbContext, logger);
+    public PetRepository(ClinicServiceDbContext db, ILogger<PetRepository> logger)
+        => (_db, _logger) = (db, logger);
 
     public IList<Pet> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Pets.ToList();
     }
 
-    public Pet? GetById(int id)
+    public Pet GetById(int id)
     {
-        throw new NotImplementedException();
+        var result = _db.Pets.FirstOrDefault(p => p.PetId == id);
+        if (result is null)
+            throw new KeyNotFoundException();
+
+        return result;
     }
 
-    public int Add(Pet item)
+    public IList<Pet> GetByClient(int clientId)
     {
-        throw new NotImplementedException();
+        return _db.Pets.Where(p => p.ClientId == clientId).ToList();
     }
 
-    public void Update(Pet item)
+    public int Add(Pet entity)
     {
-        throw new NotImplementedException();
+        _db.Pets.Add(entity);
+        _db.SaveChanges();
+        return entity.ClientId;
     }
 
-    public void Delete(Pet item)
+    public void Update(Pet entity)
     {
-        throw new NotImplementedException();
+        if (entity == null)
+            throw new NullReferenceException();
+
+        var pet = GetById(entity.PetId);
+        if (pet == null)
+            throw new KeyNotFoundException();
+
+        pet.ClientId = entity.ClientId;
+        pet.Birthday = entity.Birthday;
+        pet.Name = entity.Name;
+
+        _db.Update(pet);
+        _db.SaveChanges();
+    }
+
+    public void Delete(Pet entity)
+    {
+        if (entity == null)
+            throw new NullReferenceException();
+
+        Delete(entity.PetId);
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var pet = GetById(id);
+
+        if (pet == null)
+            throw new KeyNotFoundException();
+
+        _db.Remove(pet);
+        _db.SaveChanges();
     }
 }

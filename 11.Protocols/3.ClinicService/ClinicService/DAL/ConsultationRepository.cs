@@ -5,18 +5,18 @@ namespace ClinicService.DAL;
 
 public class ConsultationRepository : IConsultationRepository
 {
-    private readonly ClinicServiceDbContext _dbContext;
+    private readonly ClinicServiceDbContext _db;
     private readonly ILogger<ConsultationRepository> _logger;
 
-    public ConsultationRepository(ClinicServiceDbContext dbContext, ILogger<ConsultationRepository> logger)
-        => (_dbContext, _logger) = (dbContext, logger);
+    public ConsultationRepository(ClinicServiceDbContext db, ILogger<ConsultationRepository> logger)
+        => (_db, _logger) = (db, logger);
 
     public IList<Consultation> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Consultations.ToList();
     }
 
-    public Consultation? GetById(int id)
+    public Consultation GetById(int id)
     {
         throw new NotImplementedException();
     }

@@ -12,6 +12,6 @@
 
         IList<T> GetAll();
 
-        T? GetById(TId id);
+        T GetById(TId id);
     }
 }

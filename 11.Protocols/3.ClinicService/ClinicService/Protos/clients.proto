@@ -6,17 +6,30 @@ option csharp_namespace = "ClientServiceProtos";
 import "google/protobuf/wrappers.proto";
 
 service ClientService {
-
-	rpc CreateClient (CreateClientRequest) returns (CreateClientResponse);
-
-	rpc UpdateClient (UpdateClientRequest) returns (UpdateClientResponse);
-
-	rpc DeleteClient (DeleteClientRequest) returns (DeleteClientResponse);
-
-	rpc GetClientById (GetClientByIdRequest) returns (ClientResponse);
-
+	rpc GetClientById (GetClientByIdRequest) returns (GetClientByIdResponse);
 	rpc GetClients (GetClientsRequest) returns (GetClientsResponse);
+	rpc CreateClient (CreateClientRequest) returns (CreateClientResponse);
+	rpc UpdateClient (UpdateClientRequest) returns (UpdateClientResponse);
+	rpc DeleteClient (DeleteClientRequest) returns (DeleteClientResponse);
+}
 
+message GetClientByIdRequest {
+        int32 clientId = 1;
+}
+
+message GetClientByIdResponse {
+        ClientResponse client = 1;
+        int32 errCode = 2;
+        string errMessage =3;
+}
+
+message GetClientsRequest{
+}
+
+message GetClientsResponse{
+    repeated ClientResponse clients = 1;
+    int32 errCode = 2;
+    string errMessage =3;
 }
 
 message CreateClientRequest {
@@ -53,26 +66,6 @@ message DeleteClientRequest {
 message DeleteClientResponse {
 		int32 errCode = 1;
         string errMessage =2;
-}
-
-message GetClientByIdRequest {
-        int32 clientId = 1;
-}
-
-message GetClientByIdResponse {
-        ClientResponse client = 1;
-        int32 errCode = 2;
-        string errMessage =3;
-}
-
-message GetClientsRequest{
-
-}
-
-message GetClientsResponse{
-    repeated ClientResponse clients = 1;
-    int32 errCode = 2;
-    string errMessage =3;
 }
 
 message ClientResponse {

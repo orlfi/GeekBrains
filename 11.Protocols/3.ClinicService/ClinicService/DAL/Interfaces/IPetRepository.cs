@@ -2,5 +2,8 @@
 
 namespace ClinicService.DAL.Interfaces
 {
-    public interface IPetRepository : IRepository<Pet, int> { }
+    public interface IPetRepository : IRepository<Pet, int>
+    {
+        IList<Pet> GetByClient(int clientId);
+    }
 }

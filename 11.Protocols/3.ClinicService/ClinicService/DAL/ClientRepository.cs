@@ -5,53 +5,57 @@ namespace ClinicService.DAL;
 
 public class ClientRepository : IClientRepository
 {
-    private readonly ClinicServiceDbContext _dbContext;
+    private readonly ClinicServiceDbContext _db;
     private readonly ILogger<ClientRepository> _logger;
 
-    public ClientRepository(ClinicServiceDbContext dbContext, ILogger<ClientRepository> logger)
-        => (_dbContext, _logger) = (dbContext, logger);
+    public ClientRepository(ClinicServiceDbContext db, ILogger<ClientRepository> logger)
+        => (_db, _logger) = (db, logger);
 
     public IList<Client> GetAll()
     {
-        return _dbContext.Clients.ToList();
+        return _db.Clients.ToList();
     }
 
-    public Client? GetById(int id)
+    public Client GetById(int id)
     {
-        return _dbContext.Clients.FirstOrDefault(client => client.ClientId == id);
+        var result = _db.Clients.FirstOrDefault(client => client.ClientId == id);
+        if (result is null)
+            throw new KeyNotFoundException();
+
+        return result;
     }
 
-    public int Add(Client item)
+    public int Add(Client entity)
     {
-        _dbContext.Clients.Add(item);
-        _dbContext.SaveChanges();
-        return item.ClientId;
+        _db.Clients.Add(entity);
+        _db.SaveChanges();
+        return entity.ClientId;
     }
 
-    public void Update(Client item)
+    public void Update(Client entity)
     {
-        if (item == null)
+        if (entity == null)
             throw new NullReferenceException();
 
-        var client = GetById(item.ClientId);
+        var client = GetById(entity.ClientId);
         if (client == null)
             throw new KeyNotFoundException();
 
-        client.Document = item.Document;
-        client.Surname = item.Surname;
-        client.FirstName = item.FirstName;
-        client.Patronymic = item.Patronymic;
+        client.Document = entity.Document;
+        client.Surname = entity.Surname;
+        client.FirstName = entity.FirstName;
+        client.Patronymic = entity.Patronymic;
 
-        _dbContext.Update(client);
-        _dbContext.SaveChanges();
+        _db.Update(client);
+        _db.SaveChanges();
     }
 
-    public void Delete(Client item)
+    public void Delete(Client entity)
     {
-        if (item == null)
+        if (entity == null)
             throw new NullReferenceException();
 
-        Delete(item.ClientId);
+        Delete(entity.ClientId);
     }
 
     public void Delete(int id)
@@ -61,7 +65,7 @@ public class ClientRepository : IClientRepository
         if (client == null)
             throw new KeyNotFoundException();
         
-        _dbContext.Remove(client);
-        _dbContext.SaveChanges();
+        _db.Remove(client);
+        _db.SaveChanges();
     }
 }
