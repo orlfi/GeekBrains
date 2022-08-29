@@ -8,6 +8,8 @@ public class ClinicServiceDbContext : DbContext
     public virtual DbSet<Client> Clients { get; set; } = default!;
     public virtual DbSet<Pet> Pets { get; set; } = default!;
     public virtual DbSet<Consultation> Consultations { get; set; } = default!;
+    public virtual DbSet<Account> Accounts { get; set; } = default!;
+    public virtual DbSet<AccountSession> AccountSessions { get; set; } = default!;
 
     public ClinicServiceDbContext(DbContextOptions options) : base(options) { }
 

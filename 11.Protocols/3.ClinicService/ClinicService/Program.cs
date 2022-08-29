@@ -7,6 +7,10 @@ using System.Net;
 using ClinicService.DAL.Interfaces;
 using ClinicService.DAL;
 using ClinicService.Services;
+using ClinicService.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ClinicService;
 
@@ -21,6 +25,7 @@ public class Program
             options.Listen(IPAddress.Any, 5001, listenOptions =>
             {
                 listenOptions.Protocols = HttpProtocols.Http2;
+                listenOptions.UseHttps(@"e:\tmp\testcert.pfx", "12345");
             });
         });
 
@@ -54,6 +59,7 @@ public class Program
         #endregion
 
         #region Configure Repository Services
+        builder.Services.AddSingleton<IAuthenticateService, AuthenticateService>();
 
         builder.Services.AddScoped<IPetRepository, PetRepository>();
         builder.Services.AddScoped<IConsultationRepository, ConsultationRepository>();
@@ -62,6 +68,29 @@ public class Program
         #endregion
 
         builder.Services.AddControllers();
+
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(x =>
+        {
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new
+            TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthenticateService.SecretKey)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -76,6 +105,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseRouting();
 
         app.UseWhen( // Ошибка, пообещали исправить в .NET 7
             ctx => ctx.Request.ContentType != "application/grpc",
@@ -85,17 +115,19 @@ public class Program
             }
         );
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
 
         app.MapControllers();
-        app.UseRouting();
+
         app.UseEndpoints(endpoints =>  // 2
         {
             // Communication with gRPC endpoints must be made through a gRPC client.
             // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
             endpoints.MapGrpcService<ClientService>();
             endpoints.MapGrpcService<PetService>();
+            endpoints.MapGrpcService<AuthService>();
         });
 
         app.Run();

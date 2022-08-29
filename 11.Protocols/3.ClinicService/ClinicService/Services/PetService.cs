@@ -3,12 +3,14 @@ using ClinicService.DAL.Interfaces;
 using ClinicService.Data;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using PetServiceProtos;
 using System.Runtime.CompilerServices;
 using static PetServiceProtos.PetService;
 
 namespace ClinicService.Services;
 
+[Authorize]
 public class PetService : PetServiceBase
 {
     private readonly IPetRepository _db;

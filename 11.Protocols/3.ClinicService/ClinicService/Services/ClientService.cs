@@ -2,11 +2,13 @@
 using ClinicService.DAL.Interfaces;
 using ClinicService.Data;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using System.Runtime.CompilerServices;
 using static ClientServiceProtos.ClientService;
 
 namespace ClinicService.Services;
 
+[Authorize]
 public class ClientService : ClientServiceBase
 {
     private readonly IClientRepository _db;
