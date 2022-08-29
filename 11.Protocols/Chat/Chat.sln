@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatService\ChatServer.csproj", "{E15E2341-A7DB-45C6-B002-3AC32110E822}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{FCFC0579-A5A5-4A4F-B3D3-35526121D82D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClient", "ChatClient\ChatClient.csproj", "{EDD4D68E-E6F5-4283-B6C6-8B55FFD059F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E15E2341-A7DB-45C6-B002-3AC32110E822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E15E2341-A7DB-45C6-B002-3AC32110E822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E15E2341-A7DB-45C6-B002-3AC32110E822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E15E2341-A7DB-45C6-B002-3AC32110E822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCFC0579-A5A5-4A4F-B3D3-35526121D82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCFC0579-A5A5-4A4F-B3D3-35526121D82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCFC0579-A5A5-4A4F-B3D3-35526121D82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCFC0579-A5A5-4A4F-B3D3-35526121D82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD4D68E-E6F5-4283-B6C6-8B55FFD059F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD4D68E-E6F5-4283-B6C6-8B55FFD059F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD4D68E-E6F5-4283-B6C6-8B55FFD059F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD4D68E-E6F5-4283-B6C6-8B55FFD059F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B99254EA-05BD-44B3-9F0E-3EC3E4C044D5}
+	EndGlobalSection
+EndGlobal
