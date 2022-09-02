@@ -52,34 +52,34 @@ CREATE TABLE IF NOT EXISTS profiles (
 	avatar_image_id INT,
 	gender VARCHAR(1),
 	birthday DATE
-)
+);
 
 -- 8. Закладки пользователей
-CREATE TABLE IF NOT EXIST bookmarks (
+CREATE TABLE IF NOT EXISTS bookmarks (
 	user_id INTEGER,
 	publication_id INTEGER,
 	PRIMARY KEY(user_id, publication_id)
-)
+);
 
 -- 9. Изображения (для автарок и обложек статей)
-CREATE TABLE IF NOT EXIST images (
+CREATE TABLE IF NOT EXISTS images (
 	id INTEGER PRIMARY KEY,
 	url VARCHAR(250) NOT NULL UNIQUE,
  	owner_id INT NOT NULL,
  	description VARCHAR(250) NOT NULL,
   	uploaded_at TIMESTAMP NOT NULL,
   	size INT NOT NULL
-)
+);
 
 -- 10. Подписка на уведомления
 CREATE TABLE IF NOT EXISTS notifications (
-	user_id INTEGER
+	user_id INTEGER,
 	notification_type_id INTEGER,
 	PRIMARY KEY (user_id, notification_type_id)
-)
+);
 
 -- 11. Типы уведомлений
 CREATE TABLE IF NOT EXISTS notification_types (
 	id INTEGER PRIMARY KEY,
 	name VARCHAR(250)
-)
+);
