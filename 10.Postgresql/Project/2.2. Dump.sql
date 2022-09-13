@@ -5,7 +5,7 @@
 -- Dumped from database version 10.4
 -- Dumped by pg_dump version 14.4
 
--- Started on 2022-09-13 14:34:46
+-- Started on 2022-09-13 15:07:47
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET row_security = off;
 SET default_tablespace = '';
 
 --
--- TOC entry 203 (class 1259 OID 92639)
+-- TOC entry 205 (class 1259 OID 92639)
 -- Name: bookmarks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -34,7 +34,7 @@ CREATE TABLE public.bookmarks (
 ALTER TABLE public.bookmarks OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 92620)
+-- TOC entry 202 (class 1259 OID 92620)
 -- Name: comment_statuses; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -47,7 +47,7 @@ CREATE TABLE public.comment_statuses (
 ALTER TABLE public.comment_statuses OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 92514)
+-- TOC entry 200 (class 1259 OID 92514)
 -- Name: comments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -64,7 +64,7 @@ CREATE TABLE public.comments (
 ALTER TABLE public.comments OWNER TO postgres;
 
 --
--- TOC entry 196 (class 1259 OID 92502)
+-- TOC entry 198 (class 1259 OID 92502)
 -- Name: hubs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -77,7 +77,7 @@ CREATE TABLE public.hubs (
 ALTER TABLE public.hubs OWNER TO postgres;
 
 --
--- TOC entry 197 (class 1259 OID 92509)
+-- TOC entry 199 (class 1259 OID 92509)
 -- Name: hubs_publications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -90,7 +90,7 @@ CREATE TABLE public.hubs_publications (
 ALTER TABLE public.hubs_publications OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 93783)
+-- TOC entry 209 (class 1259 OID 93783)
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -107,7 +107,7 @@ CREATE TABLE public.images (
 ALTER TABLE public.images OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 93781)
+-- TOC entry 208 (class 1259 OID 93781)
 -- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -123,8 +123,8 @@ CREATE SEQUENCE public.images_id_seq
 ALTER TABLE public.images_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2888 (class 0 OID 0)
--- Dependencies: 206
+-- TOC entry 2891 (class 0 OID 0)
+-- Dependencies: 208
 -- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -132,7 +132,7 @@ ALTER SEQUENCE public.images_id_seq OWNED BY public.images.id;
 
 
 --
--- TOC entry 205 (class 1259 OID 92659)
+-- TOC entry 207 (class 1259 OID 92659)
 -- Name: notification_types; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -145,7 +145,7 @@ CREATE TABLE public.notification_types (
 ALTER TABLE public.notification_types OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 92654)
+-- TOC entry 206 (class 1259 OID 92654)
 -- Name: notifications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -158,7 +158,7 @@ CREATE TABLE public.notifications (
 ALTER TABLE public.notifications OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 92634)
+-- TOC entry 204 (class 1259 OID 92634)
 -- Name: profiles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -173,7 +173,7 @@ CREATE TABLE public.profiles (
 ALTER TABLE public.profiles OWNER TO postgres;
 
 --
--- TOC entry 199 (class 1259 OID 92610)
+-- TOC entry 201 (class 1259 OID 92610)
 -- Name: publications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -190,7 +190,7 @@ CREATE TABLE public.publications (
 ALTER TABLE public.publications OWNER TO postgres;
 
 --
--- TOC entry 201 (class 1259 OID 92625)
+-- TOC entry 203 (class 1259 OID 92625)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -206,7 +206,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 2713 (class 2604 OID 93786)
+-- TOC entry 2715 (class 2604 OID 93786)
 -- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -214,8 +214,8 @@ ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.image
 
 
 --
--- TOC entry 2878 (class 0 OID 92639)
--- Dependencies: 203
+-- TOC entry 2881 (class 0 OID 92639)
+-- Dependencies: 205
 -- Data for Name: bookmarks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -324,8 +324,8 @@ COPY public.bookmarks (user_id, publication_id) FROM stdin;
 
 
 --
--- TOC entry 2875 (class 0 OID 92620)
--- Dependencies: 200
+-- TOC entry 2878 (class 0 OID 92620)
+-- Dependencies: 202
 -- Data for Name: comment_statuses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -337,8 +337,8 @@ COPY public.comment_statuses (id, name) FROM stdin;
 
 
 --
--- TOC entry 2873 (class 0 OID 92514)
--- Dependencies: 198
+-- TOC entry 2876 (class 0 OID 92514)
+-- Dependencies: 200
 -- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -447,8 +447,8 @@ COPY public.comments (id, publication_id, user_id, status_id, created_at, text) 
 
 
 --
--- TOC entry 2871 (class 0 OID 92502)
--- Dependencies: 196
+-- TOC entry 2874 (class 0 OID 92502)
+-- Dependencies: 198
 -- Data for Name: hubs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -557,8 +557,8 @@ COPY public.hubs (id, name) FROM stdin;
 
 
 --
--- TOC entry 2872 (class 0 OID 92509)
--- Dependencies: 197
+-- TOC entry 2875 (class 0 OID 92509)
+-- Dependencies: 199
 -- Data for Name: hubs_publications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -667,8 +667,8 @@ COPY public.hubs_publications (hub_id, publication_id) FROM stdin;
 
 
 --
--- TOC entry 2882 (class 0 OID 93783)
--- Dependencies: 207
+-- TOC entry 2885 (class 0 OID 93783)
+-- Dependencies: 209
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -777,8 +777,8 @@ COPY public.images (id, url, owner_id, description, uploaded_at, size) FROM stdi
 
 
 --
--- TOC entry 2880 (class 0 OID 92659)
--- Dependencies: 205
+-- TOC entry 2883 (class 0 OID 92659)
+-- Dependencies: 207
 -- Data for Name: notification_types; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -791,8 +791,8 @@ COPY public.notification_types (id, name) FROM stdin;
 
 
 --
--- TOC entry 2879 (class 0 OID 92654)
--- Dependencies: 204
+-- TOC entry 2882 (class 0 OID 92654)
+-- Dependencies: 206
 -- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -901,118 +901,118 @@ COPY public.notifications (user_id, notification_type_id) FROM stdin;
 
 
 --
--- TOC entry 2877 (class 0 OID 92634)
--- Dependencies: 202
+-- TOC entry 2880 (class 0 OID 92634)
+-- Dependencies: 204
 -- Data for Name: profiles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.profiles (user_id, avatar_image_id, gender, birthday) FROM stdin;
-1	35	M	1971-04-11
-2	66	F	1994-03-23
-3	27	F	1992-01-23
-4	5	F	1968-07-29
-5	33	F	1978-02-01
-6	46	F	1995-07-06
-7	19	F	1966-03-26
-8	69	F	1987-05-04
-9	48	M	1992-07-22
-10	100	F	1962-11-01
-11	89	M	1952-07-20
-12	42	F	1979-02-08
-13	8	F	1957-08-15
-14	79	F	1967-01-24
-15	73	M	1985-10-22
-16	49	F	1966-09-24
-17	48	M	1997-06-02
-18	88	F	1954-12-30
-19	88	F	1969-02-01
-20	92	M	1968-09-15
-21	66	M	1955-05-22
-22	60	F	1957-10-18
-23	61	F	1967-06-06
-24	94	F	1989-09-04
-25	27	F	1982-03-15
-26	24	F	1999-10-22
-27	66	F	1987-06-13
-28	56	F	1963-04-18
-29	21	F	1989-09-11
-30	47	F	1968-07-21
-31	78	F	1981-11-01
-32	47	F	1989-09-19
-33	9	F	1977-02-04
-34	31	M	1958-03-06
-35	50	F	1976-03-19
-36	83	M	1980-12-22
-37	88	F	1995-07-23
-38	53	F	1978-08-22
-39	12	M	1986-03-14
-40	91	F	1975-11-29
-41	86	F	1972-07-13
-42	48	M	1988-05-11
-43	83	M	1955-06-15
-44	89	F	1974-06-07
-45	86	M	1951-02-16
-46	63	F	1996-05-04
-47	87	M	1959-09-30
-48	45	M	1991-06-10
-49	85	M	2000-03-11
-50	46	M	1957-04-24
-51	42	F	1985-10-21
-52	30	F	1969-11-22
-53	16	M	1988-09-25
-54	37	F	1962-06-04
-55	50	M	1970-08-06
-56	4	M	1958-01-01
-57	40	F	1992-09-29
-58	18	M	1955-06-07
-59	50	M	1979-04-23
-60	98	M	1952-04-02
-61	69	M	1965-11-11
-62	24	F	1970-06-08
-63	83	M	1983-02-07
-64	77	F	1977-01-12
-65	39	M	1989-05-18
-66	97	M	1968-02-01
-67	85	M	1995-07-24
-68	2	F	1984-07-04
-69	50	F	1961-01-19
-70	16	F	1956-08-05
-71	88	M	1988-01-31
-72	22	M	1996-11-10
-73	8	F	1972-10-26
-74	3	F	1983-12-30
-75	66	M	1952-12-27
-76	77	F	1968-04-03
-77	6	M	1999-12-08
-78	59	M	1977-08-30
-79	97	M	1959-09-15
-80	6	M	1965-01-26
-81	81	F	1978-08-26
-82	20	F	1977-12-11
-83	41	M	1959-08-04
-84	64	F	1995-02-07
-85	90	F	1976-09-03
-86	14	M	1996-07-27
-87	30	F	1963-08-26
-88	88	F	1965-08-14
-89	5	F	1953-05-26
-90	5	M	1978-04-08
-91	6	M	1998-07-08
 92	32	M	1963-08-17
-93	67	F	1967-11-01
-94	84	M	1965-02-01
-95	42	M	1958-06-25
-96	40	M	1988-12-28
-97	97	F	1968-04-11
-98	24	F	1960-03-20
-99	71	F	1999-04-07
-100	32	M	1980-05-10
+87	\N	F	1963-08-26
+71	\N	M	1988-01-31
+68	\N	F	1984-07-04
+51	\N	F	1985-10-21
+80	\N	M	1965-01-26
+70	\N	F	1956-08-05
+52	\N	F	1969-11-22
+69	\N	F	1961-01-19
+60	\N	M	1952-04-02
+97	\N	F	1968-04-11
+22	\N	F	1957-10-18
+59	\N	M	1979-04-23
+65	\N	M	1989-05-18
+98	\N	F	1960-03-20
+73	\N	F	1972-10-26
+44	\N	F	1974-06-07
+11	\N	M	1952-07-20
+42	\N	M	1988-05-11
+88	\N	F	1965-08-14
+82	\N	F	1977-12-11
+40	\N	F	1975-11-29
+43	\N	M	1955-06-15
+9	\N	M	1992-07-22
+15	\N	M	1985-10-22
+79	\N	M	1959-09-15
+48	\N	M	1991-06-10
+26	\N	F	1999-10-22
+85	\N	F	1976-09-03
+72	\N	M	1996-11-10
+95	\N	M	1958-06-25
+57	\N	F	1992-09-29
+81	\N	F	1978-08-26
+61	\N	M	1965-11-11
+19	\N	F	1969-02-01
+77	\N	M	1999-12-08
+30	\N	F	1968-07-21
+21	\N	M	1955-05-22
+3	\N	F	1992-01-23
+17	\N	M	1997-06-02
+37	\N	F	1995-07-23
+28	\N	F	1963-04-18
+5	\N	F	1978-02-01
+56	\N	M	1958-01-01
+91	\N	M	1998-07-08
+74	\N	F	1983-12-30
+54	\N	F	1962-06-04
+29	\N	F	1989-09-11
+34	\N	M	1958-03-06
+96	\N	M	1988-12-28
+83	\N	M	1959-08-04
+67	\N	M	1995-07-24
+63	\N	M	1983-02-07
+90	\N	M	1978-04-08
+10	\N	F	1962-11-01
+35	\N	F	1976-03-19
+45	\N	M	1951-02-16
+6	\N	F	1995-07-06
+86	\N	M	1996-07-27
+39	\N	M	1986-03-14
+93	\N	F	1967-11-01
+89	\N	F	1953-05-26
+36	\N	M	1980-12-22
+31	\N	F	1981-11-01
+50	\N	M	1957-04-24
+14	\N	F	1967-01-24
+13	\N	F	1957-08-15
+2	\N	F	1994-03-23
+62	\N	F	1970-06-08
+75	\N	M	1952-12-27
+99	\N	F	1999-04-07
+41	\N	F	1972-07-13
+46	\N	F	1996-05-04
+32	\N	F	1989-09-19
+7	\N	F	1966-03-26
+100	\N	M	1980-05-10
+38	\N	F	1978-08-22
+12	\N	F	1979-02-08
+78	\N	M	1977-08-30
+24	\N	F	1989-09-04
+16	2	F	1966-09-24
+53	9	M	1988-09-25
+4	18	F	1968-07-29
+84	37	F	1995-02-07
+66	65	M	1968-02-01
+25	\N	F	1982-03-15
+94	\N	M	1965-02-01
+49	\N	M	2000-03-11
+47	\N	M	1959-09-30
+20	\N	M	1968-09-15
+33	\N	F	1977-02-04
+1	\N	M	1971-04-11
+76	\N	F	1968-04-03
+18	\N	F	1954-12-30
+64	\N	F	1977-01-12
+55	\N	M	1970-08-06
+27	\N	F	1987-06-13
+23	\N	F	1967-06-06
+58	\N	M	1955-06-07
+8	\N	F	1987-05-04
 \.
 
 
 --
--- TOC entry 2874 (class 0 OID 92610)
--- Dependencies: 199
+-- TOC entry 2877 (class 0 OID 92610)
+-- Dependencies: 201
 -- Data for Name: publications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1121,8 +1121,8 @@ COPY public.publications (id, title, cover_image_id, body, author_id, created_at
 
 
 --
--- TOC entry 2876 (class 0 OID 92625)
--- Dependencies: 201
+-- TOC entry 2879 (class 0 OID 92625)
+-- Dependencies: 203
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1231,8 +1231,8 @@ COPY public.users (id, name, email, phone, created_at) FROM stdin;
 
 
 --
--- TOC entry 2889 (class 0 OID 0)
--- Dependencies: 206
+-- TOC entry 2892 (class 0 OID 0)
+-- Dependencies: 208
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1240,7 +1240,7 @@ SELECT pg_catalog.setval('public.images_id_seq', 100, true);
 
 
 --
--- TOC entry 2739 (class 2606 OID 92643)
+-- TOC entry 2741 (class 2606 OID 92643)
 -- Name: bookmarks bookmarks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1249,7 +1249,7 @@ ALTER TABLE ONLY public.bookmarks
 
 
 --
--- TOC entry 2727 (class 2606 OID 93770)
+-- TOC entry 2729 (class 2606 OID 93770)
 -- Name: comment_statuses comment_statuses_name_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1258,7 +1258,7 @@ ALTER TABLE ONLY public.comment_statuses
 
 
 --
--- TOC entry 2729 (class 2606 OID 92624)
+-- TOC entry 2731 (class 2606 OID 92624)
 -- Name: comment_statuses comment_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1267,7 +1267,7 @@ ALTER TABLE ONLY public.comment_statuses
 
 
 --
--- TOC entry 2721 (class 2606 OID 92518)
+-- TOC entry 2723 (class 2606 OID 92518)
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1276,7 +1276,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 2715 (class 2606 OID 92508)
+-- TOC entry 2717 (class 2606 OID 92508)
 -- Name: hubs hubs_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1285,7 +1285,7 @@ ALTER TABLE ONLY public.hubs
 
 
 --
--- TOC entry 2717 (class 2606 OID 92506)
+-- TOC entry 2719 (class 2606 OID 92506)
 -- Name: hubs hubs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1294,7 +1294,7 @@ ALTER TABLE ONLY public.hubs
 
 
 --
--- TOC entry 2719 (class 2606 OID 92513)
+-- TOC entry 2721 (class 2606 OID 92513)
 -- Name: hubs_publications hubs_publications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1303,7 +1303,7 @@ ALTER TABLE ONLY public.hubs_publications
 
 
 --
--- TOC entry 2747 (class 2606 OID 93791)
+-- TOC entry 2749 (class 2606 OID 93791)
 -- Name: images images_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1312,7 +1312,7 @@ ALTER TABLE ONLY public.images
 
 
 --
--- TOC entry 2749 (class 2606 OID 93793)
+-- TOC entry 2751 (class 2606 OID 93793)
 -- Name: images images_url_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1321,7 +1321,7 @@ ALTER TABLE ONLY public.images
 
 
 --
--- TOC entry 2743 (class 2606 OID 93772)
+-- TOC entry 2745 (class 2606 OID 93772)
 -- Name: notification_types notification_types_name_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1330,7 +1330,7 @@ ALTER TABLE ONLY public.notification_types
 
 
 --
--- TOC entry 2745 (class 2606 OID 92663)
+-- TOC entry 2747 (class 2606 OID 92663)
 -- Name: notification_types notification_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1339,7 +1339,7 @@ ALTER TABLE ONLY public.notification_types
 
 
 --
--- TOC entry 2741 (class 2606 OID 92658)
+-- TOC entry 2743 (class 2606 OID 92658)
 -- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1348,7 +1348,7 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- TOC entry 2737 (class 2606 OID 92638)
+-- TOC entry 2739 (class 2606 OID 92638)
 -- Name: profiles profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1357,7 +1357,7 @@ ALTER TABLE ONLY public.profiles
 
 
 --
--- TOC entry 2723 (class 2606 OID 92617)
+-- TOC entry 2725 (class 2606 OID 92617)
 -- Name: publications publications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1366,7 +1366,7 @@ ALTER TABLE ONLY public.publications
 
 
 --
--- TOC entry 2725 (class 2606 OID 92619)
+-- TOC entry 2727 (class 2606 OID 92619)
 -- Name: publications publications_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1375,7 +1375,7 @@ ALTER TABLE ONLY public.publications
 
 
 --
--- TOC entry 2731 (class 2606 OID 92631)
+-- TOC entry 2733 (class 2606 OID 92631)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1384,7 +1384,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2733 (class 2606 OID 92633)
+-- TOC entry 2735 (class 2606 OID 92633)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1393,7 +1393,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2735 (class 2606 OID 92629)
+-- TOC entry 2737 (class 2606 OID 92629)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1401,7 +1401,16 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
--- Completed on 2022-09-13 14:34:47
+--
+-- TOC entry 2752 (class 2606 OID 93796)
+-- Name: profiles profiles_avatar_image_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profiles
+    ADD CONSTRAINT profiles_avatar_image_id_fk FOREIGN KEY (avatar_image_id) REFERENCES public.images(id);
+
+
+-- Completed on 2022-09-13 15:07:47
 
 --
 -- PostgreSQL database dump complete
