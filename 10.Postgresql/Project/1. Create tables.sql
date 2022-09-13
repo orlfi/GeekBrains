@@ -28,13 +28,14 @@ CREATE TABLE IF NOT EXISTS comments (
 	publication_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
 	status_id INTEGER NOT NULL,
+	text TEXT NOT NULL,	
 	created_at TIMESTAMP NOT NULL
 );
 
 -- 5. Статусы комментариев
 CREATE TABLE IF NOT EXISTS comment_statuses (
 	id INTEGER PRIMARY KEY,
-	name VARCHAR(10)
+	name VARCHAR(20) NOT NULL UNIQUE
 );
 
 -- 6. Пользователи
@@ -81,5 +82,5 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- 11. Типы уведомлений
 CREATE TABLE IF NOT EXISTS notification_types (
 	id INTEGER PRIMARY KEY,
-	name VARCHAR(250)
+	name VARCHAR(250) NOT NULL UNIQUE
 );
