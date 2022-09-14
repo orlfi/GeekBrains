@@ -40,4 +40,3 @@ ALTER TABLE bookmarks
 ### 3. Диаграмма отношений
 Создание диагрыммы отношений осуществлялось с помощью [pgAdmin 4](https://www.pgadmin.org/).
 ![ERD](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/4.%20ERD.png)
-![PGAdmin4](https://github.com/orlfi/GeekBrains/blob/Postgresql.Lesson-1/10.Postgresql/Lesson-1/Images/pgadmin.png)
