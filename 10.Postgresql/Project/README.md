@@ -21,11 +21,23 @@
 
 ### 2. Тестовые данные
 Тестовые данные сгенерированы с помощью внешнего сервиса https://generatedata.com/
+
 Для создания дампов использовал утилиту pg_dump: 
 ```sql
-pg_dump vk > vk.dump.sql
+pg_dump hubs > hubs.dump.sql
 ```
+Дамп БД с данными содержится в файле `2.2. Hubs.dump.sql`
 
-
-![PSQL](https://github.com/orlfi/GeekBrains/blob/Postgresql.Lesson-1/10.Postgresql/Lesson-1/Images/psql.png)
+### 3. Внешние ключи
+Внешние ключи создавались командой `ALTER TABLE <tablename> ADD CONSTRAINT`:
+```sql
+ALTER TABLE bookmarks
+    ADD CONSTRAINT bookmarks_user_id_fk
+    FOREIGN KEY (user_id)
+    REFERENCES users(id);
+```
+Полный скрипт создания внешних ключей приведен в файле `3. ForeignKey.sql`
+### 3. Диаграмма отношений
+Создание диагрыммы отношений осуществлялось с помощью [pgAdmin 4](https://www.pgadmin.org/).
+![ERD](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/4.%20ERD.png)
 ![PGAdmin4](https://github.com/orlfi/GeekBrains/blob/Postgresql.Lesson-1/10.Postgresql/Lesson-1/Images/pgadmin.png)
