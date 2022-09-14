@@ -17,4 +17,4 @@ JOIN users
 LEFT JOIN comments
 	ON publications.id= comments.publication_id
 GROUP BY hubs.id, publications.id, users.id
-ORDER BY comments_count DESC
+ORDER BY comments_count DESC;

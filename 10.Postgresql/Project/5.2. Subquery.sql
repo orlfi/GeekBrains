@@ -23,4 +23,4 @@ JOIN hubs
     ON hub_id = hubs.id
 JOIN users
     ON user_id = users.id
-ORDER BY hubs.name
+ORDER BY hubs.name;

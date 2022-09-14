@@ -1,5 +1,6 @@
 -- Выбрать публикации из раздела 'Разработка игр'.
--- Вывести заголовок публикации, имя автора и количество комментариев к публикациям. 
+-- Вывести заголовок публикации, имя автора и количество комментариев к публикациям 
+-- за последние 20 месяцев. 
 -- Отсортировать результат по количеству комментариев по убыванию
 SELECT 
 	hubs.name AS hub_name, 
@@ -15,6 +16,7 @@ JOIN users
 	ON publications.author_id = users.id
 LEFT JOIN comments
 	ON publications.id= comments.publication_id
-WHERE hubs.name = 'Разработка игр'
+WHERE hubs.name = 'Разработка игр' 
+    AND comments.created_at > NOW() - interval '10 month' 
 GROUP BY hubs.id, publications.id, users.id
-ORDER BY comments_count DESC
+ORDER BY comments_count DESC;

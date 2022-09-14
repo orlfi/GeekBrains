@@ -21,4 +21,4 @@ WHERE publications_count > (
     SELECT AVG(publications_count) 
     FROM users_publications_count
 )
-ORDER BY publications_count DESC
+ORDER BY publications_count DESC;
