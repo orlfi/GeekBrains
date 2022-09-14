@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS publications (
 -- 2. Хабы (наборов тематических статей)
 CREATE TABLE IF NOT EXISTS hubs (
 	id INTEGER PRIMARY KEY,
-	name VARCHAR(200) NOT NULL UNIQUE
+	name VARCHAR(200) NOT NULL UNIQUE,
+	description VARCHAR(500)
 );
 
 -- 3. Связи публикаций с хабами (многие ко многим)
