@@ -248,5 +248,50 @@ CREATE TRIGGER verify_publication_creation_datetime_on_update BEFORE UPDATE ON p
 ```
 Скрипт приведен в файле `9. Trigger.sql`
 Результат некорректного ввода даты в поле created_at:
-
+![Trigger error](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/9.%20trigger_error.png)
 Результат корректного ввода даты в поле created_at:
+![Trigger ok](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/9.%20trigger_ok.png)
+
+### 9. Оптимизация
+Для проведения оптимизации использую запрос '6.1. Join.sql':
+```sql
+SELECT 
+	hubs.name AS hub_name, 
+	title, 
+	users.name AS user_name, 
+	count(comments.publication_id) AS comments_count
+FROM hubs_publications
+JOIN publications 
+	ON publications.id = hubs_publications.publication_id
+JOIN hubs 
+	ON hubs.id = hub_id
+JOIN users 
+	ON publications.author_id = users.id
+LEFT JOIN comments
+	ON publications.id= comments.publication_id
+WHERE hubs.name = 'Разработка игр' 
+    AND comments.created_at > NOW() - interval '10 month' 
+GROUP BY hubs.id, publications.id, users.id
+ORDER BY comments_count DESC;
+```
+Результат построения плана выполнения запроса (файл '10. Explain analyze before optimization.png'):
+![Before optimization](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/10.%20Analize%20before%20optimization.png)
+Как можно увидить, львиную долю времени выполнения (1.140 мс) занимает перебор по таблице comments:
+```
+->  Seq Scan on comments  (cost=0.00..74.00 rows=1665 width=4) (actual time=0.009..0.708 rows=1663 loops=1)
+```
+т.е. из 1.140 ms общего времени выполнения 0.708 занимает `Scan on comments`
+
+Таким образом можно сделать вывод, что узкое место в последовательном сканировании таблицы 'comments' по внешнему ключу comments.publication_id.
+
+Для оптимизации запроса построю дополнительный индекс в таблице comments по внешнему ключу publication_id:
+```sql
+CREATE INDEX IF NOT EXISTS comments_publication_id_fk ON comments(publication_id);
+```
+После построения индекса время выполнения запроса уменьшилось до 0.352 мс.
+поиск по индексу в таблице comments уменьшился до 0.037 мс:
+```
+->  Index Scan using comments_publication_id_fk on comments  (cost=0.28..2.66 rows=17 width=4) (actual time=0.014..0.037 rows=19 loops=4)
+```
+Результат оптимизации запроса (файл '10. Explain analyze after optimization.png'):
+![After optimization](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/10.%20Explain%20analyze%20after%20optimization.png)
