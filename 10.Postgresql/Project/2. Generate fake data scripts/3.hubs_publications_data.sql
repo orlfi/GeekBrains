@@ -1,0 +1,120 @@
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (6,1),
+  (94,8),
+  (95,44),
+  (34,79),
+  (41,74),
+  (14,82),
+  (10,99),
+  (77,5),
+  (50,83),
+  (95,81);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (72,59),
+  (27,53),
+  (85,56),
+  (92,75),
+  (22,22),
+  (66,78),
+  (44,43),
+  (90,24),
+  (48,20),
+  (73,56);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (28,86),
+  (26,38),
+  (12,73),
+  (37,16),
+  (73,48),
+  (75,61),
+  (94,34),
+  (53,73),
+  (73,62),
+  (59,65);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (12,10),
+  (84,17),
+  (8,38),
+  (18,47),
+  (45,41),
+  (20,12),
+  (74,32),
+  (62,63),
+  (26,6),
+  (28,15);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (74,28),
+  (46,21),
+  (66,93),
+  (1,37),
+  (41,95),
+  (43,54),
+  (50,14),
+  (12,43),
+  (67,80),
+  (46,81);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (33,45),
+  (92,20),
+  (51,7),
+  (89,57),
+  (13,47),
+  (45,32),
+  (94,57),
+  (10,31),
+  (12,48),
+  (85,80);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (56,77),
+  (74,88),
+  (23,6),
+  (16,46),
+  (52,30),
+  (43,28),
+  (42,84),
+  (52,61),
+  (54,66),
+  (68,71);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (11,25),
+  (89,25),
+  (99,56),
+  (31,81),
+  (54,77),
+  (29,78),
+  (27,82),
+  (31,65),
+  (43,95),
+  (33,77);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (65,95),
+  (98,82),
+  (93,10),
+  (72,64),
+  (81,70),
+  (53,7),
+  (76,12),
+  (93,44),
+  (74,29),
+  (34,72);
+INSERT INTO hubs_publications (hub_id,publication_id)
+VALUES
+  (96,57),
+  (98,70),
+  (54,63),
+  (24,48),
+  (21,37),
+  (37,86),
+  (18,30),
+  (78,40),
+  (16,29),
+  (6,19);
