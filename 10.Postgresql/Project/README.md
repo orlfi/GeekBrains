@@ -204,8 +204,8 @@ CREATE VIEW hubs_comments_count_by_month AS
 Результат выполнения запроса:
 ![View2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.2.%20Result.png)
 
-### 7. Пользовательская функция
-Выводит количество комментариев по id  пользователя.
+### 8. Пользовательская функция
+Функция `comments_total_by_user_id(user_id)` - выводит количество комментариев по id  пользователя.
 ```sql
 CREATE FUNCTION comments_total_by_user_id(requested_user_id INTEGER) 
 RETURNS BIGINT AS
@@ -222,4 +222,31 @@ LANGUAGE SQL;
 Скрипт приведен в файле `8.1. Function.sql`
 
 Результат выполнения запроса:
-![View2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.2.%20Result.png)
+![Function](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/8.1.%20Result.png)
+
+### 9. Триггер
+Триггер `verify_publication_creation_datetime_trigger()` проверяет изменение поля `created_at` таблицы `publications` на ввод дыты, больше текущей.
+В случае превышения даты возникает исключение.
+```sql
+CREATE OR REPLACE FUNCTION verify_publication_creation_datetime_trigger()
+RETURNS TRIGGER AS
+$$
+DECLARE today TIMESTAMP;
+BEGIN
+today := NOW();
+IF NEW.created_at > today THEN
+	RAISE EXCEPTION 'created_at:% must be less than the current date:% ', NEW.created_at, today;
+END IF;
+RETURN NEW;
+END
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER verify_publication_creation_datetime_on_update BEFORE UPDATE ON publications
+	FOR EACH ROW
+	EXECUTE FUNCTION verify_publication_creation_datetime_trigger();
+```
+Скрипт приведен в файле `9. Trigger.sql`
+Результат некорректного ввода даты в поле created_at:
+
+Результат корректного ввода даты в поле created_at:
