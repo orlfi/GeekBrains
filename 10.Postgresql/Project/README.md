@@ -42,6 +42,7 @@ ALTER TABLE bookmarks
 
 ### 4. Диаграмма отношений
 Создание диагрыммы отношений осуществлялось с помощью [pgAdmin 4](https://www.pgadmin.org/).
+
 ![ERD](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/4.%20ERD.png)
 
 ### 5. Запросы с использованием подзапросов
@@ -73,6 +74,7 @@ ORDER BY publications_count DESC;
 Скрипт приведен в файле `5.1. Subquery.sql`
 
 Результат выполнения запроса:
+
 ![Subquery1](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/5.1.%20Result.png)
 
 
@@ -107,6 +109,7 @@ ORDER BY hubs.name;
 Скрипт приведен в файле `5.2. Subquery.sql`
 
 Результат выполнения запроса:
+
 ![Subquery2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/5.2.%20Result.png)
 
 ### 6. Запросы с использованием объединения JOIN
@@ -136,6 +139,7 @@ ORDER BY comments_count DESC;
 Скрипт приведен в файле `6.1. Join.sql`
 
 Результат выполнения запроса:
+
 ![Join1](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/6.1.%20Result.png)
 
 6.2. Выбрать хабы, у которых имеются комментраии в публикациях,
@@ -162,6 +166,7 @@ ORDER BY comments_count DESC;
 Скрипт приведен в файле `6.2. Join.sql`
 
 Результат выполнения запроса:
+
 ![Join2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/6.2.%20Result.png)
 
 ### 7. Представления
@@ -183,6 +188,7 @@ SELECT * FROM hubs_without_publications;
 Скрипт приведен в файле `7.1. View.sql`
 
 Результат выполнения запроса:
+
 ![View1](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.1.%20Result.png)
 
 7.2. Представление `hubs_comments_count_by_month`, выводящее помесячно количество комментариев по каждому хабу.
@@ -202,6 +208,7 @@ CREATE VIEW hubs_comments_count_by_month AS
 Скрипт приведен в файле `7.2. View.sql`
 
 Результат выполнения запроса:
+
 ![View2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.2.%20Result.png)
 
 ### 8. Пользовательская функция
@@ -222,6 +229,7 @@ LANGUAGE SQL;
 Скрипт приведен в файле `8.1. Function.sql`
 
 Результат выполнения запроса:
+
 ![Function](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/8.1.%20Result.png)
 
 ### 9. Триггер
@@ -247,9 +255,13 @@ CREATE TRIGGER verify_publication_creation_datetime_on_update BEFORE UPDATE ON p
 	EXECUTE FUNCTION verify_publication_creation_datetime_trigger();
 ```
 Скрипт приведен в файле `9. Trigger.sql`
+
 Результат некорректного ввода даты в поле created_at:
+
 ![Trigger error](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/9.%20trigger_error.png)
+
 Результат корректного ввода даты в поле created_at:
+
 ![Trigger ok](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/9.%20trigger_ok.png)
 
 ### 9. Оптимизация
@@ -275,7 +287,9 @@ GROUP BY hubs.id, publications.id, users.id
 ORDER BY comments_count DESC;
 ```
 Результат построения плана выполнения запроса (файл '10. Explain analyze before optimization.png'):
+
 ![Before optimization](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/10.%20Analize%20before%20optimization.png)
+
 Как можно увидить, львиную долю времени выполнения (1.140 мс) занимает перебор по таблице comments:
 ```
 ->  Seq Scan on comments  (cost=0.00..74.00 rows=1665 width=4) (actual time=0.009..0.708 rows=1663 loops=1)
@@ -294,4 +308,5 @@ CREATE INDEX IF NOT EXISTS comments_publication_id_fk ON comments(publication_id
 ->  Index Scan using comments_publication_id_fk on comments  (cost=0.28..2.66 rows=17 width=4) (actual time=0.014..0.037 rows=19 loops=4)
 ```
 Результат оптимизации запроса (файл '10. Explain analyze after optimization.png'):
+
 ![After optimization](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/10.%20Explain%20analyze%20after%20optimization.png)
