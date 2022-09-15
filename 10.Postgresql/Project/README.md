@@ -70,6 +70,8 @@ WHERE publications_count > (
 )
 ORDER BY publications_count DESC;
 ```
+Скрипт приведен в файле `5.1. Subquery.sql`
+
 Результат выполнения запроса:
 ![Subquery1](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/5.1.%20Result.png)
 
@@ -101,6 +103,9 @@ JOIN users
     ON user_id = users.id
 ORDER BY hubs.name;
 ```
+
+Скрипт приведен в файле `5.2. Subquery.sql`
+
 Результат выполнения запроса:
 ![Subquery2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/5.2.%20Result.png)
 
@@ -158,3 +163,63 @@ ORDER BY comments_count DESC;
 
 Результат выполнения запроса:
 ![Join2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/6.2.%20Result.png)
+
+### 7. Представления
+7.1. Представление `hubs_without_publications`, выводящее хабы без публикаций.
+```sql
+CREATE VIEW hubs_without_publications AS
+SELECT 
+	hubs.name AS hub_name
+FROM  hubs_publications
+JOIN publications
+	ON publications.id = hubs_publications.publication_id
+RIGHT JOIN hubs 
+	ON hubs.id = hubs_publications.hub_id
+WHERE publications.title IS NULL
+ORDER BY hubs.id;
+
+SELECT * FROM hubs_without_publications;
+```
+Скрипт приведен в файле `7.1. View.sql`
+
+Результат выполнения запроса:
+![View1](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.1.%20Result.png)
+
+7.2. Представление `hubs_comments_count_by_month`, выводящее помесячно количество комментариев по каждому хабу.
+```sql
+CREATE VIEW hubs_comments_count_by_month AS
+    SELECT date_trunc('month',created_at) AS year_month,
+        hubs.name AS hub_name,
+        count(*) as comments_count
+    FROM comments
+    JOIN hubs_publications
+        ON hubs_publications.publication_id = comments.publication_id
+    JOIN hubs
+        ON hubs_publications.hub_id = hubs.id
+    GROUP BY year_month, hubs.name
+    ORDER BY year_month, hubs.name;
+```
+Скрипт приведен в файле `7.2. View.sql`
+
+Результат выполнения запроса:
+![View2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.2.%20Result.png)
+
+### 7. Пользовательская функция
+Выводит количество комментариев по id  пользователя.
+```sql
+CREATE FUNCTION comments_total_by_user_id(requested_user_id INTEGER) 
+RETURNS BIGINT AS
+$$
+SELECT
+    COUNT(*)
+FROM users
+LEFT JOIN comments
+    ON users.id = comments.user_id
+WHERE users.id = requested_user_id;
+$$
+LANGUAGE SQL;
+```
+Скрипт приведен в файле `8.1. Function.sql`
+
+Результат выполнения запроса:
+![View2](https://github.com/orlfi/GeekBrains/blob/Postgresql.Project/10.Postgresql/Project/7.2.%20Result.png)
